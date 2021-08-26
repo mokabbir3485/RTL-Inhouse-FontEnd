@@ -1,0 +1,56 @@
+﻿<form name="ApprovalsForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Approval Setup</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="All Module">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlModule" ng-change="loadGridBasedOnModule()" class="form-control selectNotMandetory" ng-options="module.ModuleName for module in ModuleList track by module.ModuleId">
+                                    <option value="" label="All Module"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th width="5%">S/N</th>
+                                    <th width="50%"  data-th="Permission Details"><span>Screen Name</span></th>
+                                    <th width="30%" class="t-cell-center">Module Name</th>
+                                    <th width="15%" style="text-align:center;">Action &nbsp;&nbsp;<input type="checkbox" ng-model="selectAllCheckBox" ng-change="SelectAllCheckBox(selectAllCheckBox)" /></th>
+                                </tr>
+                                <tr ng-repeat="aApprovalList in GetForApprovalList ">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{aApprovalList.ScreenName}}</td>
+                                    <td class="t-cell-center">{{aApprovalList.ModuleName}}</td>
+                                    <td style="text-align:center;">
+                                        <input type="checkbox" ng-model="aApprovalList.IsRequired">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>     
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="Save()" id="btnSave" class="customBtn custmoBtnSave" title="Search">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>           
+            </div>            
+        </div>
+    </div>
+</form>

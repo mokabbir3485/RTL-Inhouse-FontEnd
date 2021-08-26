@@ -1,0 +1,120 @@
+﻿<form name="bankEntryForm" novalidate >
+    {{msg}}
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" ng-show="CreatePermission||RevisePermission||RemovePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Bank Entry {{message}}</h3>
+            </div>
+            <div class="panel-body"> 
+                <div class="form-group" ng-class="{ 'has-error' : bankEntryForm.BankName.$invalid && bankEntryForm.BankName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Designation Name">
+                    <div class="input-group">
+                        <input type="text" id="txtBankName" name="BankName" class="form-control" ng-model="ad_Bank.BankName" ng-blur="CheckDuplicateBankName()" ng-change="foundChange()" placeholder="Bank Name" maxlength="51" ng-maxlength="50" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="bankEntryForm.BankName.$error.required && bankEntryForm.BankName.$touched">Bank Name is required</span>
+                    <span class="help-block" ng-if="bankEntryForm.BankName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : bankEntryForm.Description.$invalid && bankEntryForm.Description.$touched }" data-toggle="tooltip" data-placement="bottom" title="Description">
+                    <div class="input-group">
+                        <textarea id="txtDescription" name="Description" class="form-control" ng-model="ad_Bank.Description" placeholder="Description" maxlength="501" ng-maxlength="500"></textarea>
+                        <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="bankEntryForm.Description.$error.maxlength">500 Character Max</span>
+                </div>
+                <div class="input-group">
+                    <label>Status: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="true" ng-model="ad_Bank.IsActive">
+                        Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="false" ng-model="ad_Bank.IsActive"> Inactive
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <br />
+                    <div class=" row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="SaveBank()" class="customBtn custmoBtnSave" ng-disabled="bankEntryForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" ng-click="Delete()" ng-show="btnDeleleShow" title="Search">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="Button3" class="customBtn custmoBtnReset" title="Search" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Bank List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th class="txt-center">S/N</th>
+                                <!--<th class="txt-center">Store Name</th>-->
+                                <th class="txt-center" data-th="Designation details"><span>Bank Name</span></th>
+                                <th class="txt-center">Description</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aBank in Banklist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="Selbank(aBank)">
+                                <td class="txt-center">{{$index + ((currentPage-1)*PerPage) + 1 }}</td>
+                                <!--<td class="txt-center">{{aDesignation.DepartmentName}}</td>-->
+                                <td class="txt-center">{{aBank.BankName}}</td>
+                                <td class="txt-center">{{aBank.Description}}</td>
+                                <td class="txt-center">{{aBank.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="5">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+designationlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

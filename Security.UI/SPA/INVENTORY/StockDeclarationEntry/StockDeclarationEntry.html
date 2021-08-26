@@ -1,0 +1,364 @@
+﻿<form name="stockDeclarationEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">   
+                    <div class="col-md-4">
+                        <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Stock Declaration</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.DeclarationNo.$invalid && stockDeclarationEntryForm.DeclarationNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO No">
+                            <div class="input-group ">
+                                <input type="text" id="txtDeclarationNo" name="DeclarationNo" class="form-control" ng-model="inv_StockDeclaration.DeclarationNo" ng-blur="CheckDuplicateDeclerationNo()" ng-change="foundChange()" placeholder="PO No" maxlength="51" ng-maxlength="50" required autofocus >
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="stockDeclarationEntryForm.DeclarationNo.$error.required && stockDeclarationEntryForm.DeclarationNo.$touched">PO No is Required</span>
+                            <span class="help-block" style="display: block;" ng-if="stockDeclarationEntryForm.DeclarationNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.DeclarationDate.$invalid && stockDeclarationEntryForm.DeclarationDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Declaration Date">
+                            <div class='input-group'>
+                                <input type="text" name="DeclarationDate" id="txtDeclarationDate" onkeydown="return false" ng-model="inv_StockDeclaration.DeclarationDate" class="form-control datepicker" placeholder="Declaration Date" required readonly="readonly" />
+                                <span class="input-group-addon" id="calender"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="stockDeclarationEntryForm.DeclarationDate.$error.required && stockDeclarationEntryForm.DeclarationDate.$touched">Declaration Date is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.ddlStore.$dirty && stockDeclarationEntryForm.ddlStore.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Store">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlStore" ng-model="ddlStore" ng-change="inv_StockDeclaration.DepartmentId=ddlStore.DepartmentId;inv_StockDeclaration.DepartmentName=ddlStore.DepartmentName" class="form-control selectMendatory" name="ddlStore" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" ng-disabled="StockDeclarationDetailList.length" required>
+                                    <option value="" label="Outlet"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="stockDeclarationEntryForm.ddlStore.$dirty && stockDeclarationEntryForm.ddlStore.$invalid">Store is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.ddlDeclaredBy.$dirty && stockDeclarationEntryForm.ddlDeclaredBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Declared By">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlDeclaredBy" name="ddlDeclaredBy" class="form-control selectMendatory" ng-change="inv_StockDeclaration.DeclaredById=ddlDeclaredBy.EmployeeId;inv_StockDeclaration.DeclaredBy=ddlDeclaredBy.FullName" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId" required>
+                                    <option value="" label="Declared By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="stockDeclarationEntryForm.ddlDeclaredBy.$dirty && issueWithoutRequisitionForm.ddlDeclaredBy.$invalid">Declared by is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.Remarks.$invalid && stockDeclarationEntryForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <input type="text" id="txtRemarks" name="Remarks" class="form-control" ng-model="inv_StockDeclaration.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500">
+                                <span class="input-group-addon"><i class="fa fa-commenting-o"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="stockDeclarationEntryForm.Remarks.$error.required && stockDeclarationEntryForm.Remarks.$touched">Remarks is Required</span>
+                            <span class="help-block" style="display: block;" ng-if="stockDeclarationEntryForm.Remarks.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <p ng-if="Debug" data-toggle="collapse" data-target="#StockDeclarationDetail">StockDeclarationDetail</p>
+                <div ng-if="Debug" id="StockDeclarationDetail" class="collapse"><pre>{{StockDeclarationDetail|json}}</pre></div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.BarCode.$invalid && stockDeclarationEntryForm.BarCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="BarCode">
+                            <div class="input-group">
+                                <input type="text" id="txtBarcode" name="BarCode" ng-model="ItemCode" placeholder="Barcode" ng-model-options='{ debounce: 300 }' ng-change="BarcodeSearch()" class="form-control text-center" style="width:100% !important" autocomplete="off" onclick="this.setSelectionRange(0, this.value.length)" ng-disabled="!ddlStore">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="stockDeclarationEntryForm.BarCode.$error.required && stockDeclarationEntryForm.BarCode.$touched"></span>
+                            <span class="help-block" ng-if="stockDeclarationEntryForm.BarCode.$error.maxlength">20 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.Product.$dirty && stockDeclarationEntryForm.Product.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Outlet">
+                            <div class="input-group">
+                                <input type="text" id="txtProduct" ng-model="Product" placeholder="Product Name" ng-change="ItemSearch()" ng-blur="ItemSearch()" uib-typeahead="item as item.ItemName for item in VarietyList | filter:{ItemName:$viewValue}  | limitTo:500" class="form-control" onclick="this.setSelectionRange(0, this.value.length)" style="width:100% !important" autocomplete="off" typeahead-min-length="0" ng-disabled="!ddlStore">
+                                <span class="input-group-addon popover-markup">
+                                    <i class="fa fa-text-width req-icon-color"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlUnit" id="ddlUnit" class="form-control selectMendatory" name="unit" ng-change="inv_StockDeclarationDetail.DeclarationUnitId =ddlUnit.ItemUnitId; inv_StockDeclarationDetail.DeclarationUnitName =ddlUnit.UnitName; GetItemDetails(ddlUnit.ItemUnitId);" ng-options="unit.UnitName  for unit in unitlist | filter: unitFilter  track by unit.ItemUnitId">
+                                            <option value="" label="Select Unit"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.StockDeclarationDetail.$invalid && stockDeclarationEntryForm.StockDeclarationDetail.$touched }" data-toggle="tooltip" data-placement="bottom" title="Stock Quantity">
+                                    <div class="input-group">
+                                        <input type="number" id="txtStockWuantity" name="StockQuantity" class="form-control txt-center" ng-model="inv_StockDeclarationDetail.StockQty" placeholder="Stock Qty" maxlength="200" ng-maxlength="199" disabled>
+                                    </div>
+                                    <span class="help-block" ng-if="stockDeclarationEntryForm.StockDeclarationDetail.$error.maxlength"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : stockDeclarationEntryForm.StockDeclarationDetail.$invalid && stockDeclarationEntryForm.StockDeclarationDetail.$touched }" data-toggle="tooltip" data-placement="bottom" title="Declaration Quantity">
+                                    <div class="input-group">
+                                        <input type="number" id="txtDeclarationQty" name="StockDeclarationDetail" class="form-control txt-center" ng-model="inv_StockDeclarationDetail.DeclarationQuantity" placeholder="Declaration Qty" maxlength="200" ng-maxlength="199">
+                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="stockDeclarationEntryForm.StockDeclarationDetail.$error.maxlength"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Declaration Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlStockDeclarationType" class="form-control selectMendatory" name="ddlStockDeclarationType" ng-change="inv_StockDeclarationDetail.DeclarationTypeId =ddlStockDeclarationType.DeclarationTypeId;inv_StockDeclarationDetail.DeclarationTypeName =ddlStockDeclarationType.DeclarationTypeName; AddDetailValidationChk(StockDeclarationDetail)" ng-options="SDType.DeclarationTypeName for SDType in StockDeclarationTypeList  track by SDType.DeclarationTypeId">
+                                            <option value="" label="Select Declaration Type"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="btnAdd" class="customBtn custmoBtnReset btn-add" ng-disabled="!ddlUnit || !Product || !inv_StockDeclarationDetail.DeclarationQuantity || !ddlStockDeclarationType || inv_StockDeclarationDetail.DeclarationQuantity>inv_StockDeclarationDetail.StockQty || inv_StockDeclarationDetail.DeclarationQuantity<1" title=" add detail" ng-click="AddDetail()">
+                                    <i class="fa fa-plus"></i>&nbsp;{{DetailAddBtn}}
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="RemoveBtnShow" ng-click="RemoveDetail()">
+                                    <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <table class="responstable table-hover">
+                                <tr class="t-head">
+                                    <th class="t-cell-center"></th>
+                                    <th class="t-cell-center" width="5%">S/N</th>
+                                    <th data-th="Stock Declaration Details"><span>Variety Name</span></th>
+                                    <th width="10%" class="t-cell-center">Variety Code</th>
+                                    <th width="20%" class="txt-center">Declaration Type</th>
+                                    <th width="10%" class="t-cell-center">Quantity</th>
+                                    <th width="10%" class="t-cell-center">Unit</th>
+                                </tr>
+                            <tbody ng-repeat="aStockDeclarationDetail in StockDeclarationDetailList">
+                                <tr class="HoverTable" ng-click="SelDetail(aStockDeclarationDetail,$index)">
+                                    <td ng-click="$event.stopPropagation();" class="t-cell-center"><label><i ng-show="!aStockDeclarationDetail.DisplaySta && aStockDeclarationDetail.HeaderOfAttribute.length" class="fa fa-plus-square"></i><i ng-show="aStockDeclarationDetail.DisplaySta  && aStockDeclarationDetail.HeaderOfAttribute.length" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aStockDeclarationDetail.DisplaySta" /></label></td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td>{{aStockDeclarationDetail.ItemName}}</td>
+                                    <td class="t-cell-center">{{aStockDeclarationDetail.ItemCode}}</td>
+                                    <td class="t-cell-center">{{aStockDeclarationDetail.DeclarationTypeName}}</td>
+                                    <td class="t-cell-center">{{aStockDeclarationDetail.DeclarationQuantity}}</td>
+                                    <td class="t-cell-center">{{aStockDeclarationDetail.DeclarationUnitName}}</td>
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="aStockDeclarationDetail.DisplaySta && aStockDeclarationDetail.HeaderOfAttribute.length">
+                                    <td></td>
+                                    <td colspan="6">
+                                        <table class="table table-condensed table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="t-cell-center">Barcode</th>
+                                                    <th class="t-cell-center" ng-repeat="AttributeName in aStockDeclarationDetail.HeaderOfAttribute">{{AttributeName}}</th>
+                                                    <th class="t-cell-center">Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="HoverTable" ng-repeat="aDeclarationDetailAdAttribute in inv_StockDeclarationDetailAdAttributeLst | filter: { ItemId : aStockDeclarationDetail.ItemId }:true">
+                                                    <td class="t-cell-center">{{aDeclarationDetailAdAttribute.Barcode}}</td>
+                                                    <td class="t-cell-center" ng-repeat="AttributeValue in aDeclarationDetailAdAttribute.ValueOfAttribute">{{AttributeValue}}</td>
+                                                    <td class="t-cell-center text-center"><input type="number" style="text-align:center" ng-model="aDeclarationDetailAdAttribute.AttributeQty" /></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-md-1 col-xs-12">
+                    <div class="input-group">
+                        <button ng-click="AddStockDeclaration()" ng-disabled="stockDeclarationEntryForm.$invalid || RemoveBtnShow||!StockDeclarationDetailList.length" id="Button1" style="margin-left: -15px;" class="btn btn-success" title="Save">
+                            <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2 col-xs-12">
+                    <div class="input-group">
+                        <button type="button" id="btnReset" ng-click="resetForm()" class="btn btn-primary" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="margin-top:10Px" ng-show="!ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Search</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Outlet">
+                                <select ng-model="ddlOutlet" class="form-control selectNotMandetory" name="Outlet" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId">
+                                    <option value="" label="Select Outlet"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" ng-model="DeclarationNo" class="form-control" data-toggle="tooltip" data-placement="bottom" title="PO No" placeholder="PO No" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" onkeydown="return false" ng-model="FromDate" name="FromDate" id="txtFromDate" class="form-control " placeholder="From Date" required />
+                                <span class="input-group-addon" id="calender2"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" onkeydown="return false" ng-model="ToDate" name="ToDate" id="txtToDate" class="form-control " placeholder="To Date" required />
+                                <span class="input-group-addon" id="calender3"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                        <div class="row">
+                            <button id="Button4" class="customBtn custmoBtnReset" ng-click="Search()" title="Search">
+                                <i class="fa fa-search"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <table class="responstable table-hover">
+                    <tbody>
+                        <tr class="t-head">
+                            <th>S/N</th>
+                            <th class="txt-center" width="15%">PO No</th>
+                            <th class="txt-center" width="15%">Stock Out Date</th>
+                            <th class="txt-center" width="15%">Outlet</th>
+                            <th class="txt-center">Remarks</th>
+                        </tr>
+                        <tr class="HoverTable searchRow" ng-repeat="aDelcerationSearch in DelcerationSearchList" onclick="RowSelect(this)" ng-click="RowClick(aDelcerationSearch)">
+                            <td>{{$index + 1}}</td>
+                            <td class="txt-center">{{aDelcerationSearch.DeclarationNo}}</td>
+                            <td class="txt-center">{{aDelcerationSearch.DeclarationDate}}</td>
+                            <td>{{aDelcerationSearch.DepartmentName}}</td>
+                            <td class="txt-center">{{aDelcerationSearch.Remarks}}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    var picker1 = new Pikaday({
+        field: document.getElementById('txtDeclarationDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    var picker2 = new Pikaday({
+        field: document.getElementById('txtFromDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    var picker3 = new Pikaday({
+        field: document.getElementById('txtToDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+
+    document.getElementById("calender").addEventListener("click", function () {
+        picker1.show();
+    });
+    document.getElementById("calender2").addEventListener("click", function () {
+        picker2.show();
+    });
+    document.getElementById("calender3").addEventListener("click", function () {
+        picker3.show();
+    });
+
+    function getCategory(x) {
+        document.getElementById('btnCat').value = x.rowIndex;
+        document.getElementById("btnCat").click();
+    }
+    function getSubCategory(x) {
+        document.getElementById('btnSubCat').value = x.rowIndex;
+        document.getElementById("btnSubCat").click();
+    }
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+
+    });
+    $("#popover-markup").click(function () {
+        $('.trigger').popover('toggle');
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>

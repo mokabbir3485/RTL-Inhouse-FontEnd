@@ -1,0 +1,210 @@
+﻿<form name="saleRealizationEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Sale Realization</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : saleRealizationEntryForm.Company.$dirty && saleRealizationEntryForm.Company.$invalid }">
+                            <div class="input-group width-hundred-percent" data-toggle="tooltip" data-placement="bottom" title="Company">
+                                <select class="form-control selectMendatory" ng-model="ddlCompany" name="Company" ng-options="company.CompanyName for company in CompanyList track by company.CompanyId" ng-change="GetCompanyTotals()" required>
+                                    <option value="" label="-- Select Company --"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="saleRealizationEntryForm.Company.$dirty && saleRealizationEntryForm.Company.$invalid">Company is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Total Due">
+                                <input type="text" class="form-control" ng-model="TotalDue" placeholder="Total Due" disabled>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Total Advance">
+                                <input type="text" class="form-control" ng-model="TotalAdvance" placeholder="Total Advance" disabled>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Total Payable">
+                                <input type="text" class="form-control" ng-model="TotalPayable" placeholder="Total Payable" disabled>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : saleRealizationEntryForm.PaymentType.$dirty && saleRealizationEntryForm.PaymentType.$invalid }">
+                            <div class="input-group width-hundred-percent" data-toggle="tooltip" data-placement="bottom" title="Payment Type">
+                                <select class="form-control selectMendatory" id="cmbPaymentType" ng-model="ddlPaymentType" name="PaymentType" ng-change="rcv_SaleRealization.PaymentTypeId=ddlPaymentType.PaymentTypeId" ng-options="paymentType.PaymentTypeName for paymentType in PaymentTypeList track by paymentType.PaymentTypeId" required>
+                                    <option value="" label="-- Pay Type --"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="saleRealizationEntryForm.PaymentType.$dirty && saleRealizationEntryForm.PaymentType.$invalid">Payment Type is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : saleRealizationEntryForm.Amount.$touched && saleRealizationEntryForm.Amount.$invalid }">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                <input type="number" min="0" style="text-align:right" class="form-control" ng-model="rcv_SaleRealization.Amount" placeholder="Amount" name="Amount" maxlength="19" ng-maxlength="18" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="saleRealizationEntryForm.Amount.$dirty && saleRealizationEntryForm.Amount.$invalid">Amount is required</span>
+                            <span class="help-block" ng-if="saleRealizationEntryForm.Amount.$error.maxlength">19 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="From Advance">
+                                <input type="number" min="0" style="text-align:right" class="form-control" ng-model="rcv_SaleRealization.FromAdvance" placeholder="From Adv." maxlength="19">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="TDS">
+                                <input type="number" min="0" style="text-align:right" class="form-control" ng-model="rcv_SaleRealization.TDS" placeholder="TDS" maxlength="19">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="VDS">
+                                <input type="number" min="0" style="text-align:right" class="form-control" ng-model="rcv_SaleRealization.VDS" placeholder="VDS" maxlength="19">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="btnSearch" class="customBtn custmoBtnSearch" title="Load" ng-click="LoadInInvoices()" ng-disabled="!ddlCompany || !rcv_SaleRealization.Amount || !rcv_SaleRealization.selected">
+                            <i class="fa fa-search-plus"></i>&nbsp;Load In Invoices
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-show="!angular.isUndefined(ddlPaymentType) && ddlPaymentType != null && ddlPaymentType.PaymentTypeId != 3001">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Cheque No.">
+                                <input type="text" class="form-control" ng-model="rcv_SaleRealization.ChequeNo" placeholder="Cheque No.">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Cheque Date">
+                                <input type="text" class="form-control" id="dtChequeDate" ng-model="rcv_SaleRealization.ChequeDate" placeholder="Cheque Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenChequeDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Cheque Bank">
+                                <input type="text" class="form-control" ng-model="rcv_SaleRealization.ChequeBank" placeholder="Cheque Bank">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th class="t-cell-center">S/N</th>
+                                        <th class="t-cell-center">Chk</th>
+                                        <th class="t-cell-center">Invoice No.</th>
+                                        <th class="t-cell-center">Invoice Date</th>
+                                        <th class="t-cell-center">Total Due</th>
+                                        <th class="t-cell-center">Rcv. Amount</th>
+                                        <th class="t-cell-center">From Advance</th>
+                                        <th class="t-cell-center">TDS</th>
+                                        <th class="t-cell-center">VDS</th>
+                                        <th class="t-cell-center">Sub Total</th>
+                                    </tr>
+                                    <tr ng-show="SalesOrderList.length" class="HoverTable searchRow" ng-repeat="aSalesOrder in SalesOrderList">
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">
+                                            <input type="radio" ng-model="aSalesOrder.selected" ng-init="aSalesOrder.selected=false" name="rowCheck"
+                                                   ng-click="rcv_SaleRealization.selected=true;rcv_SaleRealization.SalesOrderId=aSalesOrder.SalesOrderId;rcv_SaleRealization.TotalDue=aSalesOrder.TotalDue" />
+                                        </td>
+                                        <td class="t-cell-center" ng-click="ShowReport(aSalesOrder.SalesOrderId)"><u>{{aSalesOrder.SalesOrderNo}}</u></td>
+                                        <td class="t-cell-center">{{aSalesOrder.SalesOrderDate}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.TotalDue.toFixed(2)}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.RcvAmount.toFixed(2)}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.FromAdvance.toFixed(2)}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.TDS.toFixed(2)}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.VDS.toFixed(2)}}</td>
+                                        <td class="t-cell-center">{{aSalesOrder.Subtotal.toFixed(2)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Realization Date">
+                                    <input type="text" class="form-control" id="dtRealizationDate" ng-model="rcv_SaleRealization.PaymentDate" placeholder="Realization Date" readonly="readonly" required />
+                                    <div class="input-group-addon" ng-click="CalendarOpenApprovedDate()">
+                                        <span class="fa fa-calendar req-icon-color"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : saleRealizationEntryForm.Narration.$touched && saleRealizationEntryForm.Narration.$invalid }">
+                                <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Narration">
+                                    <input type="text" class="form-control" ng-model="rcv_SaleRealization.Narration" name="Narration" placeholder="Narration" maxlength="500" ng-maxlength="499" required>
+                                    <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="saleRealizationEntryForm.Narration.$dirty && saleRealizationEntryForm.Narration.$invalid">Narration is required</span>
+                                <span class="help-block" ng-if="saleRealizationEntryForm.Narration.$error.maxlength">500 Character Max</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveRealization()" title="Save" ng-disabled="!ddlPaymentType || !rcv_SaleRealization.Amount || !rcv_SaleRealization.PaymentDate || !rcv_SaleRealization.Narration">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--<pre>{{rcv_SaleRealization | json}}</pre>-->
+</form>

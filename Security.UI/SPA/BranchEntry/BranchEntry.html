@@ -1,0 +1,255 @@
+﻿<form name="branchEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Branch Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.BranchGroup.$touched && branchEntryForm.BranchGroup.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Branch Group" hidden>
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlBranchGroup" ng-model="ddlBranchGroup" name="BranchGroup" class="form-control selectMendatory" ng-options="branchGroup.GroupName for branchGroup in BranchGrouplist track by branchGroup.GroupId" required>
+                                    <option value="" label="Select Branch Group"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="branchEntryForm.BranchGroup.$touched && branchEntryForm.BranchGroup.$invalid">Branch Group is required</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.BranchType.$touched && branchEntryForm.BranchType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Business Type" hidden>
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlBranchType" class="form-control selectMendatory" name="BranchType" ng-options="branch.BranchTypeName for branch in BranchTypelist track by branch.BranchTypeId" required>
+                                    <option value="" label="Select Business Type"></option>
+                                </select>
+                            </div><div ng-show="showLoader">
+                                <img src="/UploadedFiles/spinner.gif">
+                            </div>
+                            <span class="help-block" ng-show="branchEntryForm.BranchType.$touched && branchEntryForm.BranchType.$invalid">Business Type is required</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.BranchName.$invalid && branchEntryForm.BranchName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Name">
+                            <div class="input-group">
+                                <input type="text" id="txtBranchName" name="BranchName" maxlength="200" class="form-control" ng-model="ad_Branch.BranchName" placeholder="Branch Name" ng-blur="CheckDuplicateBranchName()" ng-change="foundChange()" ng-maxlength="199" required autofocus>
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="branchEntryForm.BranchName.$error.required && branchEntryForm.BranchName.$touched">Branch Name is required</span>
+                            <span class="help-block" ng-if="branchEntryForm.BranchName.$error.maxlength">200 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.BranchShortName.$invalid && branchEntryForm.BranchShortName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Short Name">
+                            <div class="input-group">
+                                <input type="text" id="txtBranchShortName" maxlength="5" name="BranchShortName" class="form-control" ng-model="ad_Branch.BranchShortName" placeholder="Branch Short Name" ng-blur="CheckDuplicateBranchShortName()" ng-change="foundChangeShortName()" ng-maxlength="4" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="branchEntryForm.BranchShortName.$error.required && branchEntryForm.BranchShortName.$touched">Branch Short Name is required</span>
+                            <span class="help-block" ng-if="branchEntryForm.BranchShortName.$error.maxlength">4 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.Fax.$invalid && branchEntryForm.Fax.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Name (Barcode)">
+                            <div class="input-group">
+                                <input type="text" id="txtFax" name="Fax" maxlength="50" class="form-control" ng-model="ad_Branch.Fax" placeholder="Branch Name (Barcode)" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="branchEntryForm.Fax.$error.required && branchEntryForm.Fax.$touched">Branch Name (Barcode) is required</span>
+                            <span class="help-block" ng-if="branchEntryForm.Fax.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.Manager.$touched && branchEntryForm.Manager.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Branch Incharge">
+                            <div class="input-group">
+                                <input type="text" ng-model="ad_Branch.ManagerName" name="Manager" id="txtManager" class="form-control" placeholder="Branch Incharge" maxlength="150" ng-maxlength="149">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="branchEntryForm.Manager.$error.maxlength">150 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.ContactNo.$invalid && branchEntryForm.ContactNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact No.">
+                            <div class="input-group">
+                                <input type="text" id="txtContactNo" maxlength="50" name="ContactNo" class="form-control" ng-model="ad_Branch.ContactNo" placeholder="Contact No" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="branchEntryForm.ContactNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.Address.$invalid && branchEntryForm.BrancAddresshName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Address">
+                            <div class="input-group" style="margin-bottom: 24px">
+                                <textarea rows="3" id="tbxAddress" maxlength="51" class="form-control" placeholder="Address" name="Address" ng-model="ad_Branch.Address" ng-maxlength="50"></textarea>
+                                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="branchEntryForm.Address.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.Email.$invalid && branchEntryForm.Email.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                            <div class="input-group">
+                                <input type="email" id="txtEmail" maxlength="50" name="Email" class="form-control" ng-model="ad_Branch.Email" placeholder="Email" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="branchEntryForm.Email.$error.email && branchEntryForm.Email.$touched">Invalid Email</span>
+                            <span class="help-block" ng-if="branchEntryForm.Email.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.Web.$invalid && branchEntryForm.Web.$touched }" data-toggle="tooltip" data-placement="bottom" title="Web Address" hidden>
+                            <div class="input-group">
+                                <input type="text" id="txtWeb" name="Web" class="form-control" maxlength="50" ng-model="ad_Branch.Web" placeholder="Web Address" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="branchEntryForm.Web.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.TIN.$invalid && branchEntryForm.TIN.$touched }" data-toggle="tooltip" data-placement="bottom" title="Tax Identification Number" hidden>
+                            <div class="input-group">
+                                <input type="text" id="txtTIN" name="TIN" maxlength="50" class="form-control" ng-model="ad_Branch.TIN" placeholder="Tax Identification Number" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="branchEntryForm.TIN.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.VatRegNo.$invalid && branchEntryForm.VatRegNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Vat Reg. Number" hidden>
+                            <div class="input-group">
+                                <input type="text" id="txtVatRegNo" maxlength="50" name="VatRegNo" class="form-control" ng-model="ad_Branch.VatRegNo" placeholder="Vat Registration Number" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="branchEntryForm.VatRegNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" hidden>
+                            <img ng-show="ShowImage" ng-model="d" src="{{ImageSRC}}" width="300" height="110" />
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary" style="background-color: #f69c55; border-color: #F69C6E; ">
+                                        Browse&hellip; <input type="file" id="imageUpload" style="display: none" name="file" accept="image/*" class="form-control" onchange="angular.element(this).scope().uploadFile(this.files)" />
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="Select Branch Logo" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.PromotionalNotes.$invalid && branchEntryForm.PromotionalNotes.$touched }" data-toggle="tooltip" data-placement="bottom" title="Promotional Notes">
+                            <div class="input-group">
+                                <textarea rows="2" id="tbPromotionalNotes" class="form-control" placeholder="Promotional Notes" name="PromotionalNotes" ng-model="ad_Branch.PromotionalNotes"></textarea>
+                                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : branchEntryForm.TermsAndConditions.$invalid && branchEntryForm.TermsAndConditions.$touched }" data-toggle="tooltip" data-placement="bottom" title="Terms And Conditions">
+                            <div class="input-group">
+                                <textarea rows="2" id="tbTermsAndConditions" class="form-control" placeholder="Terms And Conditions" name="TermsAndConditions" ng-model="ad_Branch.TermsAndConditions"></textarea>
+                                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Status: </label>
+                            &nbsp;&nbsp;
+                            <div class="radio-inline">
+                                <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_Branch.IsActive">Active
+                            </div>
+                            <div class="radio-inline">
+                                <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_Branch.IsActive">Inactive
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <!--<br />-->
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                    <div class="row">
+                                        <button id="Button1" class="customBtn custmoBtnSave" ng-click="AddBranch()" ng-disabled="!ad_Branch.BranchName || !ad_Branch.BranchShortName || !ad_Branch.Fax" title="{{button}}">
+                                            <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                    <div class="row">
+                                        <button id="Button2" class="customBtn custmoBtnDelete" title="Delete" ng-click="Delete()" ng-show="Show">
+                                            <i class="fa fa-trash"></i>&nbsp;Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                    <div class="row">
+                                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Branch List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center" data-th="Outlet Details"><span>Branch Name</span></th>
+                                <th class="txt-center">Short Name</th>
+                                <th class="txt-center">Name (Barcode)</th>
+                                <th class="txt-center">Branch Inchrge</th>
+                                <th class="txt-center">Contact</th>
+                                <th class="txt-center">Email</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aBranch in Branchlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelBranch(aBranch)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aBranch.BranchName}}</td>
+                                <td class="txt-center">{{aBranch.BranchShortName }}</td>
+                                <td class="txt-center">{{aBranch.Fax }}</td>
+                                <td class="txt-center">{{aBranch.ManagerName }}</td>
+                                <td class="txt-center">{{aBranch.ContactNo}}</td>
+                                <td class="txt-center">{{aBranch.Email}}</td>
+                                <td class="txt-center">{{aBranch.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Branchlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    $(function () {
+        // We can attach the `fileselect` event to all file inputs on the page
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+        // We can watch for our custom `fileselect` event like this
+        $(document).ready(function () {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,149 @@
+<form name="chartOfAccountsForm" novalidate>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp; Chart Of Account Entry </h3>
+            </div>
+               <div class="panel-body">
+                <div class="input-group input-group-md ddl">
+                    <select id="ddlStore" ng-model="ddlAccountType" ng-options="accType.AccountTypeName for accType in AccountTypeList" ng-change="GetAccountTypeDetails()" class="form-control selectMendatory" required>
+                        <option value="" label="Select Account Type "></option>
+                    </select>
+                </div>
+                <br />
+                <div class="input-group input-group-md ddl">
+                    <select id="Select1" ng-model="ddlAccounTypeDetail" ng-options="accTypeDetail.AccountTypeDetailName for accTypeDetail in AccountTypeDetailList track by accTypeDetail.AccountTypeDetailId" class="form-control selectMendatory" ng-change="ChartOfAccounts.AccountTypeDetailId = ddlAccounTypeDetail.AccountTypeDetailId" required>
+                        <option value="" label="Select Account Type Detail"></option>
+                    </select>
+                </div>
+                <br/>
+                <div class="form-group" ng-class="{ 'has-error' :chartOfAccountsForm.AccountName.$invalid && chartOfAccountsForm.AccountName.$touched }">
+                    <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Name">
+                        <input type="text" id="txtAccountTypeName" name="AccountName" maxlength="51" class="form-control" ng-model="ChartOfAccounts.AccountName" ng-blur="CheckDuplicateRoleName()" ng-change="foundChange()" placeholder="Enter Name" ng-maxlength="50" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="chartOfAccountsForm.AccountName.$error.required && accountTypeForm.AccountName.$touched">Account Type name is required</span>
+                    <span class="help-block" ng-if="chartOfAccountsForm.AccountName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' :chartOfAccountsForm.Description.$invalid && chartOfAccountsForm.Description.$touched }">
+                    <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Account Description">
+                        <input type="text" name="Description" maxlength="501" class="form-control" ng-model="ChartOfAccounts.AccountDescription" placeholder="Account Description" ng-maxlength="500">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="accountTypeForm.Description.$error.maxlength">500 Character Max</span>
+                </div>
+                <br />
+                <div class="input-group">
+                    <label>Is Sub-Account </label>
+                    &nbsp;&nbsp;
+                    <input type="checkbox">
+                </div>
+                <div class="input-group input-group-md ddl">
+                    <select id="Select2" ng-model="ddlAccountParent" ng-options="coa.AccountName for coa in AccountList" ng-change="ChartOfAccounts.ParentId=ddlAccountParent.AccountId" class="form-control selectMendatory" required>
+                        <option value="" label="Select Account"></option>
+                    </select>
+                </div>
+                <br />
+                <div class="input-group">
+                    <label>Active  </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                            ng-value="true" ng-model="ChartOfAccounts.IsActive">
+                        Yes
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                            ng-value="false" ng-model="ChartOfAccounts.IsActive">
+                        No
+                    </div>
+                </div>
+                <br />
+                <div class="form-group" ng-class="{ 'has-error' :chartOfAccountsForm.balance.$invalid && chartOfAccountsForm.balance.$touched }">
+
+                    <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Balance">
+
+                        <input type="text" id="Text2" name="balance" maxlength="51" class="form-control" ng-model="AccountType.AccountTypeName" ng-blur="CheckDuplicateRoleName()" ng-change="foundChange()" placeholder="Balance" ng-maxlength="50" autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" ></i></span>
+                    </div>
+                    <span class="help-block" ng-if="accountTypeForm.balance.$error.required && accountTypeForm.balance.$touched">Account Type name is required</span>
+                    <span class="help-block" ng-if="accountTypeForm.balance.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="txtDate" name="reqDate" class="form-control datepicker" placeholder="Date" readonly="readonly" />
+                    <span class="input-group-addon" id="calender"><i class="fa fa-calendar"></i></span>
+                </div>
+                <br />
+         
+                <div class="col-md-12">
+                    <div class="row">
+                        <br />
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button class="customBtn custmoBtnSave" ng-click="SaveChartOfAcoounts()" ng-disabled="chartOfAccsountsForm.$invalid"><i class="fa fa-floppy-o"></i>&nbsp;{{buttonLabel}}</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button class="customBtn custmoBtnDelete" ng-click="Delete()" ng-show="deleleBtnShow"><i class="fa fa-trash"></i>&nbsp;Delete</button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button class="customBtn custmoBtnReset" ng-click="resetForm()"><i class="fa fa-refresh"></i>&nbsp;Reset</button>
+                            </div>
+                        </div>
+                        <pre>{{ChartOfAccounts | json}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="col-md-8">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp; Chart Of Account Table</h3>
+        </div>
+        <div class="panel-body">
+            <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th>Account Name</th>
+                                <th>Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="chartOfAccount in ChartOfAccountsList | filter:q | itemsPerPage: PerPage" total-items="total_count" current-page="currentPage" ng-click="SelectAccount(chartOfAccount)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td>{{chartOfAccount.AccountName}}</td>
+                                <td>{{chartOfAccount.IsActiveString}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="4">
+                                    <dir-pagination-controls max-size="8"
+                                        direction-links="true"
+                                        boundary-links="true"
+                                        on-page-change="getData(newPageNumber)" style="text-align: center;">
+                                    </dir-pagination-controls>
+
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span>
+                            <input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage">
+                            <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+AccountTypeList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+

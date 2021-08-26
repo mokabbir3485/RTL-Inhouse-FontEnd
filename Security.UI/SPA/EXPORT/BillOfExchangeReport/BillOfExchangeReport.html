@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 15px;
+        }
+
+        td {
+            vertical-align: top;
+            text-align: left;
+        }
+        @media print {
+            #footer {
+                position: fixed;
+                bottom: 0;
+                padding-right: 30px;
+            }
+        }
+
+        /*@page {
+            size: A4;
+            margin-top: 2.2cm;
+            margin-bottom: 2cm;
+            margin-left: .25in;
+            margin-right: .25in;
+        }*/
+    </style>
+</head>
+<body>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <!--<button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>-->
+                            </div>
+                        </div>
+                    </div>
+                        <br />
+
+                    <div class="container" id="source-html">
+                        <div>
+                            <p style="font-size: 25px; text-align: center;"><b><u>BILL OF EXCHANGE                  1</u></b></p>
+                        </div>
+                        <br />
+                        <div>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="BillForReportList[0].BOENumber"><b>BOE 01 No: {{BillForReportList[0].BOENumber}}</b></p><br />
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="BillForReportList[0].ExpNo"><b>EXP No: </b>{{BillForReportList[0].ExpNo}} <b>&emsp;&emsp;Date: </b>{{BillForReportList[0].ExpDate}}</p>
+                        </div>
+                        <br /><br />
+                        <div class="flex-container">
+                            <div>
+                                <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="BillForReportList[0].Amount"><b>Amount: $  {{BillForReportList[0].Amount}}</b></p>
+                            </div>
+                            <div>
+                                <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="BillForReportList[0].ApplicationDate"><b>Date: </b>{{BillForReportList[0].ApplicationDate}}</p>
+                            </div>
+                        </div>
+                        <br />
+
+
+                        <div>
+                            <p style="text-align:justify;font-size: 1em;">
+                                <span ng-if="BillForReportList[0].PaymentProcessTypeId == 4">{{BillForReportList[0].TermsOfPayment}}</span><span ng-if="BillForReportList[0].PaymentProcessTypeId == 2 || BillForReportList[0].PaymentProcessTypeId == 3">At Sight</span> of this First bill of exchange (Second being unpaid) pay to the order of
+
+                                <b>{{BillForReportList[0].ExporterBankName}}</b> Branch Address:  {{BillForReportList[0].ExporterBankAddress}}. <b>Account Name: </b>{{BillForReportList[0].ExporterAccName}} <b>Account No: </b>{{BillForReportList[0].ExporterAccNo}} <b>Swift Code No: {{BillForReportList[0].ExporterSwiftCode}}.</b> US <b>$ {{BillForReportList[0].Amount}} ({{BillForReportList[0].AmountInWords}})</b>
+
+                            </p>
+                            <br />
+                            <p style="text-align:justify; font-size: 1em;">
+                                Value Received and charges the same to account of <b>{{BillForReportList[0].ImporterName}}</b> {{BillForReportList[0].ImporterBillingAddress}} <b>H.S. Code:</b> {{BillForReportList[0].HsCode}} <b ng-if="BillForReportList[0].PaymentProcessTypeId == 'LC'">LC No:</b> {{BillForReportList[0].LcScNo}} <b ng-if="BillForReportList[0].PaymentProcessTypeId == 'LC'">Date:</b> {{BillForReportList[0].LcScDate}}
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'LcInfo'} | filter: { InfoSubType: 'BDBankDc' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <span style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="ciInfoDetail.InfoValue" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'ExpContact' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <!-- Extra field -->
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'LcInfo'} | filter: { InfoSubType: 'LcInfoEx1' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'LcInfo'} | filter: { InfoSubType: 'LcInfoEx2' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'LcInfo'} | filter: { InfoSubType: 'LcInfoEx3' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'LcInfo'} | filter: { InfoSubType: 'LcInfoEx4' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                as per <b ng-if="BillForReportList[0].PaymentProcessTypeId == 4">Proforma Invoice No: </b> <b ng-if="BillForReportList[0].PaymentProcessTypeId == 2 || BillForReportList[0].PaymentProcessTypeId == 3">Sales Contract No: </b> {{PiRefInfo}}
+                            </p>
+
+                        </div>
+                        <br />
+                            
+                        <div>
+                            <!--<span style="font-size: .9em;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'LCA' }"><b><u>{{ciInfoDetail.InfoType}}:</u></b></span>-->
+                            <span style="font-size: .9em;" ng-if="CiInfoDetailReportList[0].InfoLabel"><b><u>Applicants:</u></b></span>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'LCA' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'IRC' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'VATReg' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'TIN' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'BIN' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'AppExtxa1' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'AppExtxa2' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'AppExtxa3' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'AppExtxa4' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoType: 'Applicants'} | filter: { InfoSubType: 'AppExtxa5' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                            <br />
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="BillForReportList[0].ImporterBankName"><b>To<br /></b></p>
+                            <p style="font-size: 1em; line-height: 1;" ng-if="BillForReportList[0].ImporterBankName"><b>{{BillForReportList[0].ImporterBankName}}</b></p>
+                            <p style="font-size: 1em; line-height: 1;" ng-if="BillForReportList[0].ImporterBankAddress">{{BillForReportList[0].ImporterBankAddress}}</p>
+                            <p style="font-size: 1em; line-height: 1;" ng-if="BillForReportList[0].ImporterSwiftCode"><b>Swift Code No: </b>{{BillForReportList[0].ImporterSwiftCode}}</p>
+                            <p style="font-size: 1em; line-height: 1;" ng-if="BillForReportList[0].BankInfoLabel"><b>{{BillForReportList[0].BankInfoLabel}}:</b>{{BillForReportList[0].ImporterBankBin}}</p>
+                            <p style="font-size: 1em; line-height: 1;" ng-if="!BillForReportList[0].BankInfoLabel && BillForReportList[0].ImporterBankBin"><b>BIN:</b>{{BillForReportList[0].ImporterBankBin}}</p>
+
+                            <br />
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;"><b>A/C<br /></b></p>
+                            <p style="font-size: 1em; line-height: 1;" ng-if="BillForReportList[0].ImporterName"><b>{{BillForReportList[0].ImporterName}}</b></p>
+                            <p style="font-size: 1em; line-height: 1;" ng-if="BillForReportList[0].ImporterBillingAddress">{{BillForReportList[0].ImporterBillingAddress}}</p>
+
+                            <br />
+
+                        </div>
+                        <br />
+                        <div id="footer">
+                            <table style="width: 100%;">
+                                <tbody style="left:30px; right: 50px;">
+                                    <tr>
+                                        <td width="450px" style="text-align:left;">
+                                            <!--<div>
+                                                <br />
+                                                <br />
+                                                <span style="font-size: .9em; line-height: 1;"><b>Authorized Signature</b></span>
+                                                <br />
+                                                <span style="font-size: .9em; line-height: 1;"><b>{{BillForReportList[0].ImporterName}}</b></span>
+
+                                            </div>-->
+                                        </td>
+                                        <td width="450px" style="text-align: right;">
+                                            <div ng-if="BillForReportList[0].ExporterId == 1">
+                                                <span style="font-size: .9em; line-height: 1;"><b>{{BillForReportList[0].ExporterAccName}}</b></span>
+                                                <br />
+                                                <br />
+                                                <br />
+                                                <span style="font-size: .9em; line-height: 1;"><b>Authorized Signature</b></span>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+
+                            <!--<table style="width: 100%;">
+                                <tbody style="left:30px; right: 50px;">
+                                    <tr>
+                                        <td style="text-align:left;font-size: small;">
+                                            <div class="footer">
+                                                <span><b>{{currentDatetimeFormated}}</b></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>-->
+                        </div>
+                    </div>
+                 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+<style>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+
+
+<script type="text/javascript">
+    //$("#footer").draggable();
+
+    function ExportToDoc() {
+        $('.hideButton').hide();
+        $('#result').hide();
+
+        var sourceHTML = document.getElementById("source-html").innerHTML;
+
+        // console.log(sourceHTML);
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+        function replaceAll(str, term, replacement) {
+            return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+        }
+        var removeTableBorderStr;
+        $('#ciTable tbody tr td').each(function (tdIndex, td) {
+            var preStyle = $(this).attr("style");
+
+            if (preStyle != undefined) {
+                var pos = preStyle.indexOf("display: none;");
+                if (pos != -1) {
+                    $('#ciTable').find("tbody tr td:nth-child(" + tdIndex + ")").each(function () {
+
+                        $(this).remove();
+
+                        alert();
+                    });
+                    //  $(this).remove();
+                }
+            }
+
+        });
+
+
+        var thCount = 8;
+        //$('#ciTable thead tr th').each(function () {
+        //    thCount++;
+        //});
+
+        if (thCount <= 10 && thCount > 0) {
+            removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+        }
+        else if (thCount <= 15 && thCount > 10) {
+            removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .7em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+        }
+        else {
+            alert('Please insert less then 15 column.');
+            return;
+        }
+
+        //var firstChildCount = 1;
+        //$("#ciTable tbody tr").each(function () {
+        //    var firstChild = $(this).children(':first');
+        //    firstChild.text(firstChildCount++).outerText;
+        //});
+        var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(removeTableBorderStr);
+        var fileDownload = document.createElement("a");
+        document.body.appendChild(fileDownload);
+        fileDownload.href = source;
+        fileDownload.download = 'Commercil Invoice.doc';
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
+        $('.hideButton').show();
+        $('#result').show();
+
+
+    }
+    function PrintPdf() {
+
+        window.print();
+
+    }
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+</script>

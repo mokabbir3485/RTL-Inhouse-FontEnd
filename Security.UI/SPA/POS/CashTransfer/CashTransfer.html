@@ -1,0 +1,126 @@
+﻿<form name="CashTransferForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Payment</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.OutLet.$invalid && CashTransferForm.OutLet.$touched }" data-toggle="tooltip" data-placement="bottom" title="Outlet Name">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlOutLet" class="form-control selectMendatory" ng-options="aOutlet.DepartmentName for aOutlet in  userOutletList track by aOutlet.DepartmentId" name="OutLet" required autofocus>
+                                    <option value="" label="Select OutLet"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="CashTransferForm.OutLet.$touched && CashTransferForm.OutLet.$invalid">Outlet is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.Bank.$invalid && CashTransferForm.Bank.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bank">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlBank" class="form-control selectMendatory" ng-options="aBank.BankName for aBank in  ActiveBankList track by aBank.BankId" name="Bank" required>
+                                    <option value="" label="Select Bank"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="CashTransferForm.Bank.$touched && CashTransferForm.Bank.$invalid">Bank is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.BankBranchName.$invalid && CashTransferForm.BankBranchName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Name">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" ng-model="CashDeposit.BankBranchName" placeholder="Branch Name" name="BankBranchName" maxlength="50" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="CashTransferForm.BankBranchName.$error.required && CashTransferForm.BankBranchName.$touched">Branch Name is required</span>
+                            <span class="help-block" ng-if="CashTransferForm.BankBranchName.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.DepositedBy.$invalid && CashTransferForm.DepositedBy.$touched }" data-toggle="tooltip" data-placement="bottom" title="Deposited By">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlEmployee" class="form-control selectMendatory" ng-options="aemployee.FullName for aemployee in  employeeList track by aemployee.EmployeeId" name="DepositedBy" required>
+                                    <option value="" label="Deposited By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="CashTransferForm.DepositedBy.$touched && CashTransferForm.DepositedBy.$invalid">Deposit By is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.ReferenceNo.$invalid && CashTransferForm.ReferenceNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="References No">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" ng-model="CashDeposit.ReferenceNo" placeholder="References No" name="ReferenceNo" maxlength="50" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="CashTransferForm.ReferenceNo.$error.required && CashTransferForm.ReferenceNo.$touched">References No is required</span>
+                            <span class="help-block" ng-if="CashTransferForm.ReferenceNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.DepositDate.$invalid && CashTransferForm.DepositDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Deposit Date">
+                            <div class='input-group'>
+                                <input type="text" id="txtDate" class="form-control" placeholder="Deposit Date" readonly="readonly" name="DepositDate" required />
+                                <span class="input-group-addon" id="calendar1"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="CashTransferForm.DepositDate.$error.required && CashTransferForm.DepositDate.$touched">Deposit Date is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.Amount.$invalid && CashTransferForm.Amount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                            <div class='input-group'>
+                                <input type="number" class="form-control" ng-model="CashDeposit.Amount" placeholder="Amount" name="Amount" maxlength="20" ng-maxlength="19" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="CashTransferForm.Amount.$error.required && CashTransferForm.Amount.$touched">Amount is required</span>
+                            <span class="help-block" ng-if="CashTransferForm.Amount.$error.maxlength">20 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class='input-group' ng-class="{ 'has-error' : CashTransferForm.Remarks.$invalid && CashTransferForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                                <input type="text" class="form-control" ng-model="CashDeposit.Remarks" placeholder="Remarks" name="Remarks" maxlength="200" ng-maxlength="199" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="CashTransferForm.Remarks.$error.maxlength">200 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button class="customBtn custmoBtnSave" ng-click="SaveDeposit()" title="Save" ng-disabled="CashTransferForm.$invalid || CashDeposit.Amount<0">
+                            <i class="fa fa-save"></i>&nbsp;Save
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="customBtn custmoBtnReset" ng-click="Reset()" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calendar1").addEventListener("click", function () {
+        picker.show();
+    });
+    document.getElementById("txtDate").addEventListener("click", function () {
+        picker.show();
+    });
+</script>

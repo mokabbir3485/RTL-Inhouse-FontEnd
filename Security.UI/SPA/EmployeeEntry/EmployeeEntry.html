@@ -1,0 +1,617 @@
+
+<form name="userForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Employee Entry</h3>
+            </div>
+            <input type="hidden" id="hdnUserId" />
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#employee"><span><i class="fa fa-user"></i></span>&nbsp;Employee</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#user"><span><i class="fa fa-user-plus"></i></span>&nbsp;User</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="employee" class="tab-pane fade in active">
+                        <div class="col-md-12 tabBorder">
+                            <div class="row">
+                                <br />
+                                <div class="col-md-4">
+
+                                    <div class="row" style="padding-bottom:2%">
+                                        <div class="col-md-4" ng-class="{ 'has-error' : userForm.Title.$invalid && userForm.Title.$touched }" data-toggle="tooltip" data-placement="bottom" title="Title">
+                                            <div class="input-group">
+                                                <input type="text" id="tbxTitle" name="Title" class="form-control" ng-model="ad_Employee.Title" placeholder="Title" maxlength="10" ng-maxlength="9" autofocus>
+                                                <span class="input-group-addon" style="padding: 2px 3px;"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.Title.$error.required && userForm.Title.$touched">Title is required</span>
+                                            <span class="help-block" ng-if="userForm.Title.$error.maxlength">10 Character Max</span>
+                                        </div>
+                                        <div class="col-md-8" ng-class=" { 'has-error':userform.FirstName.$invalid && userform.FirstName.$touched }" data-toggle="tooltip" data-placement="bottom" title="First Name">
+                                            <div class=" input-group">
+                                                <input type="text" id="tbxFirstName" maxlength="50" name="FirstName" class="form-control" ng-model="ad_Employee.FirstName" placeholder="First Name" ng-maxlength="49" required>
+                                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.FirstName.$error.required && userForm.FirstName.$touched">First Name is required</span>
+                                            <span class="help-block" ng-if="userForm.FirstName.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.MiddleName.$invalid && userForm.MiddleName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Middle Name">
+                                        <div class="input-group">
+                                            <input type="text" id="tbxMiddleName" name="MiddleName" class="form-control" ng-model="ad_Employee.MiddleName" maxlength="50" ng-maxlength="49" placeholder="Middle Name">
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-if="userForm.MiddleName.$error.maxlength">50 Character Max</span>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.LastName.$invalid && userForm.LastName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Last Name">
+                                        <div class="input-group">
+                                            <input type="text" id="tbxLastName" name="LastName" class="form-control" ng-model="ad_Employee.LastName" placeholder="Last Name" maxlength="50" ng-maxlength="49">
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-if="userForm.LastName.$error.required && userForm.LastName.$touched">Last Name is required</span>
+                                        <span class="help-block" ng-if="userForm.LastName.$error.maxlength">50 Character Max</span>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" ng-class="{ 'has-error' : userForm.DateOfBirth.$invalid && userForm.DateOfBirth.$touched }">
+                                                <div class='input-group'>
+                                                    <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control" name="DateOfBirth" id="txtDateOfBirth" placeholder="Date of Birth" maxlength="10" readonly="readonly" />
+                                                    <span class="input-group-addon" id="calander2"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-if="userForm.DateOfBirth.$error.required && userForm.DateOfBirth.$touched">Date of Birth is required</span>
+                                                <span class="help-block" ng-if="userForm.DateOfBirth.$error.pattern">Valid Date of Birth is required</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class=" input-group">
+                                                <input type="text" id="tbxFirstName" maxlength="10" name="BloodGroup" class="form-control" ng-model="ad_Employee.BloodGroup" placeholder="Blood Group" ng-maxlength="9" required>
+                                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.BloodGroup.$error.required && userForm.BloodGroup.$touched">Blood Group is required</span>
+                                            <span class="help-block" ng-if="userForm.BloodGroup.$error.maxlength">10 Character Max</span>
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.ContactNo.$invalid && userForm.ContactNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Number">
+                                        <div class="input-group">
+                                            <input type="text" id="tbxContact" name="ContactNo" class="form-control" ng-model="ad_Employee.ContactNo" placeholder="Contact No." maxlength="20" ng-maxlength="19" required>
+                                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                        </div>
+                                        <!--<span class="help-block" ng-if="userForm.ContactNo.$error.required && userForm.ContactNo.$touched">Contact No. is required</span>-->
+                                        <span class="help-block" ng-if="userForm.ContactNo.$error.maxlength">20 Character Max</span>
+                                    </div>
+
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.Email.$invalid && userForm.Email.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                                        <div class="input-group">
+                                            <input type="email" id="tbxEmail" name="Email" class="form-control" ng-model="ad_Employee.Email" placeholder="Email" maxlength="50" ng-maxlength="49" autocomplete="off">
+                                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                        </div>
+                                        <!--<span class="help-block" style="display: block;" ng-if="userForm.Email.$error.required && userForm.Email.$touched">Email is required</span>-->
+                                        <!--<span class="help-block" style="display: block;" ng-if="userForm.Email.$error.email && userForm.Email.$touched">Invalid Email</span>-->
+                                        <span class="help-block" ng-if="userForm.Email.$error.maxlength">50 Character Max</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4">
+
+
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.PresentAddress.$invalid && userForm.PresentAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Present Address">
+                                        <div class="input-group">
+                                            <textarea rows="4" id="tbxAddress" style=" padding-bottom: 1px" name="PresentAddress" ng-model="ad_Employee.PresentAddress" class="form-control" maxlength="500" ng-maxlength="499" placeholder=" Present Address"></textarea>
+                                            <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-if="userForm.PresentAddress.$error.required && userForm.PresentAddress.$touched">Present Address is required</span>
+                                        <span class="help-block" ng-if="userForm.PresentAddress.$error.maxlength">500 Character Max</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group" style="margin-bottom: 25px;">
+                                            <label>Gender : </label>
+                                            <label style="color:red;">* </label>
+                                            &nbsp;&nbsp;
+                                            <div class="radio-inline">
+                                                <input type="radio" name="Gender"
+                                                       value="Male" ng-model="ad_Employee.Gender" required>
+                                                Male
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input type="radio" name="Gender"
+                                                       value="Female" ng-model="ad_Employee.Gender" required> Female
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <label>Status: </label>
+                                            &nbsp;&nbsp;
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionsRadios"
+                                                       ng-value="true" ng-model="ad_Employee.IsActive">
+                                                Active
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionsRadios"
+                                                       ng-value="false" ng-model="ad_Employee.IsActive"> Inactive
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        
+                                            <div class="form-group" ng-class="{ 'has-error' : userForm.Grade.$touched && userForm.Grade.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Grade">
+                                                <div class="input-group input-group-md ddl">
+                                                    <select ng-model="ddlGrade" id="ddlGrade" class="form-control selectMendatory" name="Grade" ng-options="grade.GradeName for grade in GradeList track by grade.GradeId" ng-change="ad_Employee.GradeId = ddlGrade.GradeId" required>
+                                                        <option value="" label="Grade"></option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block" ng-show="userForm.Grade.$touched && userForm.Grade.$invalid">Grade is required</span>
+                                            </div>
+                                        
+
+                                        <!--<div class="col-md-4">
+                                            <button id="btnDetail" class="customBtn custmoBtnSearch" title="Detail" ng-click="GradeDetail()" >
+                                                Detail
+                                            </button>
+                                        </div>-->
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.Contract.$touched && userForm.Contract.$invalid }" data-toggle="tooltip"  data-placement="bottom" title="Contract">
+                                            <div class="input-group input-group-md ddl">
+                                                <select ng-model="ddlContract" id="ddlContract" class="form-control selectMendatory" name="Contract" ng-options="contract.ContractTypeName for contract in GetAllContractTypeList track by contract.ContractTypeId" ng-change="ad_Employee.ContractTypeId = ddlContract.ContractTypeId" required>
+                                                    <option value="" label="Select Contract Type"  ></option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block" ng-show="userForm.Contract.$touched && userForm.Contract.$invalid">Contract is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" ng-model="ad_Employee.IsFlexibleOnTime"  style="display:block" />FlexibleHours
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" ng-model="ad_Employee.IsFlexibleOnDate" ng-change="flexibleOnDateChange()" style="display:block" />FlexibleDays
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" id="UserAcc" ng-model="userAccount" ng-change="CheckUser(userAccount)" style="display:block" />CreateUser
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-4">
+
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.Branch.$touched && userForm.Branch.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Branch">
+                                        <div class="input-group input-group-md ddl">
+                                            <select ng-model="ddlBranch" id="ddlBranch" class="form-control selectMendatory" name="Branch" ng-options="branch.BranchName for branch in Branchlist track by branch.BranchId" ng-change="RefreshDepartmentDdl(ddlBranch.BranchId); BindUserBranch();" required>
+                                                <option value="" label="Select Branch"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="userForm.Branch.$touched && userForm.Branch.$invalid">Branch is required</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.Department.$touched && userForm.Department.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Department">
+                                        <div class="input-group input-group-md ddl">
+                                            <select ng-model="ddlDepartment" class="form-control selectMendatory" name="Department" ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId" ng-change="BindUserBranch(ddlDepartment.DepartmentId);" required>
+                                                <option value="" label="Select Department"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="userForm.Department.$touched && userForm.Department.$invalid">Department is required</span>
+                                    </div>
+                                    <div class="form-group" ng-hide="!ddlDepartment" data-toggle="tooltip" data-placement="bottom" title="Select Section">
+                                        <div class="input-group input-group-md ddl">
+                                            <select ng-model="ddlSection" class="form-control selectNotMandetory" name="Section" ng-options="section.SectionName for section in SectionList track by section.SectionId" ng-change="ad_Employee.SectionId=ddlSection.SectionId">
+                                                <option value="" label="Select Section"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-class="{ 'has-error' : userForm.Designation.$touched && userForm.Designation.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Designation">
+                                        <div class="input-group input-group-md ddl">
+                                            <select ng-model="ddlDesignation" class="form-control selectMendatory" name="Designation" ng-options="designation.DesignationName for designation in DesignationList track by designation.DesignationId " required>
+                                                <option value="" label="Select Designation"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="userForm.Designation.$touched && userForm.Designation.$invalid">Designation is required</span>
+                                    </div>
+                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Manager">
+                                        <div class="input-group input-group-md ddl">
+                                            <select id="ddlMktManger" ng-model="ddlMktManger" class="form-control selectNotMandetory" name="ddlMktManger" ng-options="emp.FullName for emp in AllEmployee track by emp.EmployeeId">
+                                                <option value="" label="Select Manager"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div ng-hide="hideSignetureBrowse" class="form-group" ng-class="{ 'has-error' : userForm.file.$dirty && userForm.file.$invalid }">
+                                        <img ng-show="ShowImage" ng-model="d" src="{{ImageSRC}}" width="300" height="110" />
+                                        <div class="input-group">
+                                            <label class="input-group-btn">
+                                                <span class="btn btn-primary" style="background-color: #f69c55; border-color: #F69C6E; ">
+                                                    Browse&hellip; <input type="file" id="imageUpload" style="display: none" name="file" accept="image/*" class="form-control" onchange="angular.element(this).scope().uploadFile(this.files)" required />
+                                                </span>
+                                            </label>
+                                            <input type="text" class="form-control" placeholder="Select Signature" readonly>
+                                        </div>
+
+                                        <span class="help-block" ng-show="userForm.file.$dirty && userForm.file.$invalid">Signature is required</span>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" ng-class="{ 'has-error' : userForm.EmployeeCode.$invalid && userForm.EmployeeCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Employee Code">
+                                                <div class="input-group">
+                                                    <input type="text" id="tbxEmployeeCode" name="EmployeeCode" class="form-control" ng-blur="CheckDuplicateEmployeeCode()" ng-model="ad_Employee.EmployeeCode" placeholder="Emp. Code" maxlength="50" ng-maxlength="49" ng-change="foundChangeCode()" ng-disabled="!ddlBranch" required />
+                                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-if="userForm.EmployeeCode.$error.required && userForm.EmployeeCode.$touched">Employee Code is required</span>
+                                                <span class="help-block" ng-if="userForm.EmployeeCode.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" ng-class="{ 'has-error' : userForm.BasicSalary.$invalid && userForm.BasicSalary.$touched }" data-toggle="tooltip" data-placement="bottom" title="Basic Salary">
+                                                <div class="input-group">
+                                                    <input type="text" id="tbxBasicSalary" name="BasicSalary" class="form-control" ng-model="ad_Employee.BasicSalary" placeholder="Basic Salary" maxlength="10" ng-maxlength="9" ng-change="foundChangeCode()" required />
+                                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-if="userForm.BasicSalary.$error.required && userForm.BasicSalary.$touched">Basic Salary is required</span>
+                                                <span class="help-block" ng-if="userForm.BasicSalary.$error.maxlength">10 Character Max</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" ng-class="{ 'has-error' : userForm.JoiningDate.$invalid && userForm.JoiningDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Joining Date">
+                                                <div class='input-group'>
+                                                    <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control" name="JoiningDate" id="txtJoiningDate" placeholder="Joining Date" maxlength="10" readonly="readonly" />
+                                                    <span class="input-group-addon" id="calander3"><i class="fa fa-calendar" style="color:red"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-if="userForm.JoiningDate.$error.required && userForm.JoiningDate.$touched">Joining Date is required</span>
+                                                <!--<span class="help-block" ng-if="userForm.JoiningDate.$error.pattern">Valid Joining Date is required</span>-->
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Finish Date">
+                                                <div class='input-group'>
+                                                    <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control" name="FinishDate" id="txtFinishDate" placeholder="Finish Date" maxlength="10" readonly="readonly" />
+                                                    <span class="input-group-addon" id="calander4"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-if="userForm.FinishDate.$error.pattern">Valid Finish Date is required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Tab - 2 -->
+                    <div id="user" class="tab-pane fade" ng-show="userAccount">
+                        <div id="userAccount">
+                            <div class="col-md-12 tabBorder">
+                                <div class="row">
+                                    <br />
+                                    <div class="col-md-4">
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.Role.$dirty && userForm.Role.$invalid }">
+                                            <div class="input-group ddl" data-toggle="tooltip" data-placement="bottom" title="Select User Group">
+                                                <select ng-model="ddlRole" class="form-control selectMendatory" name="Role" id="cmbRole" ng-options="role.RoleName for role in RoleList track by role.RoleId ">
+                                                    <option value="" label="Select User Group"></option>
+                                                </select>
+                                                <!-- <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>-->
+                                            </div>
+                                            <span class="help-block" ng-show="userForm.Role.$dirty && userForm.Role.$invalid">User Group is required</span>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.UserName.$invalid && userForm.UserName.$touched }" data-toggle="tooltip" data-placement="bottom" title="User Name">
+                                            <div class="input-group">
+                                                <input type="text" id="txtUsername" name="UserName" class="form-control" ng-model="s_User.Username" placeholder="User Name" maxlength="51" ng-maxlength="50" ng-blur="CheckDuplicateUsername()" ng-change="foundChange()" />
+                                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.UserName.$error.required && userForm.UserName.$touched">User Name is required</span>
+                                            <span class="help-block" ng-if="userForm.UserName.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.password.$dirty && userForm.password.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Password">
+                                            <div class="input-group" id="passWrd">
+                                                <input type="password" id="tbxPassword" name="password" class="form-control" ng-model="s_User.Password" placeholder="Password" maxlength="51" ng-maxlength="50" />
+                                                <span class="input-group-addon" id="passAddon"><i class="fa fa-key" style="color:red;"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.password.$error.required && userForm.password.$touched">Password is required</span>
+                                            <span class="help-block" ng-if="userForm.password.$error.maxlength">50 Character Max</span>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.rtyPassword.$dirty && userForm.rtyPassword.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Re-Type Password">
+                                            <div class="input-group" id="rtyPass">
+                                                <input type="password" id="tbxRetypePassword" name="rtyPassword" class="form-control" ng-model="s_User.rtyPassword" placeholder="Re-Type Password" nx-equal-ex="s_User.Password" maxlength="51" ng-maxlength="50" />
+                                                <span class="input-group-addon" id="rtyPassAddon"><i class="fa fa-key" style="color:red;"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.rtyPassword.$error.nxEqualEx">Must be equal!</span>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.authPassword.$dirty && userForm.authPassword.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Authorization Password">
+                                            <div class="input-group" id="rtyPass">
+                                                <input type="password" name="authPassword" class="form-control" ng-model="s_User.AuthorizationPassword" placeholder="Authorization Password" maxlength="21" ng-maxlength="20" />
+                                                <span class="input-group-addon" id="authPasswordAddon"><i class="fa fa-key"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.authPassword.$error.maxlength">20 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group" hidden>
+                                            <div class="input-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="ReqSmsCode" ng-model="reqSmsCode" ng-change="SecureLoginChange()" /> &nbsp;&nbsp;Secure Login With SMS Code
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : userForm.SmsMobileNo.$invalid && userForm.SmsMobileNo.$touched && reqSmsCode }" data-toggle="tooltip" data-placement="bottom" title="Mobile Number" ng-show="reqSmsCode">
+                                            <div class="input-group" style="margin-top: -5px">
+                                                <input type="text" id="tbxSmsMobileNo" name="SmsMobileNo" class="form-control" ng-model="s_User.SmsMobileNo" maxlength="51" ng-maxlength="50" placeholder="Mobile Number" />
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="userForm.SmsMobileNo.$error.maxlength">20 Character Max</span>
+                                            <span class="help-block" ng-show="userForm.SmsMobileNo.$touched && userForm.SmsMobileNo.$invalid && reqSmsCode">Mobile No is required</span>
+                                        </div>
+                                        <div class="form-group" ng-show="ddlDepartment">
+                                            <div class="input-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" ng-model="allowToOtherBr" />&nbsp;Allow User to Other Sores
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Branch" ng-show="allowToOtherBr">
+                                            <div class="input-group input-group-md ddl">
+                                                <select ng-model="ddlBranchUser" class="form-control selectNotMandetory" ng-options="branch.BranchName for branch in BranchlistForUser track by branch.BranchId" ng-change="RefreshDepartmentUserDdl(ddlBranchUser.BranchId)">
+                                                    <option value="" label="Select Branch"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Department" ng-show="allowToOtherBr">
+                                            <div class="input-group input-group-md ddl">
+                                                <select ng-model="ddlDepartmentUser" class="form-control selectNotMandetory" ng-options="department.DepartmentName for department in DepartmentListForUser | filter : {DepartmentId: '!' + ddlDepartment.DepartmentId }  track by department.DepartmentId">
+                                                    <option value="" label="Select Department"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddDepartmentForUser()" ng-show="allowToOtherBr" ng-disabled="!ddlDepartmentUser">
+                                                    <i class=" fa fa-plus-square">
+                                                    </i>&nbsp;{{AddBtnLabel}}
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="RemoveBtnShow" ng-click="RemoveDepartmentForUser()">
+                                                    <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-show="allowToOtherBr">
+                                        <table class="responstable table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="t-cell-center">Branch</th>
+                                                    <th class="t-cell-center" width="50%">Department</th>
+                                                </tr>
+                                                <tr class="HoverTable searchRow" ng-repeat="dept in UserDepartmentList" ng-click="SelectUserDepartment($index)" onclick="RowSelect(this)">
+                                                    <td class=" t-cell-center">{{dept.BranchName}}</td>
+                                                    <td class="t-cell-center">{{dept.DepartmentName}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <br />
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button id="btnSave" class="customBtn custmoBtnSave" title="Save" ng-click="AddEmployee()" ng-disabled="!ad_Employee.FirstName||!ad_Employee.GradeId
+                                        ||!ad_Employee.Gender||!ddlBranch||!ddlDesignation||!ddlDepartment||!ad_Employee.EmployeeCode||!ad_Employee.BloodGroup">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="btnDelete" ng-show="btnDeleleShow" ng-click="Delete()" class="customBtn custmoBtnDelete" title="Search">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnClear" class="customBtn custmoBtnReset" ng-click="resetForm()" title="Clear">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Employee List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetEmpSearch()" ng-model="SearchName" placeholder="Name" />
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetEmpSearch()" ng-model="SearchCode" placeholder="Code" />
+                            <span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetEmpSearch()" ng-model="SearchOutlet" placeholder="Branch" />
+                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetEmpSearch()" ng-model="SearchPhone" placeholder="Phone" />
+                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr>
+                                <th>S/N</th>
+                                <th width="10%" class="t-cell-center">Branch</th>
+                                <th width="15%" class="t-cell-center">Department</th>
+                                <th data-th="Employee Details"><span>Employee Name</span></th>
+                                <th width="10%" class="t-cell-center">Username</th>
+                                <th width="10%" class="t-cell-center">Code</th>
+                                <th width="15%" class="t-cell-center">Designation</th>
+                                <th width="10%" class="t-cell-center">Contact No.</th>
+                                <th width="5%" class="t-cell-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable searchRow" dir-paginate="aEmployee in employeeList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" onclick="RowSelect(this)" ng-click="SelEmployee(aEmployee,$index+1)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="t-cell-center">{{aEmployee.BranchName}}</td>
+                                <td class="t-cell-center">{{aEmployee.DepartmentName}}</td>
+                                <td>{{aEmployee.FullName}}</td>
+                                <td class="t-cell-center">{{aEmployee.Username}}</td>
+                                <td class="t-cell-center">{{aEmployee.EmployeeCode}}</td>
+                                <td class="t-cell-center">{{aEmployee.DesignationName}}</td>
+                                <td class="t-cell-center">{{aEmployee.ContactNo}}</td>
+                                <td class="t-cell-center">{{aEmployee.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="9">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+employeeList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtDateOfBirth'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calander2").addEventListener("click", function () {
+        picker.show();
+    });
+
+    var picker1 = new Pikaday({
+        field: document.getElementById('txtJoiningDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calander3").addEventListener("click", function () {
+        picker1.show();
+    });
+
+    var picker2 = new Pikaday({
+        field: document.getElementById('txtFinishDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date(),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calander4").addEventListener("click", function () {
+        picker2.show();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#UserAcc").click(function () {
+            var user = document.getElementById("UserAcc").checked;
+            if (user) {
+                $('.nav-tabs a[data-target="#user"]').tab('show');
+                $("#cmbRole").focus();
+            }
+        });
+    });
+</script>
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>

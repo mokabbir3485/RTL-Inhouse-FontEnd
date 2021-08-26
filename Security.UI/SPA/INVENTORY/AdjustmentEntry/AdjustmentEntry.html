@@ -1,0 +1,256 @@
+﻿<form name="adjustmentEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; * Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Adjustment Entry</h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.AdjustmentName.$invalid && adjustmentEntryForm.AdjustmentName.$touched }" data-toggle="tooltip" data-placement="bottom" title="AdjustmentNo">
+                            <div class="input-group">
+                                <input type="text" id="txtAdjustmentNo" name="AdjustmentNo" class="form-control" placeholder="Adjustment No*" required>
+                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="adjustmentEntryForm.AdjustmentNo.$error.required && adjustmentEntryForm.AdjustmentNo.$touched">Adjustment No. require*</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.AdjustmentDate.$invalid && adjustmentEntryForm.AdjustmentDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Adjustment Date">
+                            <div class="input-group">
+                                <input type="text" onkeydown="return false" name="AdjustmentDate" id="txtAdjustmentDate" class="form-control datepicker" placeholder="Adjustment Date*" required />
+                                <span class="input-group-addon" id="calender1"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="adjustmentEntryForm.AdjustmentDate.$error.required && adjustmentEntryForm.AdjustmentDate.$touched">Date of Birth is required</span>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12"><hr /></div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.Category.$dirty && adjustmentEntryForm.Category.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlCategory" name="Category" class="form-control" required>
+                                    <option value="" label="Select Category*"></option>
+                                </select>
+                                <span class="input-group-addon"><i class="fa fa-th-large"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="adjustmentEntryForm.Category.$dirty && adjustmentEntryForm.Category.$invalid">Category is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.Category.$dirty && adjustmentEntryForm.SubCategory.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Subcategory">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlSubCategory" name="SubCategory" class="form-control" required>
+                                    <option value="" label="Select Subcategory*"></option>
+                                </select>
+                                <span class="input-group-addon"><i class="fa fa-th-large"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="adjustmentEntryForm.SubCategory.$dirty && adjustmentEntryForm.SubCategory.$invalid">Subcategory is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.Product.$dirty && adjustmentEntryForm.Product.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Product">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlProduct" name="Product" class="form-control" required>
+                                    <option value="" label="Select Product*"></option>
+                                </select>
+                                <span class="input-group-addon popover-markup" style="padding:0 0;">
+                                    <i class="fa fa-th-large trigger" onclick="Ok()" data-placement="bottom" style="padding: 9px; width: 100%;">
+                                        <!--<div class="head hide">Select Category & Subcategory</div>-->
+                                        <div class="content hide">
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding: 0 5px;">
+                                                    <input type="text" class="form-control" name="" style="margin-bottom:5px;" placeholder="Search..." value="">
+                                                    <table class="responstable table-hover">
+                                                        <tbody>
+                                                            <tr class="t-head">
+                                                                <th>Category</th>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Category-1</td>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Category-2</td>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Category-3</td>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Category-4</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <br />
+                                                </div>
+                                                <div class="col-md-6" style="padding:0 5px;">
+                                                    <input type="text" class="form-control" name="" style="margin-bottom:5px;" placeholder="Search..." value="">
+                                                    <table class="responstable table-hover">
+                                                        <tbody>
+                                                            <tr class="t-head">
+                                                                <th>Subcategory</th>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Subcategory-1</td>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Subcategory-2</td>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Subcategory-3</td>
+                                                            </tr>
+                                                            <tr class="HoverTable">
+                                                                <td>Subcategory-4</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <button id="sub" onclick="$('.trigger').popover('hide');" type="submit" class="btn btn-default btn-block">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </i>
+                                </span>
+                            </div>
+                            <span class="help-block" ng-show="adjustmentEntryForm.Product.$dirty && adjustmentEntryForm.Product.$invalid">Product is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.AdjustmentType.$dirty && adjustmentEntryForm.AdjustmentType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Adjustment Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlAdjustmentType" name="AdjustmentType" class="form-control" required>
+                                            <option value="" label="Add/Deduct*"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="adjustmentEntryForm.AdjustmentType.$dirty && adjustmentEntryForm.AdjustmentType.$invalid">Adjustment Type is required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.AddOrDeduct.$dirty && adjustmentEntryForm.AddOrDeduct.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Add/Deduct Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlAddOrReduct" name="AddOrDeduct" class="form-control" required>
+                                            <option value="" label="Select Adj. Type*"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="adjustmentEntryForm.AddOrDeduct.$dirty && adjustmentEntryForm.AddOrDeduct.$invalid">Add Or Deduct is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : adjustmentEntryForm.AdjustmentName.$invalid && adjustmentEntryForm.AdjustmentName.$touched }" data-toggle="tooltip" data-placement="bottom" title="AdjustmentNo">
+                            <div class="input-group">
+                                <input type="text" id="txtAdjustmentNo" name="AdjustmentNo" class="form-control" placeholder="Reason" required>
+                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="adjustmentEntryForm.AdjustmentNo.$error.required && adjustmentEntryForm.AdjustmentNo.$touched">Adjustment No. require*</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" id="tbxReqNo" name="ReqNo" class="form-control" placeholder="Quantity">
+                                        <span class="input-group-addon"><i class="fa fa-th-large"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button id="btnAdd" class="btn btn-add" title="Add" style="margin-left:-6px;">
+                                            <i class="fa fa-plus"></i>&nbsp;Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Adjustment List</h3>
+            </div>
+            <div class="panel-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th data-th="Product"><span>Product Name</span></th>
+                                <th>Adjustment Type</th>
+                                <th>Add/Deduct Type</th>
+                                <th>Quantity</th>
+                            </tr>
+                            <tr class="HoverTable">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+    });
+</script>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtAdjustmentDate'),
+        firstDay: 1,
+        format: "DD MMM",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker.show();
+    });
+</script>
+<script>
+    function Ok() {
+        $('.popover-markup>.trigger').popover({
+            html: true,
+            title: function () {
+                return $(this).parent().find('.head').html();
+            },
+            content: function () {
+                return $(this).parent().find('.content').html();
+            }
+        });
+    }
+</script>
+

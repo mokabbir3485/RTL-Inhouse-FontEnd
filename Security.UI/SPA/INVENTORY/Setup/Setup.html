@@ -1,0 +1,281 @@
+﻿<form name="setupForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Stock Maintenance Setup</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="inputType" class="col-md-5 control-label text-right">Effect From:</label>
+                                    <div class="input-group">
+                                        <input id="txtFromDate1" type="text" name="cal1" data-toggle="tooltip" data-placement="bottom" title="Effective From" ng-model="inv_StockValuationSetup.FromDate" class="form-control datepicker" disabled="disabled" required />
+                                        <span class="input-group-addon" id="calender1"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputType" class="col-md-4 control-label text-right">Effect To:</label>
+                                    <div class="input-group">
+                                        <input id="txtToDate2" type="text" onkeydown="return false" data-toggle="tooltip" data-placement="bottom" title="Effective To" name="cal2" ng-model="inv_StockValuationSetup.ToDate" class="form-control datepicker2" disabled="disabled" required />
+                                        <span class="input-group-addon" id="calender2"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Stock Valuation Setup</legend>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="inputType" class="col-md-5 control-label text-right">Valuation Type:</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="text" id="tbxTitle" name="Title" class="form-control" data-toggle="tooltip" data-placement="bottom" title="Current Valuation Type" ng-model="inv_StockValuationSetup.ValuationType" ng-maxlength="10" required disabled="disabled"/>
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label for="inputType" class="col-md-4 control-label text-right">  Change for next cycle:</label>
+                                        <div class="input-group">
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionRdo"
+                                                       value="FirstPrice" ng-model="ValuationType">
+                                                First Price
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionRdo"
+                                                       value="LastPrice" ng-model="ValuationType">
+                                                Last Price
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionRdo"
+                                                       value="Average" ng-model="ValuationType">
+                                                Average
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="inputType" class="col-md-5 control-label text-right">Increment (In Month):</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input type="text" id="aa" ng-model="Incriment" onkeypress='validate(event)' ng-keyup="ShowDate(Incriment)" class="form-control" />
+                                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row">
+                                        <div class="form-group" ng-show="DemoFromDate">
+                                            <label for="inputType" class="col-md-5 control-label text-right">Effect From:</label>
+                                            <div class="input-group">
+                                                <input id="txtFromDate1" type="text" name="cal1" data-toggle="tooltip" data-placement="bottom" title="Effective From" ng-model="DemoFromDate" class="form-control datepicker" disabled="disabled" required />
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-show="DemoToDate">
+                                        <label for="inputType" class="col-md-4 control-label text-right">Effect To:</label>
+                                        <div class="input-group">
+                                            <input id="txtDemoToDate" type="text" onkeydown="return false" data-toggle="tooltip" data-placement="bottom" title="Effective To" name="cal2" ng-model="DemoToDate" class="form-control datepicker1" required />
+                                            <span class="input-group-addon" id="calender"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="inputType" class="col-md-5 control-label text-right">Update Type:</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+
+                                                <div class="radio-inline">
+                                                    <input type="radio" name="options"
+                                                           ng-value="true" ng-model="inv_StockValuationSetup.IsActive">
+                                                    Auto
+                                                </div>
+                                                <div class="radio-inline">
+                                                    <input type="radio" name="options"
+                                                           ng-value="false" ng-model="inv_StockValuationSetup.IsActive">
+                                                    Manual
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="row">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Stock Movement Setup</legend>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="inputType" class="col-md-5 control-label text-right">Maintenance Type:</label>
+                                        <div class="input-group">
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionRdo"
+                                                       value="FirstPrice" ng-model="ValuationType">
+                                                FIFO
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionRdo"
+                                                       value="LastPrice" ng-model="ValuationType">
+                                                LIFO
+                                            </div>
+                                            <div class="radio-inline">
+                                                <input type="radio" name="optionRdo"
+                                                       value="Average" ng-model="ValuationType">
+                                                Not Applicable
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="inputType" class="col-md-5 control-label text-right">Update Type:</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+
+                                                <div class="radio-inline">
+                                                    <input type="radio" name="options"
+                                                           ng-value="true" ng-model="inv_StockValuationSetup.IsActive">
+                                                    Auto
+                                                </div>
+                                                <div class="radio-inline">
+                                                    <input type="radio" name="options"
+                                                           ng-value="false" ng-model="inv_StockValuationSetup.IsActive">
+                                                    Manual
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="input-group">
+                    <button class="btn btn-success" ng-click="AddSetup()">
+                        <i class="fa fa-floppy-o"></i>&nbsp;Save
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="input-group">
+                    <button id="Button3" class="btn btn-primary" title="Search" ng-click="resetForm()">
+                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <br />
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;SignalR Test</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-2">
+                    Current Qty: <input type="text" ng-model="display" disabled="disabled" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    Quantity: <input type="text" ng-model="inputQty" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-add" ng-click="AddQty()">+</button>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-adn" ng-click="DeductQty()">-</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <br />
+</form>
+<script>
+    var show = true;
+    function validate(evt) {
+        var theEvent = evt || window.event;
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+        if (show) {
+            var parts = document.getElementById('txtToDate2').value.split('/');
+            var date = "'" + parts[2] + "-" + parts[1] + "-" + parts[0] + "'";
+            var picker1 = new Pikaday({
+                field: document.getElementById('txtDemoToDate'),
+                firstDay: 1,
+                format: "DD/MM/YYYY",
+                minDate: new Date(date),
+                maxDate: new Date('2050-12-31'),
+                yearRange: [1930, 2050],
+                theme: 'blue-theme'
+            });
+            show = false;
+        }
+        document.getElementById("calender").addEventListener("click", function () {
+            picker1.show();
+        });
+    }
+</script>
+
+

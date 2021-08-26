@@ -1,0 +1,177 @@
+﻿<form name="reorderLevelSetupForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Reorder Level Setup</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <!-- Select Store -->
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : reorderLevelSetupForm.ddlStore.$dirty && reorderLevelSetupForm.ddlStore.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Store">
+                            <div class="input-group ddl">
+                                <select id="ddlStore" ng-model="ddlStore" ng-disabled="ddlStoreDisable" class="form-control selectMendatory" ng-change="ClearsorList();" name="ddlStore" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" autofocus required>
+                                    <option value="" label="Store"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="reorderLevelSetupForm.ddlStore.$dirty && reorderLevelSetupForm.ddlStore.$invalid">Store is required</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary" style="background-color: #f69c55; border-color: #F69C6E; ">
+                                    Browse&hellip; <!--<input type="file" accept=".xls,.xlsx,.ods" multiple="false" style="display: none;">-->
+                                    <input type="file" accept=".xls,.xlsx,.ods" fileread="" ng-blur="ImportData()" style="display: none;" multiple="false" />
+                                </span>
+                            </label>
+                            <input type="text" id="browsFile" class="form-control" placeholder="Browse For Excel File" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="Button4" class="btn btn-info" ng-disabled="SearchBtnDisable || !ddlStore" ng-click="SearchReorderlevel(ddlStore.DepartmentId, ddlSrcCategory.CategoryId, ddlSrcSubategory.SubCategoryId, ddlProduct.ItemId)" title="Search">
+                                    <i class="fa fa-search"></i>&nbsp;Search
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="" class="btn " ng-show="ExportBtnDisable" ng-click="exportData()" style="background-color: #1F7745; color: #fff" title="Export">
+                                    <i class="fa fa-expand"></i>&nbsp;Export
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                        <select ng-model="ddlSrcCategory" class="form-control selectNotMandetory" ng-change="SelectSubategory(ddlSrcCategory.category)" name="SrcCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId">
+                                            <option value="" label="Select Category"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group input-group-md ddl" ng-disabled="!ddlSrcCategory" data-toggle="tooltip" data-placement="bottom" title="Select Subcategory">
+                                        <select ng-model="ddlSrcSubategory" ng-disabled="!ddlSrcCategory" class="form-control selectNotMandetory" ng-change="SelectSubategory(ddlSrcSubategory.subategory)" name=" srcsubategory" ng-options="subategory.SubCategoryName for subategory in SubcategoryList| filter:{CategoryId: ddlSrcCategory.CategoryId} : true track by subategory.SubCategoryId">
+                                            <option value="" label="Select Subcategory"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : reorderLevelSetupForm.Product.$dirty && reorderLevelSetupForm.Product.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Product">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="Product" ng-model="ddlProduct" class="form-control selectNotMandetory" name="Product" ng-change="ClearsorList();" ng-options="item.ItemName for item in ItemSearchResultList track by item.ItemId">
+                                            <option value="" label="Select Product"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="reorderLevelSetupForm.Product.$dirty && reorderLevelSetupForm.Product.$invalid">Product is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <table class="responstable table-hover">
+                            <!--<td>{{aReorderLevelList.MinReorderLevel}}</td>
+                            <td>{{aReorderLevelList.MaxReorderLevel}}</td>-->
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="t-cell-center" width="120">Category</th>
+                                    <th class="t-cell-center" width="120">Subcategory</th>
+                                    <th data-th="Product Reorder Level Details"><span>Product Name</span></th>
+                                    <th class="t-cell-center" width="120">Product Code</th>
+                                    <th width="120" class="t-cell-center">Unit</th>
+                                    <th width="80" style="text-align:center;">Min Qty</th>
+                                    <th width="80" style="text-align:center;">Max Qty</th>
+                                    <th class="t-cell-center" style="width: 50px;"><span class="fa fa-check-square-o"></span></th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aReorderLevelList in ReorderLevelList" ng-click="SelCustomerAddress(aCustomerAddress,$index)">
+                                    <td>{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aReorderLevelList.CategoryName}}</td>
+                                    <td class="t-cell-center">{{aReorderLevelList.SubcategoryName}}</td>
+                                    <td>{{aReorderLevelList.ItemName}}</td>
+                                    <td class="t-cell-center">{{aReorderLevelList.ItemCode}}</td>
+                                    <td class="t-cell-center">
+                                        <select ng-model="aReorderLevelList.ddlUnitReorderlevel" class="form-control " ng-change="aReorderLevelList.ReorderUnitId = aReorderLevelList.ddlUnitReorderlevel.ItemUnitId; aReorderLevelList.UnitName = aReorderLevelList.ddlUnitReorderlevel.UnitName" name="ddlUnitReorderlevel" ng-options="unit.UnitName for unit in ItemUnitlist  | filter: unitFilter(aReorderLevelList) track by unit.ItemUnitId">
+                                            <option value="" label="Select Unit"></option>
+                                        </select>
+                                    </td>
+                                    <td style="text-align:center;"><input type="text" ng-model="aReorderLevelList.MinReorderLevel" ng-change="((aReorderLevelList.MinReorderLevel > 0)  && (aReorderLevelList.ddlUnitReorderlevel.ItemUnitId >=1))  ? aReorderLevelList.selected =true : aReorderLevelList.selected =false;" class="form-control text-center" placeholder="Min" onclick="return this.select();" min="0" /> </td>
+                                    <td style="text-align:center;"><input type="text" ng-model="aReorderLevelList.MaxReorderLevel" class="form-control text-center" placeholder="Max" onclick="return this.select();" /> </td>
+                                    <td class="t-cell-center"><input type="checkbox" ng-checked="aReorderLevelList.MinReorderLevel > 0  && aReorderLevelList.ddlUnitReorderlevel.ItemUnitId >=1" ng-model="aReorderLevelList.selected" ng-disabled="true" /></td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Buttons -->
+        <div class="col-sm-12">
+            <div class="col-md-1 col-xs-12">
+                <div class="input-group">
+                    <button ng-click="AddReorderLevel(ddlStore.DepartmentId)" ng-disabled="!ReorderLevelList.length" id="Button1" style="margin-left: -15px;" class="btn btn-success" title="Search">
+                        <i class="fa fa-floppy-o"></i>&nbsp;Save
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-12">
+                <div class="input-group">
+                    <button type="button" id="btnReset" ng-click="resetReorderLevelSetupForm()" class="btn btn-primary" title="Reset">
+                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+</form>
+
+
+<style>
+    .fontAwesome {
+        font-family: Helvetica, 'FontAwesome', sans-serif;
+    }
+</style>
+<script>
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+    });
+</script>
+
+<script>
+    $(function () {
+        // We can attach the `fileselect` event to all file inputs on the page
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+        // We can watch for our custom `fileselect` event like this
+        $(document).ready(function () {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 16px;
+            color: #000000;
+            height: auto;
+        }
+
+        td {
+            vertical-align: top;
+            text-align: left;
+        }
+        @media print {
+            /*#footer {
+                position: fixed;
+                bottom: 80px;
+                padding-right: 30px;
+            }*/
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+            /*margin-top: 2.2cm;
+            margin-bottom: 2cm;
+            margin-left: 0;
+            margin-right: 0;*/
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -1em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -1em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="container" id="source-html">
+                        <div>
+                            <p style="font-size: 30px; text-align: center;"><b>RETAIL TECHNOLOGIES LIMITED</b></p>
+                        </div>
+                        <div>
+                            <p style="font-size: 16px; text-align: center;">FSSFB # 7(Ground Floor East Wing) Dhaka EPZ Extension Area -Bangladesh</p>
+                        </div>
+                        <p style="font-size: 16px; text-align: center;"><hr style="border-top: 1px solid black;"></p>
+                        <div>
+                            <p style="font-size: 25px; text-align: center;"><b><u>CONSUMPTION CERTIFICATE</u></b></p>
+                        </div>
+                        <table>
+                            <tr>
+                                <td style="width: 370px">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].StatementNo"><b>CONSUMPTION STATEMENT NO.</b></p>
+                                </td>
+                                <td style="width: 490px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].StatementNo">: {{ConsumptionReportList[0].StatementNo}}</p>
+                                </td>
+                                <td style="width: 150px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].StatementDate">Date: {{ConsumptionReportList[0].StatementDate}}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 370px">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;"><b>BILL OF ENTRY NO.</b></p>
+                                </td>
+                                <td style="width: 490px;">
+                                    <p style="font-size: 1em;   margin : 0;  padding : 0 ;">: {{ConsumptionReportList[0].BillOfEntryNo}}</p>
+                                </td>
+                                <td style="width: 150px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;">Date: {{ConsumptionReportList[0].BillOfEntryDate}}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 370px">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].InvoiceNo"><b>INVOICE NO.</b></p>
+                                </td>
+                                <td style="width: 490px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].InvoiceNo">: {{ConsumptionReportList[0].InvoiceNo}}</p>
+                                </td>
+                                <td style="width: 150px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].InvoiceDate">Date: {{ConsumptionReportList[0].InvoiceDate}}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 370px">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].CompanyNameBilling"><b>NAME AND ADDRESS</b></p>
+                                </td>
+                                <td style="width: 490px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;"  ng-if="CommercialInvoiceMasterList[0].CompanyNameBilling"><b>Billing : {{CommercialInvoiceMasterList[0].CompanyNameBilling}}</b><br />  : {{CommercialInvoiceMasterList[0].ImporterBillAddress}}</p>
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ; " ng-if="CommercialInvoiceMasterList[0].PaymentProcessTypeId == 2 || CommercialInvoiceMasterList[0].PaymentProcessTypeId == 3"><b>Delivery : {{CommercialInvoiceMasterList[0].CompanyNameDelivery}}</b><br />  : {{CommercialInvoiceMasterList[0].ImporterDeliveryAddress}}</p>
+                                </td>
+                                <td style="width: 150px;">
+                                </td>
+                            </tr>
+                            <tr ng-if="CommercialInvoiceMasterList[0].PaymentProcessTypeId == 4">
+                                <td style="width: 370px">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].LcScNo"><b>LC NO.</b></p>
+                                </td>
+                                <td style="width: 490px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].LcScNo">: {{ConsumptionReportList[0].LcScNo}}</p>
+                                </td>
+                                <td>
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;" ng-if="ConsumptionReportList[0].LcScNo">Date: {{ConsumptionReportList[0].LcDate}}</p>
+                                </td>
+                            </tr>
+                            <tr ng-if="CommercialInvoiceMasterList[0].PaymentProcessTypeId == 2 || CommercialInvoiceMasterList[0].PaymentProcessTypeId == 3">
+                                <td style="width: 370px">
+                                    <span style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ;"><b>SC NO. </b></span>
+                                </td>
+                                <td style="width: 490px;">
+
+                                    <div>
+                                        <table>
+
+                                            <tr ng-repeat="PiNo in CommercialInvoiceMasterList[0].PiRefNo track by $index">
+                                                        
+                                                <td>
+                                                    <span style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ;">: {{PiNo}}</span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    
+
+                                </td>
+                                <td>
+                                    <div>
+                                        <table>
+                                            <tr ng-repeat="PiDate in CommercialInvoiceMasterList[0].PiRefDate track by $index">
+                                                <td>
+                                                    <span style="font-size: 1em;" ng-if="CommercialInvoiceMasterList[0].PiRefNo">Date: {{PiDate}}</span>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 370px">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;"><b>DEPZ PERMISSION NO.</b></p>
+                                </td>
+                                <td style="width: 490px;">
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;">: {{ConsumptionReportList[0].DEPZPermissionNo}}</p>
+                                </td>
+                                <td>
+                                    <p style="font-size: 1em;    margin : 0;  padding : 0 ;">Date: {{ConsumptionReportList[0].DEPZPermissionDate}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <br />
+                        <div>
+                            <p style="font-size: 25px; text-align: center;"><b><u>DESCRIPTION OF EXPORTED GOODS</u></b></p>
+                        </div>
+                        <table id="ItemTable" style="width:100%; ">
+                            <thead>
+                                <tr>
+                                    <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px; width: 70px;"><u>SL NO.</u></th>
+                                    <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px; width: 125px;"><u>ITEM NAME</u></th>
+                                    <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>QTY(PCS)</u></th>
+                                    <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>QTY(Rolls)</u></th>
+                                    <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>UNIT PRICE</u></th>
+                                    <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>AMOUNT(USD)</u></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in DescriptionReportList track by $index">
+                                    <td class="txt-center" style="font-size: 1em;     margin : 0;  padding : 0 ; ">{{$index+1}}</td>
+                                    <td style="font-size: 1em;     margin : 0;  padding : 0 ; ">{{item.ItemName}}</td>
+                                    <td class="txt-center" style="font-size: 1em;     margin : 0;  padding : 0 ; ">{{item.QtyDescription}}</td>
+                                    <td class="txt-center" style="font-size: 1em;     margin : 0;  padding : 0 ; ">{{item.Quantity}} Rolls</td>
+                                    <td class="txt-center" style="font-size: 1em;     margin : 0;  padding : 0 ; ">$ {{item.UnitPrice}}</td>
+                                    <td class="txt-center" style="font-size: 1em;     margin : 0;  padding : 0 ; ">$ {{item.Amount}}</td>
+
+                                </tr>
+                                <tr style="height: 65px;">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; "><hr style="border-top: 1px solid black;"></td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; "><hr style="border-top: 1px solid black;"></td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; "><hr style="border-top: 1px solid black;"></td>
+                                    <td></td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; "><hr style="border-top: 1px solid black;"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; "><b>Total: </b></td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; ">{{TotalQtyDescription}} PCS</td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; ">{{TotalQuantity}} Rolls</td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; "></td>
+                                    <td class="txt-center" style="font-size: 1em;    margin : 0;  padding : 0 ; ">$ {{TotalAmount}}</td>
+                                    <td></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <br />
+                        <div>
+                            <table id="BondTable" style="width:100%; border-collapse: collapse; ">
+                                <thead>
+                                    <tr>
+                                       <!-- <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>SL NO.</u></th>-->
+                                        <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>7.IMPORT BOND NO</u></th>
+                                        <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>PREVIOUS BL(KG)</u></th>
+                                        <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>EXPORT QTY(KG)</u></th>
+                                        <th class="txt-center" style="font-size: 1em; padding: 5px; padding-top:5px; padding-bottom:0px;"><u>CLOSING BALANCE(KG)</u></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="bond in RawMaterialsReportList track by $index">
+                                       <!-- <td class="txt-center" style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ;">{{$index+1}}</td>-->
+                                        <td class="txt-center" style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ; ">{{bond.ImportBondNo}}</td>
+                                        <td class="txt-center" style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ; ">{{bond.PreviousBalance}}</td>
+                                        <td class="txt-center" style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ; " contenteditable="true">{{bond.ExportQty}}</td>
+                                        <td class="txt-center" style="font-size: 1em; line-height: 1;    margin : 0;  padding : 0 ; ">{{bond.ClosingBalance}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br />
+                        <br />
+                        <div ng-if="DescriptionReportList.length == 2">
+                            <div class="flexcontainer">
+                                <div>Reg.No:</div>
+                                <div style="width: 550px;">Page No:</div>
+                            </div>
+                            <div class="flexcontainer">
+                                <div>Reg.No:</div>
+                                <div style="width: 550px;">Page No:</div>
+                            </div>
+                        </div>
+                        <div class="flexcontainer" ng-if="DescriptionReportList.length == 1">
+                            <div>Reg.No:</div>
+                            <div style="width: 550px;">Page No:</div>
+                        </div>
+                        <br />
+
+                        <br />
+                        <div id="footer">
+                            <p style="font-size: 1em; margin: 0; padding: 0; "><b> YOUR'S FAITHFULLY <br /></b></p>
+                            <p style="font-size: 1em; margin: 0; padding: 0; ">FOR & ON BEHALF OF:<br /></p>
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <p style="font-size: 1em; line-height: 1; margin: 0; padding: 0; ">______________________<br /></p>
+                            <br />
+                            <br />
+                            <!--<table style="width: 100%;">
+                                <tbody style="left:30px; right: 50px;">
+                                    <tr>
+                                        <td style="text-align:left; font-size: small;">
+                                            <div class="footer">
+                                                <span><b>{{currentDatetimeFormated}}</b></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>-->
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
+<style>
+    .flex-container {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .flexcontainer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .flex-container2 {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+<script type="text/javascript">
+    //$("#footer").draggable();
+    function ExportToDoc() {
+        $('.hideButton').hide();
+        $('#result').hide();
+
+        var sourceHTML = document.getElementById("source-html").innerHTML;
+
+        // console.log(sourceHTML);
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+        function replaceAll(str, term, replacement) {
+            return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+        }
+        var removeTableBorderStr;
+        $('#ciTable tbody tr td').each(function (tdIndex, td) {
+            var preStyle = $(this).attr("style");
+
+            if (preStyle != undefined) {
+                var pos = preStyle.indexOf("display: none;");
+                if (pos != -1) {
+                    $('#ciTable').find("tbody tr td:nth-child(" + tdIndex + ")").each(function () {
+
+                        $(this).remove();
+
+                        alert();
+                    });
+                    //  $(this).remove();
+                }
+            }
+
+        });
+
+
+        var thCount = 8;
+        //$('#ciTable thead tr th').each(function () {
+        //    thCount++;
+        //});
+
+        if (thCount <= 10 && thCount > 0) {
+            removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: 1em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: 1em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+        }
+        else if (thCount <= 15 && thCount > 10) {
+            removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: 1em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .7em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+        }
+        else {
+            alert('Please insert less then 15 column.');
+            return;
+        }
+
+        //var firstChildCount = 1;
+        //$("#ciTable tbody tr").each(function () {
+        //    var firstChild = $(this).children(':first');
+        //    firstChild.text(firstChildCount++).outerText;
+        //});
+        var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(removeTableBorderStr);
+        var fileDownload = document.createElement("a");
+        document.body.appendChild(fileDownload);
+        fileDownload.href = source;
+        fileDownload.download = 'Commercil Invoice.doc';
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
+        $('.hideButton').show();
+        $('#result').show();
+
+    }
+
+
+    function PrintPdf() {
+
+        window.print();
+
+    }
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+</script>

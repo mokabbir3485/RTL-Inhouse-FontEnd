@@ -1,0 +1,393 @@
+﻿<form name="supplierEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Supplier Entry </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.SupplierName.$invalid && supplierEntryForm.SupplierName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Supplier Name">
+                    <div class="input-group">
+                        <input type="text" id="txtSupplierName" name="SupplierName" class="form-control" ng-model="ad_Supplier.SupplierName" placeholder="Supplier Name" maxlength="129" ng-maxlength="128" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="supplierEntryForm.SupplierName.$error.required && supplierEntryForm.SupplierName.$touched">Supplier Name is required</span>
+                    <span class="help-block" ng-if="supplierEntryForm.SupplierName.$error.maxlength">128 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.SupplierType.$touched && supplierEntryForm.SupplierType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier Type">
+                    <div class="input-group input-group-md ddl">
+                        <select ng-model="ddlSupplierType" class="form-control selectMendatory" name="SupplierType" ng-options="supplierType.SupplierTypeName for supplierType in supplierTypeList track by supplierType.SupplierTypeId" required>
+                            <option value="" label="Select Supplier Type"></option>
+                        </select>
+                    </div>
+                    <span class="help-block" ng-show="supplierEntryForm.SupplierType.$touched && supplierEntryForm.SupplierType.$invalid">Supplier Type is required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.SupplierWeb.$invalid && supplierEntryForm.SupplierWeb.$touched }" data-toggle="tooltip" data-placement="bottom" title="web Address">
+                    <div class="input-group">
+                        <input type="text" id="txtWeb" name="SupplierWeb" class="form-control" ng-model="ad_Supplier.Web" placeholder="Web Address" maxlength="51" ng-maxlength="50"/>
+                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="supplierEntryForm.SupplierWeb.$error.maxlength">50 Character Max</span>
+                </div>
+
+                <!--<div class="form-group">
+                    <div class="input-group">
+                        <label>Supplier Type: </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="optionRdo"
+                                   value="Local" ng-model="ad_Supplier.SupplierType">
+                            Local
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="optionRdo"
+                                   value="Overseas" ng-model="ad_Supplier.SupplierType">
+                            Overseas
+                        </div>
+                    </div>
+                </div>-->
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="true" ng-model="ad_Supplier.IsActive">
+                            Active
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="false" ng-model="ad_Supplier.IsActive"> Inactive
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Receivable ?: </label>
+                        &nbsp;&nbsp;
+                        <input type="checkbox" ng-model="ad_Supplier.IsReceivable">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-globe"></i>&nbsp;Address<label style="color:red;">* </label> (Minimum 1 Required)</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label>  Address Type:</label>
+                            <div class="input-group">
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionAdd"
+                                           value="Mailing" ng-model="ad_SupplierAddress.AddressType">
+                                    Mailing
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionAdd"
+                                           value="Billing" ng-model="ad_SupplierAddress.AddressType">
+                                    Billing
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionAdd"
+                                           value="DeliveryPoint" ng-model="ad_SupplierAddress.AddressType">
+                                    Delivery Point
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.Address.$invalid && supplierEntryForm.Address.$touched }" data-toggle="tooltip" data-placement="bottom" title="Address">
+                            <div class="input-group">
+                                <textarea rows="3" type="text" name="Address" id="tbxAddress" class="form-control" ng-model="ad_SupplierAddress.Address" placeholder="Address" maxlength="500" ng-maxlength="499" required></textarea>
+                                <span class="input-group-addon"><i class="fa fa-paper-plane" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="supplierEntryForm.Address.$error.required && supplierEntryForm.Address.$touched">Address is required</span>
+                            <span class="help-block" ng-if="supplierEntryForm.Address.$error.maxlength">500 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.ContactPerson.$invalid && supplierEntryForm.ContactPerson.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Person">
+                            <div class="input-group">
+                                <input type="text" id="tbxConPerson" name="ContactPerson" class="form-control" ng-model="ad_SupplierAddress.ContactPerson" placeholder="Contact Person" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="supplierEntryForm.ContactPerson.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.ContactDesignation.$invalid && supplierEntryForm.ContactDesignation.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Designation">
+                            <div class="input-group">
+                                <input type="text" id="tbxConDesignation" name="ContactDesignation" class="form-control" ng-model="ad_SupplierAddress.ContactDesignation" placeholder="Contact Designation" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="supplierEntryForm.ContactDesignation.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.Phone.$invalid && supplierEntryForm.Phone.$touched }" data-toggle="tooltip" data-placement="bottom" title="Phone Number">
+                            <div class="input-group">
+                                <input type="text" id="tbxPhone" name="Phone" class="form-control" ng-model="ad_SupplierAddress.Phone" placeholder="Phone Number" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="supplierEntryForm.Phone.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.Mobile.$invalid && supplierEntryForm.Mobile.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile Number">
+                            <div class="input-group">
+                                <input type="text" id="tbxMobile" name="Mobile" class="form-control" ng-model="ad_SupplierAddress.Mobile" placeholder="Mobile Number" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="supplierEntryForm.Mobile.$error.maxlength">50 Character Max</span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.Email.$invalid && supplierEntryForm.Email.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                            <div class="input-group">
+                                <input type="email" id="tbxEmail" name="Email" class="form-control" ng-model="ad_SupplierAddress.Email" placeholder="Email" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="supplierEntryForm.Email.$error.Email && supplierEntryForm.Email.$touched">Invalid Email</span>
+                            <span class="help-block" ng-if="supplierEntryForm.Email.$error.maxlength">50 Character Max</span>
+                        </div>
+                        
+
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.Port.$invalid && supplierEntryForm.Port.$touched }" data-toggle="tooltip" data-placement="bottom" title="Port">
+                            <div class="input-group">
+                                <input type="text" id="tbxEmail" name="Email" class="form-control" ng-model="ad_SupplierAddress.Port" placeholder="Port" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="supplierEntryForm.Port.$error.Port && supplierEntryForm.Port.$touched">Invalid Port</span>
+                            <span class="help-block" ng-if="supplierEntryForm.Port.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.TIN.$invalid && supplierEntryForm.TIN.$touched }" data-toggle="tooltip" data-placement="bottom" title="TIN">
+                            <div class="input-group">
+                                <input type="text" id="tbxEmail" name="TIN" class="form-control" ng-model="ad_Supplier.TIN" placeholder="TIN" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-qrcode"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="supplierEntryForm.TIN.$error.TIN && supplierEntryForm.TIN.$touched">Invalid TIN</span>
+                            <span class="help-block" ng-if="supplierEntryForm.TIN.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.BIN.$invalid && supplierEntryForm.BIN.$touched }" data-toggle="tooltip" data-placement="bottom" title="BIN">
+                            <div class="input-group">
+                                <input type="text" id="tbxEmail" name="BIN" class="form-control" ng-model="ad_Supplier.BIN" placeholder="BIN" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-qrcode"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="supplierEntryForm.BIN.$error.BIN && supplierEntryForm.BIN.$touched">Invalid BIN</span>
+                            <span class="help-block" ng-if="supplierEntryForm.BIN.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.NID.$invalid && supplierEntryForm.NID.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                            <div class="input-group">
+                                <input type="text" id="tbxEmail" name="NID" class="form-control" ng-model="ad_Supplier.NID" placeholder="NID" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-qrcode"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="supplierEntryForm.NID.$error.NID && supplierEntryForm.NID.$touched">Invalid NID</span>
+                            <span class="help-block" ng-if="supplierEntryForm.NID.$error.maxlength">50 Character Max</span>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label>Default: </label>
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="default" ng-model="ad_SupplierAddress.IsDefault" ng-change="CheckDefault(ad_SupplierAddress.IsDefault)" value="default">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                <div class="row">
+
+                                    <button id="btnAdd" class="customBtn custmoBtnReset" title="addAddress" ng-click="AddSupplierAddress()" ng-disabled="supplierEntryForm.addressType.$invalid
+                                                                                                                                                    ||supplierEntryForm.Address.$invalid
+                                                                                                                                                    ||supplierEntryForm.ContactPerson.$invalid
+                                                                                                                                                    ||supplierEntryForm.ContactDesignation.$invalid
+                                                                                                                                                    ||supplierEntryForm.Phone.$invalid
+                                                                                                                                                    ||supplierEntryForm.Mobile.$invalid
+                                                                                                                                                    ||supplierEntryForm.Email.$invalid
+                                                                                                                                                   ">
+                                        <i class="fa fa-plus-square"></i>&nbsp;{{buttonSuppAddress}}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                <div class="row">
+                                    <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="btnSuppAddressDeleleShow" ng-click="removeAddress()">
+                                        <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Address Details"><span>Address</span></th>
+                                    <th>Phone</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Port</th>
+                                    <th>Default</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aSupplierAddress in supplierAddresslist" ng-click="SelSupplierAddress(aSupplierAddress,$index)">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{aSupplierAddress.Address}}</td>
+                                    <td>{{aSupplierAddress.Phone}}</td>
+                                    <td>{{aSupplierAddress.Mobile}}</td>
+                                    <td>{{aSupplierAddress.Email}}</td>
+                                    <td>{{aSupplierAddress.Port}}</td>
+                                    <td>{{aSupplierAddress.Status}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil-square"></i>&nbsp;Bill Policy </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error' : supplierEntryForm.PolicyDescription.$invalid && supplierEntryForm.PolicyDescription.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bill Policy">
+                            <div class="input-group">
+                                <textarea rows="2" type="text" id="tbxPolicy" class="form-control" name="PolicyDescription" ng-model="ad_SupplierBillPolicy.PolicyDescription" placeholder="Policy" maxlength="500" ng-maxlength="499" required></textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="supplierEntryForm.PolicyDescription.$error.required && supplierEntryForm.PolicyDescription.$touched">Policy is required</span>
+                            <span class="help-block" ng-if="supplierEntryForm.PolicyDescription.$error.maxlength">500 Character Max</span>
+                        </div>
+                        <div class="row">
+                            <br />
+                            <div class="col-md-7">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+
+                                        <div class="row">
+                                            <button id="btnAdd" class="customBtn custmoBtnReset" title="addAddress" ng-click="AddSupplierBillPolicy()" ng-disabled="supplierEntryForm.PolicyDescription.$invalid">
+                                                <i class="fa fa-plus-square"></i>&nbsp;{{buttonBillPolicy}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+
+                                        <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="btnSuppBillPolicyDeleleShow" ng-click="removeBillPolicy()">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br />
+
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Bill Policy Details"><span>Bill Policy</span></th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aBillPolicy in supplierBillPolicylist" ng-click="SelSupplierBillPolicy(aBillPolicy,$index)">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{aBillPolicy.PolicyDescription}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                        <div class="row">
+                            <button class="customBtn custmoBtnSave" ng-click="AddSupplier()" ng-disabled="(supplierEntryForm.SupplierName.$invalid || supplierEntryForm.SupplierType.$invalid
+                                                                                          || supplierEntryForm.SupplierWeb.$invalid)||(supplierAddresslist.length==0)
+                            ">
+                                <i class="fa fa-floppy-o"></i>&nbsp;{{buttonSupp}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                        <div class="row">
+                            <button id="btnDelete" ng-show="btnDeleleShow" ng-click="Delete()" class="customBtn custmoBtnDelete" title="Search">
+                                <i class="fa fa-trash"></i>&nbsp;Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                        <div class="row">
+                            <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+
+                <h3 class="panel-title "><i class="fa fa-list"></i>&nbsp;Supplier List</h3>
+
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th data-th="Supplier Details"><span>Supplier Name</span></th>
+                                <th>Supplier Code</th>
+                                <th>Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aSupplier in supplierlist | filter:q | itemsPerPage: PerPage" total-items="total_count" current-page="currentPage" ng-click="SelSupplier(aSupplier)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td>{{aSupplier.SupplierName}}</td>
+                                <td>{{aSupplier.SupplierCode}}</td>
+                                <td>{{aSupplier.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="4">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+supplierlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

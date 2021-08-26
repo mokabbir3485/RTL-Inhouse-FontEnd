@@ -1,0 +1,205 @@
+﻿<form name="bankAccountForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Bank Account</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.BankName.$invalid && bankAccountForm.BankName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bank Name">
+                            <div class="input-group">
+                                <input type="text" id="txtBankName" name="BankName" maxlength="100" class="form-control" ng-model="ad_BankAccount.BankName" placeholder="Bank Name" ng-blur="CheckDuplicateBankName()" ng-change="foundChange()" ng-maxlength="99" required autofocus>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="bankAccountForm.BankName.$error.required && bankAccountForm.BankName.$touched">Bank name is required</span>
+                            <span class="help-block" ng-if="bankAccountForm.BankName.$error.maxlength">100 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.AccountNo.$invalid && bankAccountForm.AccountNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Account No">
+                            <div class="input-group">
+                                <input type="text" id="txtAccountNo" maxlength="100" name="AccountNo" class="form-control" ng-model="ad_BankAccount.AccountNo" placeholder="Account No" ng-blur="CheckDuplicateAccountNo()" ng-change="foundChangeAccountNo()" ng-maxlength="99">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <!--<span class="help-block" style="display: block;" ng-if="bankAccountForm.AccountNo.$error.required && bankAccountForm.AccountNo.$touched">Account no is required</span>-->
+                            <span class="help-block" ng-if="bankAccountForm.AccountNo.$error.maxlength">100 Character Max</span>
+                        </div>
+                 
+                        <div class="form-group " ng-class="{ 'has-error' : bankAccountForm.AccountName.$invalid && bankAccountForm.AccountName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Account Name">
+                            <div class="input-group">
+                                <input type="text" id="txtBankAccountName" name="AccountName" maxlength="100" class="form-control" ng-model="ad_BankAccount.AccountName" placeholder="Account Name" ng-blur="CheckDuplicateAccountName()" ng-change="foundChangeAccountName()" ng-maxlength="99" autofocus>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                          
+                            <span class="help-block" ng-if="bankAccountForm.AccountName.$error.maxlength">100 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.BranchName.$invalid && bankAccountForm.BranchName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Name">
+                            <div class="input-group">
+                                <input type="text" id="txtBranchName" maxlength="100" name="BranchName" class="form-control" ng-model="ad_BankAccount.BranchName" placeholder="Branch Name" ng-blur="CheckDuplicateBranchName()" ng-change="foundChangeBranchName()" ng-maxlength="99">
+                                <span class="input-group-addon"><i class="fa fa-text-width" ></i></span>
+                            </div>
+                            <span class="help-block" ng-if="bankAccountForm.BranchName.$error.maxlength">100 Character Max</span>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.BranchAddress.$invalid && bankAccountForm.BranchAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Address">
+                            <div class="input-group" style="margin-bottom: 24px">
+                                <textarea rows="3" id="tbxBranchAddress"  class="form-control" placeholder="Branch Address" name="BranchAddress" ng-model="ad_BankAccount.BranchAddress" ng-maxlength="200" required></textarea>
+                                <span class="input-group-addon"><i class="fa fa-paper-plane" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="bankAccountForm.BranchAddress.$error.required && bankAccountForm.BranchAddress.$touched">Branch address is required</span>
+                            <span class="help-block" ng-if="bankAccountForm.BranchAddress.$error.maxlength">200 Character Max</span>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.SwiftCode.$invalid && bankAccountForm.SwiftCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="SwiftCode">
+                            <div class="input-group">
+                                <input type="text" id="txtSwiftCode" maxlength="100" name="SwiftCode" class="form-control" ng-model="ad_BankAccount.SwiftCode" placeholder="Swift Code" ng-blur="CheckDuplicateSwiftCode()" ng-change="foundChangeSwiftCode()" ng-maxlength="99">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <!--<span class="help-block" style="display: block;" ng-if="bankAccountForm.SwiftCode.$error.required && bankAccountForm.SwiftCode.$touched">Swift code is required</span>-->
+                            <span class="help-block" ng-if="bankAccountForm.SwiftCode.$error.maxlength">100 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.BIN.$invalid && bankAccountForm.BIN.$touched }" data-toggle="tooltip" data-placement="bottom" title="BIN">
+                            <div class="input-group">
+                                <input type="text" id="txtBIN" name="BIN" maxlength="100" class="form-control" ng-model="ad_BankAccount.BIN" placeholder="BIN" ng-blur="CheckDuplicateBIN()" ng-change="foundChangeBIN()" ng-maxlength="99" autofocus>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <!--<span class="help-block" style="display: block;" ng-if="bankAccountForm.BIN.$error.required && bankAccountForm.BIN.$touched">BIN no is required</span>-->
+                            <span class="help-block" ng-if="bankAccountForm.BIN.$error.maxlength">100 Character Max</span>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.AccountFor.$touched && bankAccountForm.AccountFor.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Account For">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlAccountFor" ng-model="ddlAccountFor" name="AccountFor" class="form-control selectMendatory" ng-options="account.AccountFor for account in AccountForList track by account.AccountFor" ng-disabled="AccountForSelectionDisabled" ng-change="ad_BankAccount.AccountFor = ddlAccountFor.AccountFor ;GetAccountFor(ad_BankAccount.AccountFor)" required>
+                                    <option value="" label="Select Account For"></option>
+
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="bankAccountForm.AccountFor.$touched && bankAccountForm.AccountFor.$invalid">Account for is required</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : bankAccountForm.AccountRefId.$touched && bankAccountForm.AccountRefId.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Account Ref Id">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlAccountRefId" ng-model="ddlAccountRef" name="AccountRefId" class="form-control selectMendatory" ng-options="company.CompanyName for company in CompanyDropdownList track by company.CompanyId" ng-change="ad_BankAccount.AccountRefId = ddlAccountRef.CompanyId">
+                                    <option value="" label="Account Referance"></option>
+
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="bankAccountForm.AccountRefId.$touched && bankAccountForm.AccountRefId.$invalid">Account RefId is required</span>
+                        </div>
+
+                      
+
+                        <div class="input-group">
+                            <label>Status: </label>
+                            &nbsp;&nbsp;
+                            <div class="radio-inline">
+                                <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_BankAccount.IsActive">Active
+                            </div>
+                            <div class="radio-inline">
+                                <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_BankAccount.IsActive">Inactive
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <!--<br />-->
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                    <div class="row">
+                                        <button id="Button1" class="customBtn custmoBtnSave" ng-click="SaveBankAccount()" ng-disabled="!ad_BankAccount.BankName || !ad_BankAccount.BranchAddress || !ddlAccountFor" title="{{button}}">
+                                            <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                    <div class="row">
+                                        <button id="Button2" class="customBtn custmoBtnDelete" title="Delete" ng-click="Delete()" ng-show="Show">
+                                            <i class="fa fa-trash"></i>&nbsp;Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                    <div class="row">
+                                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Bank Account List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center" data-th="Outlet Details"><span>Bank Name</span></th>
+                                <th class="txt-center">Account No</th>
+                                <th class="txt-center">Account Name</th>
+                                <th class="txt-center">Branch Name </th>
+                                <th class="txt-center">Branch Address</th>
+                                <th class="txt-center">Swift Code</th>
+                                <th class="txt-center">BIN</th>
+                                <th class="txt-center">Account For</th>
+                                <th class="txt-center">Account Ref Id</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            
+                           
+                            <tr class="HoverTable" dir-paginate="aBankAccount in BankAccountList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelBankAccount(aBankAccount)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aBankAccount.BankName}}</td>
+                                <td class="txt-center">{{aBankAccount.AccountNo }}</td>
+                                <td class="txt-center">{{aBankAccount.AccountName }}</td>
+                                <td class="txt-center">{{aBankAccount.BranchName}}</td>
+                                <td class="txt-center">{{aBankAccount.BranchAddress}}</td>
+                                <td class="txt-center">{{aBankAccount.SwiftCode }}</td>
+                                <td class="txt-center">{{aBankAccount.BIN}}</td>
+                                <td class="txt-center">{{aBankAccount.AccountFor}}</td>
+                                <td class="txt-center">{{aBankAccount.AccountRefId}}</td>
+                                <td class="txt-center">{{aBankAccount.Status}}</td>
+
+                            </tr>
+                          
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+BankAccountList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</form>
+

@@ -1,0 +1,434 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mushak_4.3</title>
+
+    <style type="text/css">
+        body {
+            font-family: 'SolaimanLipi', sans-serif;
+            font-size: 11px;
+            line-height: 12px;
+        }
+
+        .tg {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .header {
+            text-align: center;
+            line-height: 10px;
+        }
+
+        .info {
+            text-align: left;
+            /*line-height: 10px;*/
+        }
+
+        .com-info {
+            text-align: right;
+            line-height: 10px;
+        }
+
+        .tg td {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            padding: 5px 5px;
+        }
+
+        .tg th {
+            border-color: black;
+            border-style: solid;
+            border-width: 1px;
+            overflow: hidden;
+            padding: 5px 5px;
+        }
+
+        .tg .tg-i3dw {
+            border-color: inherit;
+            font-family: "Times New Roman", Times, serif !important;
+            text-align: center;
+            vertical-align: top
+        }
+
+        .tg .tg-c3ow {
+            border-color: inherit;
+            text-align: center;
+            vertical-align: top
+        }
+
+        @page {
+            size: A4 landscape;
+        }
+    </style>
+
+</head>
+
+<body>
+    <table style="width: 100%; font-size: 11px;">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset"
+                                        style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;"
+                                        title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div style="display: flex;justify-content: center;align-items: center">
+                        <div style="text-align:left;">
+
+                            <img style="width:90px;height:55px;border-radius:100%;" src="/UploadedImages/govt.jpg" />
+
+                        </div>
+                        <div>
+                            <p class="header">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার </p>
+                            <p class="header"> জাতীয় রাজস্ব বোর্ড</p>
+                            <p class="header">ঊপকরণ উৎপাদন সহগ (Input-Output Coefficient) ঘোষণা </p>
+                            <p class="header">(বিধি ২১ দ্রষ্টব্য)</p>
+
+                        </div>
+                    </div>
+
+                    <p class="info"><b>প্রতিষ্ঠানের নামঃ</b> Retail Technologies Ltd</p>
+                    <p class="info"><b>ঠিকানাঃ</b> House # B/142, Road # 22, New DOHS, Mohakhali, Dhaka - 1206.</p>
+                    <p class="info"><b>বিনঃ</b>  000395977-0102</p>
+                    <p class="info"><b>দাখিলের তারিখঃ</b> {{BillOfMaterialObj.SubmitDate}}</p>
+                    <p class="info"><b>ঘোষিত সহগ অনুযায়ী পণ্য /সেবার প্রথম সরবরাহের তারিখঃ</b> {{BillOfMaterialObj.DeliveryDate}}</p>
+                    <table class="tg" style="width: 100%;">
+                        <thead>
+
+                            <tr>
+                                <th class="tg-c3ow" rowspan="2"> ক্রমিক সংখ্যা</th>
+                                <th class="tg-c3ow" rowspan="2">পণ্যের এইচ এস কোড/সেবা কোড</th>
+                                <th class="tg-c3ow" rowspan="2">
+                                    সরবরাহকৃত পণ্য/ সেবার নাম ও বর্ণনা (প্রযোজ্য ক্ষেত্রে
+                                    ব্র্যান্ড নামসহ)
+                                </th>
+                                <th class="tg-c3ow" rowspan="2">সরবরাহের একক</th>
+                                <th class="tg-c3ow" colspan="6">
+                                    একক পণ্য
+                                    /সেবা সরবরাহের ব্যবহার যাবতীয় উপকরণের /কাঁচামালের প্যাকিং সামগ্রীর বিবরণ পরিমাণ ও
+                                    ক্রয়মূল্য
+                                    (ঊপকড়ণভিত্তিক অপচয়ের শতকরা হার)
+                                </th>
+                                <th class="tg-c3ow" colspan="2"> মূল্য সংযোজনের বিবরণ </th>
+                                <th class="tg-c3ow" rowspan="2">মন্তব্য</th>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow">বিবরণ</td>
+                                <td class="tg-c3ow" colspan="2">অপচয়সহ পরিমাণ </td>
+                                <td class="tg-c3ow"> ক্রয়মূল্য</td>
+                                <td class="tg-c3ow">অপচয়ের পরিমাণ</td>
+                                <td class="tg-c3ow">শতকরা হার</td>
+                                <td class="tg-c3ow">মূল্য সংযোজনের হার</td>
+                                <td class="tg-c3ow">মূল্য</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tg-c3ow">১</td>
+                                <td class="tg-c3ow">২</td>
+                                <td class="tg-c3ow">৩</td>
+                                <td class="tg-c3ow">৪</td>
+                                <td class="tg-c3ow">৫</td>
+                                <td class="tg-c3ow" colspan="2">৬</td>
+                                <td class="tg-c3ow">৭</td>
+                                <td class="tg-c3ow">৮</td>
+                                <td class="tg-c3ow">৯</td>
+                                <td class="tg-c3ow">১০</td>
+                                <td class="tg-c3ow">১১</td>
+                                <td class="tg-c3ow">১২</td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow">১</td>
+                                <td class="tg-c3ow">{{BillOfMaterialObj.HsCode}}</td>
+                                <td class="tg-c3ow" rowspan="2" style="width: 140px">{{BillOfMaterialObj.ItemName}}</td>
+                                <td class="tg-c3ow" rowspan="2">{{BillOfMaterialObj.Unit}}</td>
+                                <td class="tg-c3ow"><b><u>Raw Materials</u></b></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-i3dw">একক</td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow" style="width: 115px">{{OverheadDetailList[0].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[0].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr ng-repeat="aBOMDetail in BillOfMaterialObj.BOMDetail track by $index">
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{aBOMDetail.ItemName}}</td>
+                                <td class="tg-c3ow">{{aBOMDetail.Qty}}</td>
+                                <td class="tg-c3ow">{{aBOMDetail.Unit}}</td>
+                                <td class="tg-c3ow">{{aBOMDetail.UnitPrice}}</td>
+                                <td class="tg-c3ow">{{aBOMDetail.WastageAmount}}</td>
+                                <td class="tg-c3ow">{{aBOMDetail.WastagePercentage}} %</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[1].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[1].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[2].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[2].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[3].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[3].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[4].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[4].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow" style="width: 225px"> <b><u>Packing & Supporting materials</u></b></td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[5].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[5].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{PackingDetailList[0].SectorName}}</td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow">{{PackingDetailList[0].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[6].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[6].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{PackingDetailList[1].SectorName}}</td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow">{{PackingDetailList[1].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[7].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[7].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{PackingDetailList[2].SectorName}}</td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow">{{PackingDetailList[2].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[8].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[8].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"><u><b>Service & Other Rebate Item</b></u></td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[9].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[9].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{ServiceDetailList[0].SectorName}}</td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow">{{ServiceDetailList[0].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[10].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[10].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{ServiceDetailList[1].SectorName}}</td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow">{{ServiceDetailList[1].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[11].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[11].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{ServiceDetailList[2].SectorName}}</td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"> {{ServiceDetailList[2].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow">{{OverheadDetailList[12].SectorName}}</td>
+                                <td class="tg-c3ow">{{OverheadDetailList[12].Amount}}</td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"><b>মোট উপকরনের মূল্য</b></td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"><b>{{TotalRawMaterialWithOtherCost}}</b></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"> <b>মোট মূল্য সংযোজনের খাত</b></td>
+                                <td class="tg-c3ow"><b>{{ TotalOverheadAmount}}</b></td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow" colspan="2"> </td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+                            <tr>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow" colspan="2"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"></td>
+                                <td class="tg-c3ow"><b>{{TotalCost}}</b></td>
+                                <td class="tg-c3ow"></td>
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+                    <br />
+                    <p class="com-info"><b>প্রতিষ্ঠান কতৃপক্ষের দায়িত্বপ্রাপ্ত ব্যক্তির নামঃ</b>____________________________</p>
+                    <p class="com-info"><b>পদবীঃ</b>____________________________</p>
+                    <p class="com-info"><b>স্বাক্ষরঃ</b>____________________________</p>
+                    <p class="com-info"><b>সীলঃ</b>____________________________</p>
+                    <p class="info"><b>বিশেষ দ্রষ্টব্যঃ</b></p>
+                    <p style="text-align: left">
+                        ১। যেকোন পণ্য বা সেবা প্রথম সরবরাহের পূর্ববর্তী ১৫ দিনের মধ্যে অনলাইনে মুসক কম্পিউটার সিস্টেমে
+                        বা সংশ্লিষ্ট বিভাগীয় কর্মকর্তার দপ্তরে উপকরন-উৎপাদ সহগ ঘোষণা দাখিল করিতে হইবে। <br />
+                        ২। পণ্য মূল্য বা মোট উপকরণ /কাঁচামালের মূল্য ৭.৫% এর বেশী পরিবর্তন হইলে নতুন ঘোষণা দাখিল করিতে হইবে। <br />
+                        ৩। উপকরণ ক্রয়ের স্বপক্ষে প্রামাণিক দলিল হিসাবে বিল অব এন্ট্রি বা চালানপত্রের কপি সংরক্ষণ
+                        করিতে হইবে।
+                    </p>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#Hidebr").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

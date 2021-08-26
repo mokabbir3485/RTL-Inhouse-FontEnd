@@ -1,0 +1,126 @@
+﻿<form name="supplierAdvanceEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Supplier Advance / Opening Balance</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group" style="margin-bottom: 25px;">
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="RequisitionType" ng-model="SupplierAdvanceType" value="advance" ng-change="SupplierAdvanceTypeChange()" />Advance
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-3">
+                        <div class="form-group" ng-hide="true">
+                            <div class="input-group" style="margin-bottom: 25px;">
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="RequisitionType" ng-model="CompanyAdvanceType" value="openingAdvance" ng-change="CompanyAdvanceTypeChange()" />Opening Advance
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group" style="margin-bottom: 25px;">
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="RequisitionType" ng-model="SupplierAdvanceType" value="openingBalance" ng-change="SupplierAdvanceTypeChange()" />Opening Balance
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-3" ng-show="CompanyAdvanceType == 'advance'">
+                        <div class="form-group" ng-class="{ 'has-error' : companyAdvanceEntryForm.VoucherNo.$dirty && companyAdvanceEntryForm.VoucherNo.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Voucher No">
+                            <div class="input-group">
+                                <input type="text" id="txtVoucherNo" ng-model="rcv_CompanyAdvance.VoucherNo" name="VoucherNo" class="form-control" placeholder="Voucher No" maxlength="50" ng-maxlength="49" ng-blur="CheckVoucherNoExists()">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="requisitionEntryForm.Remarks.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>-->
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : supplierAdvanceEntryForm.supplier.$dirty && supplierAdvanceEntryForm.supplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlSupplier" ng-model="ddlSupplier" name="supplier" class="form-control selectMendatory" ng-options="supplier.SupplierName for supplier in supplierList track by supplier.SupplierId" ng-change="pay_SupplierAdvance.SupplierId=ddlSupplier.SupplierId; pay_SupplierAdvance.SupplierName=ddlSupplier.SupplierName; CheckOpeningSavedOnSupplierChange()" required>
+                                    <option value="" label="-- Select Supplier --"></option>
+                                </select>
+                                <span class="help-block" ng-show="supplierAdvanceEntryForm.supplier.$dirty && supplierAdvanceEntryForm.supplier.$invalid">Supplier Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="SupplierAdvanceType=='advance'">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Payment Type">
+                                    <select ng-model="ddlPaymentType" class="form-control selectNotMandetory" ng-change="pay_SupplierAdvance.PaymentTypeId=ddlPaymentType.PaymentTypeId" ng-options="paymentType.PaymentTypeName for paymentType in PaymentTypeList track by paymentType.PaymentTypeId" required>
+                                        <option value="" label="Payment Type"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class='input-group'>
+                                    <input type="text" class="form-control" id="dtPayDate" ng-model="pay_SupplierAdvance.AdvanceDate" placeholder="Payment Date" readonly="readonly" />
+                                    <div class="input-group-addon" ng-click="CalendarOpen()">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" ng-show="SupplierAdvanceType!='advance'">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Payment Date">
+                            <input type="text" id="Remarks" ng-model="pay_SupplierAdvance.Remarks" class="form-control" placeholder="Opening Date: {{MinDateFormat}}" readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : supplierAdvanceEntryForm.amount.$dirty && supplierAdvanceEntryForm.amount.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                            <div class="input-group">
+                                <input type="number" id="txtAmount" ng-model="pay_SupplierAdvance.Amount" name="amount" class="form-control" placeholder="Amount" maxlength="15" ng-maxlength="14">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="supplierAdvanceEntryForm.amount.$dirty && supplierAdvanceEntryForm.amount.$invalid">Amount is required</span>
+                            <span class="help-block" ng-if="supplierAdvanceEntryForm.amount.$error.maxlength">15 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button class="customBtn custmoBtnSave" ng-disabled="!pay_SupplierAdvance.SupplierId || !pay_SupplierAdvance.Amount || (SupplierAdvanceType=='openingAdvance' && OpeningAdvanceSaved) || (SupplierAdvanceType=='openingBalance' && OpeningBalanceSaved)" ng-click="SaveAdvance()">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="Button3" class="customBtn custmoBtnReset" title="Search" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <pre>{{pay_SupplierAdvance | json}}</pre>
+</form>

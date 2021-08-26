@@ -1,0 +1,826 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+</style>
+<form name="inventoryReportForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="radio-inline" ng-show="StockSummary">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="StockSummary" ng-model="rbReport">Stock Summary Report
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="ProductSerialNo">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ProductSerialNo" ng-model="rbReport">Product Serial Number
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="DateWiseProductionStatus">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="DateWiseProductionStatus" ng-model="rbReport">Date Wise Production Status
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="PurchaseBySupplier">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="PurchaseBySupplier" ng-model="rbReport">Purchase By Supplier Report
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SaleReportByCompany">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="SaleReportByCompany" ng-model="rbReport">Sale By Company Report
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="ReceiptNote">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ReceiptNote" ng-model="rbReport">Receipt Note
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SalesOrder">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="SalesOrder" ng-model="rbReport">Sales Order
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="InternalWorkOrderReport">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="InternalWorkOrderReport" ng-model="rbReport">Internal Work Order
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="DeliveryChallan">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="DeliveryChallan" ng-model="rbReport">Delivery Challan
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SalesBill">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="SalesBill" ng-model="rbReport">Sales Bill
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="GatePass">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="GatePass" ng-model="rbReport">Gate Pass
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="ArDue">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ArDue" ng-model="rbReport">Accounts Receivable Due
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="radio-inline" ng-show="ArSummary">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="ArSummary" ng-model="rbReport">Accounts Receivable Summary
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="AcLedger">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="AcLedger" ng-model="rbReport">Account Ledger
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="AttSum">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="AttSum" ng-model="rbReport" ng-change="RedioBtnChange();">Attendance Summary
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="radio-inline" ng-show="AttSumWithOT">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="AttSumWithOT" ng-model="rbReport" ng-change="RedioBtnChange();">Attendance Summary With OT
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="radio-inline" ng-show="AttDtl">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="AttDtl" ng-model="rbReport" ng-change="RedioBtnChange();">Attendance Detail
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SalSheet">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="SalSheet" ng-model="rbReport" ng-change="RedioBtnChange();">Salary Sheet
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="LeaveBalance">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="LeaveBalance" ng-model="rbReport" ng-change="RedioBtnChange();">Leave Balance
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SalaryHistory">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="SalaryHistory" ng-model="rbReport" ng-change="RedioBtnChange();">Salary History
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="CIFReport" ng-model="CIFReport" ng-change="CIFRedioBtnChange();">Customer Information Formation
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-hide="CIFReport == 'CIFReport'" ng-show="CIFReport == 'CIFReportFalse' || rbReport=='PaymentReport'||rbReport=='BalanceReport'||rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='VarietywiseSalesReport'">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Report Parameters</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="modal fade" id="modChart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width:100%">
+                        <div class="modal-content" style="border-radius: 5px 5px 5px 5px; width: 100%">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" id="exampleModalLabel">Sale Comparicson</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="col-md-4" style="margin-top: 5px; height: 10px; background-color: rgba(100,100,100,0.5)"></div>
+                                        <div class="col-md-8">
+                                            Today
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-4" style="margin-top: 5px; height: 10px; background-color: rgba(220,220,220,0.5)"></div>
+                                        <div class="col-md-8">
+                                            This Month
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-4" style="margin-top: 5px; height: 10px; background-color: rgba(10,60,100,1)"></div>
+                                        <div class="col-md-8">
+                                            Last Month
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body">
+                                <canvas id="canvas" width="1366" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" ng-hide="rbReport=='SaleComparison'">
+                        <div class="row">
+                            <!--FromDate-->
+                            <div class="col-md-12" ng-show="rbReport=='SalesInvoiceReport'||rbReport=='StockIssue'|| rbReport=='StockReceive'|| rbReport=='SaleByDate' || rbReport=='SaleByFarmer'||rbReport=='StockLedger'||rbReport=='StockLedgerAttribute'||rbReport=='PaymentReport'
+                                                ||rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='SaleByQuantity'||rbReport=='LeadingCustomerWiseSalesReport'||rbReport=='VarietywiseSalesReport' ||rbReport=='DateWiseProductionStatus' || rbReport=='PurchaseBySupplier'
+                                                ||rbReport=='SaleReportByCompany'||rbReport=='StockSummary' ||rbReport=='ReceiptNote'||rbReport=='DeliveryChallan'||rbReport=='SalesOrder'||rbReport=='InternalWorkOrderReport'||rbReport=='SalesBill' ||rbReport=='GatePass'
+                                                || rbReport=='ArSummary' || rbReport=='AcLedger' || rbReport=='AttSum' || rbReport=='AttSumWithOT' || rbReport=='AttDtl'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.DeclarationDate.$invalid && inventoryReportForm.DeclarationDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                                    <div class='input-group'>
+                                        <input type="text" name="FromDate" id="txtFromDate" onkeydown="return false" ng-model="FromDate" class="form-control " placeholder="From Date" autocomplete="off" />
+                                        <span class="input-group-addon" id="calender1"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--ToDate-->
+                            <div class="col-md-12" ng-hide="rbReport=='SalSheet' || rbReport=='LeaveBalance' || rbReport=='SalaryHistory'" ng-show="rbReport=='SalesInvoiceReport'|| rbReport=='StockIssue'|| rbReport=='StockReceive'|| rbReport=='SaleByDate' ||rbReport=='SaleByQuantity'|| rbReport=='SaleByFarmer'||rbReport=='StockLedger'||rbReport=='StockLedgerAttribute'||rbReport=='PaymentReport'
+                                                 ||rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='LeadingCustomerWiseSalesReport'||rbReport=='VarietywiseSalesReport'||rbReport=='DateWiseProductionStatus' || rbReport=='PurchaseBySupplier' ||rbReport=='SaleReportByCompany'||rbReport=='StockSummary'
+                                                 ||rbReport=='ReceiptNote'||rbReport=='DeliveryChallan'||rbReport=='SalesOrder'||rbReport=='InternalWorkOrderReport'||rbReport=='SalesBill'||rbReport=='GatePass' || rbReport=='ArSummary' || rbReport=='AcLedger' || rbReport=='AttSum' || rbReport=='AttSumWithOT' || rbReport=='AttDtl'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.DeclarationDate.$invalid && inventoryReportForm.DeclarationDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                                    <div class='input-group'>
+                                        <input type="text" name="ToDate" id="txtToDate" onkeydown="return false" ng-model="ToDate" class="form-control " placeholder="To Date" autocomplete="off" />
+                                        <span class="input-group-addon" id="calender2"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Branch Multi Select-->
+                            <div class="col-md-12"
+                                 ng-show="rbReport=='PaymentReport'||rbReport=='BalanceReport'||rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='VarietywiseSalesReport'">
+                                <div class="form-group">
+                                    <div ng-dropdown-multiselect="" extra-settings="dropdownSetting"
+                                         options="Categories" selected-model="CategoriesSelected" events="myEventListeners" checkboxes="true"></div>
+                                </div>
+                            </div>
+                            <!--From Month Year-->
+                            <div class="col-md-12" ng-show="rbReport=='SalaryHistory'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Year">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selMonth" ng-model="ddlFromMonthYear" class="form-control selectMendatory" name="Year" ng-options="month.MonthAndYear  for month in MonthYearList  track by month.MonthYearId">
+                                            <option value="" label="Select Month Year From"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--To Month Year-->
+                            <div class="col-md-12" ng-show="rbReport=='SalaryHistory'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Year">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selMonth" ng-model="ddlToMonthYear" class="form-control selectMendatory" name="Year" ng-options="month.MonthAndYear  for month in MonthYearList  track by month.MonthYearId">
+                                            <option value="" label="Select Month Year To"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Month-->
+                            <div class="col-md-12" ng-show="rbReport=='SalSheet'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Month">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selMonth" ng-model="ddlMonth" class="form-control selectMendatory" name="Month" ng-change="GetHeaders()" ng-options="month.MonthName  for month in MonthList  track by month.MonthId">
+                                            <option value="" label="Select Month"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Year-->
+                            <div class="col-md-12" ng-show="rbReport=='SalSheet' || rbReport=='LeaveBalance'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Year">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selYear" ng-model="ddlYear" class="form-control selectMendatory" name="Year" ng-change="GetHeaders()" ng-options="year.YearName  for year in YearList  track by year.YearId">
+                                            <option value="" label="Select Year"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Branch-->
+                            <div class="col-md-12"
+                                 ng-hide="rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='StockLedgerAttribute'||rbReport=='PaymentReport'||rbReport=='BalanceReport'||rbReport=='VarietywiseSalesReport'||rbReport=='ReceiptNote'
+                                 ||rbReport=='SalesOrder'||rbReport=='DeliveryChallan'||rbReport=='SalesBill' ||rbReport=='InternalWorkOrderReport'||rbReport=='DateWiseProductionStatus' || rbReport=='PurchaseBySupplier'
+                                 ||rbReport=='SaleReportByCompany'||rbReport=='StockSummary' ||rbReport=='GatePass' ||rbReport=='ArDue'||rbReport=='ArSummary' || rbReport=='AcLedger'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlBranch.$dirty && inventoryReportForm.ddlBranch.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Branch">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlBranch" ng-model="ddlBrunch" class="form-control selectNotMandetory" name="ddlBranch" ng-options="brunch.BranchName  for brunch in Branchlist  track by brunch.BranchId" ng-change="resetGrade()">
+                                            <option value="" label="Select Branch"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Grade-->
+                            <div class="col-md-12" ng-show="rbReport=='SalSheet' || rbReport=='LeaveBalance' ">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Grade">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selGrade" ng-model="ddlGrade" class="form-control selectMendatory" name="Grade" ng-options="grade.GradeName  for grade in GradeList  track by grade.GradeId" ng-change="GetHeaders();GetDepartmentByBranchAndGrade()">
+                                            <option value="" label="Select Grade"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Grade For Attendance Summary-->
+                            <div class="col-md-12" ng-show="rbReport=='AttSum' || rbReport=='SalaryHistory'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Grade">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selGrade" ng-model="ddlGrade" class="form-control selectNotMandetory" name="Grade" ng-options="grade.GradeName  for grade in GradeList  track by grade.GradeId" ng-change="GetDepartmentByBranchAndGrade()">
+                                            <option value="" label="Select Grade"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Departmnet-->
+                            <div class="col-md-12"
+                                 ng-hide="rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='PaymentReport'||rbReport=='BalanceReport'||rbReport=='VarietywiseSalesReport'||rbReport=='ReceiptNote'||rbReport=='SalesOrder'||rbReport=='DeliveryChallan'
+                                 ||rbReport=='SalesBill' ||rbReport=='InternalWorkOrderReport'||rbReport=='DateWiseProductionStatus' || rbReport=='PurchaseBySupplier'||rbReport=='SaleReportByCompany'||rbReport=='StockSummary'||rbReport=='GatePass'
+                                  ||rbReport=='ArDue'||rbReport=='ArSummary' ||rbReport=='AcLedger' ||rbReport=='AttSum'|| rbReport=='AttSumWithOT'||rbReport=='SalSheet'  || rbReport=='AttDtl'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlReceiveBy.$dirty && inventoryReportForm.ddlReceiveBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Departmnet">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selDepartment" ng-model="ddlDepartment" class="form-control selectNotMandetory" name="Department" ng-options="department.DepartmentName for department in departmentlist | filter:{BranchId:ddlBrunch.BranchId} track by department.DepartmentId" ng-change="GetSectionByDepartment();">
+                                            <option value="" label="Select Departmnet"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12"
+                                 ng-show="rbReport=='SalSheet'||rbReport=='AttSum'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlReceiveBy.$dirty && inventoryReportForm.ddlReceiveBy.$invalid }">
+                                    <div class="input-group input-group-md ddl">
+                                        <div ng-dropdown-multiselect=""
+                                             options="example8data"
+                                             selected-model="departmentIdList"
+                                             extra-settings="example8settings">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!---Unit---->
+                            <div class="col-md-12" ng-hide="rbReport=='SalSheet' || rbReport=='AttSum' || rbReport=='LeaveBalance' || rbReport=='SalaryHistory'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selUnit" ng-model="ddlUnit" class="form-control selectNotMandetory" name="Unit" ng-options="unit.UnitName  for unit in UnitList  track by unit.UnitName">
+                                            <option value="" label="Select Unit"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Section-->
+                            <div class="col-md-12"
+                                 ng-hide="rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='PaymentReport'||rbReport=='BalanceReport'||rbReport=='VarietywiseSalesReport'||rbReport=='ReceiptNote'||rbReport=='SalesOrder'||rbReport=='DeliveryChallan'
+                                 ||rbReport=='SalesBill' ||rbReport=='InternalWorkOrderReport'||rbReport=='DateWiseProductionStatus' || rbReport=='PurchaseBySupplier'||rbReport=='SaleReportByCompany'||rbReport=='StockSummary'||rbReport=='GatePass'
+                                  ||rbReport=='ArDue'||rbReport=='ArSummary' ||rbReport=='AcLedger' || rbReport=='AttSumWithOT' || rbReport=='AttDtl'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlReceiveBy.$dirty && inventoryReportForm.ddlReceiveBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Section">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selSection" ng-model="ddlSection" class="form-control selectNotMandetory" name="Section" ng-options="section.SectionName for section in sectionList | filter:{DepartmentId:ddlDepartment.DepartmentId} track by section.SectionId">
+                                            <option value="" label="Select Section"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Company Type-->
+                            <div class="col-md-12" ng-show="rbReport=='ArDue' || rbReport=='ArSummary'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Company Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selCompanyType" ng-model="ddlCompanyType" class="form-control selectNotMandetory" name="CompanyType" ng-change="BindEmployeeByCompanyType(ddlCompanyType.CompanyTypeId); BindCompanyByCompanyTypeAndEmployee(ddlCompanyType.CompanyTypeId, ddlEmployee.EmployeeId)" ng-options="companyType.CompanyTypeName for companyType in CompanyTypeList track by companyType.CompanyTypeId">
+                                            <option value="" label="-- Select Company Type --"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Employee-->
+                            <div class="col-md-12" ng-show="rbReport=='ArDue' || rbReport=='ArSummary'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Reference">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlEmployee" class="form-control selectNotMandetory" ng-change="BindCompanyByCompanyTypeAndEmployee(ddlCompanyType.CompanyTypeId, ddlEmployee.EmployeeId)" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId">
+                                            <option value="" label="-- Select Reference --"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Employee2-->
+                            <div class="col-md-12" ng-show="rbReport=='AttDtl'|| rbReport=='LeaveBalance' || rbReport=='SalaryHistory'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Employee">
+                                    <div class="input-group width-hundred-percent">
+                                        <select class="form-control basic-select2" style="width:100%;" ng-model="ddlEmployeeByBranch" ng-options="employee.FullName  for employee in employeeByBranchList track by employee.EmployeeId">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Supplier-->
+                            <div class="col-md-12" ng-show="rbReport=='PurchaseBySupplier'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlSupplier" name="ddlSupplier" class="form-control selectNotMandetory" ng-options="supplier.SupplierName for supplier in supplierlist track by supplier.SupplierId">
+                                            <option value="" label="-- Select Supplier --"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Company-->
+                            <div class="col-md-12" ng-show="rbReport=='SaleReportByCompany' || rbReport=='ArDue' || rbReport=='ArSummary' || rbReport=='AcLedger' || rbReport=='SalesOrder'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlCompany.$dirty && inventoryReportForm.ddlCompany.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Company">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlCompany" name="ddlCompany" class="form-control selectNotMandetory" ng-options="company.CompanyName for company in companyList track by company.CompanyId">
+                                            <option value="" label="-- Select company --"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Item Unit-->
+                            <div class="col-md-12" ng-show="rbReport=='SaleByFarmer'||rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='LeadingCustomerWiseSalesReport'
+                                            ||rbReport=='VarietywiseSalesReport'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ItemUnit.$dirty && inventoryReportForm.ItemUnit.$invalid }">
+                                    <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                                        <select ng-model="ddlItemUnit" class="form-control selectMendatory" name="ItemUnit" ng-options="unit.name for unit in unitList track by unit.id">
+                                            <!--<option value="" label="Select Unit"></option>-->
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="inventoryReportForm.ItemUnit.$dirty && inventoryReportForm.ItemUnit.$invalid">Unit is required</span>
+                                </div>
+                            </div>
+                            <!--Bank-->
+                            <div class="col-md-12" ng-show="rbReport=='PaymentReport'">
+                                <div class="form-group" ng-class="{ 'has-error' : CashTransferForm.Bank.$invalid && CashTransferForm.Bank.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bank">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlBank" class="form-control selectMendatory" ng-options="aBank.BankName for aBank in  ActiveBankList track by aBank.BankId" name="Bank" required>
+                                            <option value="" label="Select Bank"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="CashTransferForm.Bank.$touched && CashTransferForm.Bank.$invalid">Bank is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row" ng-show="rbReport=='ReceiptNote'||rbReport=='SalesOrder'||rbReport=='DeliveryChallan'||rbReport=='InternalWorkOrderReport'||rbReport=='SalesBill'||rbReport=='GatePass' ">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{ 'has-error' : transId.$invalid && transId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Enter Releted Id Or No.">
+                                    <div class="input-group input-group-md ddl">
+                                        <input type="text" id="transId" name="transId" class="form-control" ng-model="transId" placeholder="" maxlength="51" ng-maxlength="50" required>
+                                    </div>
+                                    <span class="help-block" ng-show="transId.$touched && transId.$invalid">Enter Releted Data.</span>
+                                </div>
+                            </div>
+                            <!--Search Button-->
+                            <div class="col-md-12">
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                    <div class="row">
+                                        <button id="searchButton" class="customBtn custmoBtnReset" title="Search" ng-click="loadDataForReportGrid();">
+                                            <i class="fa fa-search-plus"></i>&nbsp;Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" ng-hide="rbReport=='SaleComparison'||rbReport=='BalanceReport'||rbReport=='PaymentReport'||rbReport=='ReceiptNote'
+                             ||rbReport=='SalesOrder'||rbReport=='DeliveryChallan'||rbReport=='SalesBill' ||rbReport=='InternalWorkOrderReport'
+                             ||rbReport=='DateWiseProductionStatus'|| rbReport=='PurchaseBySupplier' ||rbReport=='SaleReportByCompany'||rbReport=='GatePass'
+                             || rbReport=='ArDue' || rbReport=='ArSummary' || rbReport=='AcLedger' || rbReport=='AttSum' || rbReport=='AttSumWithOT' || rbReport=='AttDtl'">
+
+                            <!--Category-->
+                            <div class="col-md-12" ng-hide="rbReport=='SaleComparison' || rbReport=='SalesInvoiceReport'||rbReport=='SalSheet' ||rbReport=='LeaveBalance' || rbReport=='SalaryHistory'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlCategory.$dirty && inventoryReportForm.ddlCategory.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Category">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlCategory" ng-model="ddlCategory" class="form-control selectMendatory" name="Category" ng-change="SelectDefault()" ng-options="category.CategoryName for category in Categorylist track by category.CategoryId">
+                                            <option value="" label="Select Category"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--SubCategory-->
+                            <div class="col-md-12" ng-hide="rbReport=='SalesInvoiceReport'||rbReport=='DateWiseProductionStatus'||rbReport=='SalSheet'|| rbReport=='LeaveBalance' || rbReport=='SalaryHistory'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlSubCategory.$dirty && inventoryReportForm.ddlSubCategory.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Subcategory">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlSubCategory" class="form-control selectMendatory" name="SubCategory" ng-change="GetVariety(ddlSubCategory)" ng-options="subCategory.SubCategoryName for subCategory in SubcategoryList| filter:{CategoryId: ddlCategory.CategoryId} : true track by subCategory.SubCategoryId" ng-disabled="!ddlCategory">
+                                            <option value="" label="Select SubCategory"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Variety-->
+                            <div class="col-md-12" ng-hide="rbReport=='SalesInvoiceReport'||rbReport=='SalSheet'|| rbReport=='LeaveBalance' || rbReport=='SalaryHistory'" ng-class="{ 'has-error' : inventoryReportForm.Variety.$dirty && inventoryReportForm.Variety.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Product">
+                                <div class="form-group">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlVariety" class="form-control selectMendatory" name="Product" ng-change="GetModelList(ddlVariety)" ng-options="aVariety.ItemName for aVariety in VarietyList| filter:{SubCategoryId: ddlVariety.SubCategoryId} : true track by aVariety.ItemId" ng-disabled="!ddlSubCategory">
+                                            <option value="" label="Select Product"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Header1-->
+                            <div class="col-md-12" data-toggle="tooltip" data-placement="bottom" title="Header 1" ng-show="rbReport=='SalSheet'">
+                                <div class="form-group">
+                                    <div class=" input-group">
+                                        <input type="text" id="tbxHeader1" maxlength="50" name="Header1" class="form-control" ng-model="SalarySheetHeader1" placeholder="Header 1" ng-maxlength="49" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Header2-->
+                            <div class="col-md-12" data-toggle="tooltip" data-placement="bottom" title="Header 2" ng-show="rbReport=='SalSheet'">
+                                <div class="form-group">
+                                    <div class=" input-group">
+                                        <input type="text" id="tbxHeader2" maxlength="50" name="Header2" class="form-control" ng-model="SalarySheetHeader2" placeholder="Header 2" ng-maxlength="49" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Header3-->
+                            <div class="col-md-12" data-toggle="tooltip" data-placement="bottom" title="Header 3" ng-show="rbReport=='SalSheet'">
+                                <div class="form-group">
+                                    <div class=" input-group">
+                                        <input type="text" id="tbxHeader3" maxlength="50" name="Header3" class="form-control" ng-model="SalarySheetHeader3" placeholder="Header 3" ng-maxlength="49" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Item Model-->
+                            <div class="col-md-12" ng-show="rbReport=='ProductSerialNo'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ddlProductModel.$dirty && inventoryReportForm.ddlProductModel.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Model">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlProductModel" class="form-control selectMendatory" name="Model" ng-options="aProductModel.Value for aProductModel in ProductModelList | orderBy:'Value' track by aProductModel.Value" ng-disabled="!ddlVariety">
+                                            <option value="" label="Select Model"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Sale Type-->
+                            <div class="col-md-12" ng-show="rbReport=='SalesInvoiceReport'|| rbReport=='SaleByFarmer'||rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='VarietywiseSalesReport'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.saleType.$dirty && inventoryReportForm.saleType.$invalid }">
+                                    <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Sale Type">
+                                        <select ng-model="ddlSaleType" class="form-control selectMendatory" name="saleType" ng-options="saleType.name for saleType in saleTypeList track by saleType.id">
+                                            <!--<option value="" label="Select Unit"></option>-->
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="inventoryReportForm.saleType.$dirty && inventoryReportForm.saleType.$invalid">Sale Type is required</span>
+                                </div>
+                            </div>
+                            <!--Customer Type-->
+                            <div class="col-md-12" ng-show="rbReport=='SaleByFarmer'||rbReport=='VarietyWiseCustomerSalesReport'||rbReport=='LeadingCustomerWiseSalesReport'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.Variety.$dirty && inventoryReportForm.Variety.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Customer Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selCustomerType" ng-model="ddlCustomerType" class="form-control selectMendatory" name="CustomerType" ng-change="CustomerTypeChange()" ng-options="customerTypoe.CustomerTypeName for customerTypoe in customerTypeList track by customerTypoe.CustomerTypeId"
+                                                ng-disabled="rbReport!='LeadingCustomerWiseSalesReport' && !CategoriesSelected.length">
+                                            <option value="" label="Select Customer Type"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Customer-->
+                            <div class="col-md-12" ng-show="rbReport=='LeadingCustomerWiseSalesReport'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.Customer.$dirty && inventoryReportForm.Customer.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Customer">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selCustomer" ng-model="ddlCustomer" class="form-control selectMendatory" name="Customer" ng-options="AactiveCustomer.FullName for AactiveCustomer in  ActiveCustomerList track by AactiveCustomer.CustomerId" ng-disabled="!ddlCustomerType">
+                                            <option value="" label="Select Customer"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Customer Multi Select-->
+                            <div class="col-md-12" ng-show="rbReport=='SaleByFarmer'||rbReport=='VarietyWiseCustomerSalesReport'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.selCustomerForMultiSelect.$dirty && inventoryReportForm.selCustomerForMultiSelect.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Customer">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selCustomerForMultiSelect" ng-model="selCustomerForMultiSelect" class="form-control selectMendatory" name="Customer" ng-options="AactiveCustomer.FullName for AactiveCustomer in  ActiveCustomerListForMultiSelect track by AactiveCustomer.CustomerId" ng-disabled="!ddlCustomerType">
+                                            <option value="" label="Select Customer"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Buyer Type-->
+                            <div class="col-md-12" ng-show="rbReport=='LeadingCustomerWiseSalesReport'">
+                                <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.BuyerType.$dirty && inventoryReportForm.BuyerType.$invalid }">
+                                    <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Buyer Type">
+                                        <select ng-model="ddlBuyer" class="form-control selectMendatory" name="BuyerType" ng-options="aBuyer.name for aBuyer in buyerList track by aBuyer.value"></select>
+                                    </div>
+                                    <span class="help-block" ng-show="inventoryReportForm.BuyerType.$dirty && inventoryReportForm.BuyerType.$invalid">Buyer Type is required</span>
+                                </div>
+                            </div>
+                            <!--Quantity Order-->
+                            <div class="col-md-12" ng-show="rbReport=='SaleByQuantity'">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input type="radio" name="optionsRadios1" value="DESC" ng-model="rbSort">Most To Lowest
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input type="radio" name="optionsRadios1" value="ASC" ng-model="rbSort">Lowest To Most
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Grid-->
+                    <div class="col-md-12" ng-hide="!ShowReportDetailsGrid">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;{{ReportTableHeader}} List</h3>
+                            </div>
+                            <div class="col-md-12" ng-show="rbReport=='GatePass'">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input type="radio" name="optionsRadios4" value="NonReturnable" ng-model="rbReturnType">Non-Returnable
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input type="radio" name="optionsRadios3" value="Returnable" ng-model="rbReturnType">Returnable
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body custom-panal-body">
+                                <div class="tbl-outer">
+                                    <table class="responstable table-hover">
+                                        <tbody>
+                                            <tr class="t-head">
+                                                <th class="t-cell-center">S/N</th>
+                                                <th class="t-cell-center" ng-repeat="header in ReportHeader">{{header}}</th>
+
+                                            </tr>
+                                            <tr class="HoverTable searchRow" ng-click="SelSingleReport(detail)" dir-paginate="detail in ReportDetailList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" onclick="RowSelect(this)">
+                                                <td class="txt-center">{{$index + ((currentPage-1)*PerPage) + 1 }}</td>
+                                                <td class="txt-center">{{detail.column3}}</td>
+                                                <td class="txt-center">{{detail.column4}}</td>
+                                                <td class="txt-center">{{detail.column5}}</td>
+                                                <td class="txt-center">{{detail.column6}}</td>
+                                            </tr>
+                                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                                <th colspan="5">
+                                                    <dir-pagination-controls max-size="8"
+                                                                             direction-links="true"
+                                                                             boundary-links="true"
+                                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                    </dir-pagination-controls>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                        bo
+                                    </table>
+                                    <div class="row pagination-footer">
+                                        n-
+                                        <div class="col-md-6">
+                                            <span>Show </span>
+                                            <input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage">
+                                            <span>Records </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+ReportDetailList.length}} of {{total_count}} Records</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--View Button-->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 4%; padding-right: 7%;">
+                                <div class="row">
+                                    <button id="Button1" class="customBtn custmoBtnSave" ng-click="ReportViewButton()" title="Report View">
+                                        <i class="fa fa-floppy-o"></i>&nbsp;View Report
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-hide="rbReport=='AttSum' || rbReport=='AttSumWithOT' || rbReport=='AttDtl' || rbReport=='SalSheet' || rbReport=='LeaveBalance' || rbReport=='SalaryHistory'" ng-show="CIFReport == 'CIFReport'">
+        <table>
+            <tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.DeclarationDate.$invalid && inventoryReportForm.DeclarationDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                        <div class='input-group'>
+                            <input type="text" name="FromDate" id="txtFromDateCIF" onkeydown="return false" ng-model="CIFFromDate" class="form-control " placeholder="From Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender1CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.DeclarationDate.$invalid && inventoryReportForm.DeclarationDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                        <div class='input-group'>
+                            <input type="text" name="ToDate" id="txtToDateCIF" onkeydown="return false" ng-model="CIFToDate" class="form-control " placeholder="To Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender2CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceEntryForm.Importer.$invalid && commercialInvoiceEntryForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlImporter" name="Importer" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" required>
+                                <option value="" label="--Select Customer--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="commercialInvoiceEntryForm.Importer.$touched && commercialInvoiceEntryForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify;">
+                    <p style="font-weight:bold;font-size:16px;">
+                        Customer Information Formation
+                    </p>
+                </td>
+
+                <td>
+                    <button class="btn btn-success" style="font-size:13px; padding:12.5px"
+                            ng-click="CIFReportBtn(ddlImporter.CompanyId)">
+                        Report
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    var today = new Date();
+    var yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    var picker1 = new Pikaday({
+        field: document.getElementById('txtFromDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2018-07-01'),
+        maxDate: yesterday,
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker1.show();
+
+    });
+
+    var picker2 = new Pikaday({
+        field: document.getElementById('txtToDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2018-07-01'),
+        maxDate: yesterday,
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender2").addEventListener("click", function () {
+        picker2.show();
+
+    });
+    $("#calender2").click(function () {
+        $("#txtToDate").val('');
+    });
+
+
+    //////////////////////////////////////////////////////////
+    var picker3 = new Pikaday({
+        field: document.getElementById('txtFromDateCIF'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2018-07-01'),
+        maxDate: yesterday,
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1CIF").addEventListener("click", function () {
+        picker1.show();
+
+    });
+
+    var picker4 = new Pikaday({
+        field: document.getElementById('txtToDateCIF'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2018-07-01'),
+        maxDate: yesterday,
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender2CIF").addEventListener("click", function () {
+        picker2.show();
+
+    });
+    $("#calender2CIF").click(function () {
+        $("#txtToDateCIF").val('');
+    });
+    $("#calender1CIF").click(function () {
+        $("#txtFromDateCIF").val('');
+    });
+</script>

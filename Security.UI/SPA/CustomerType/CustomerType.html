@@ -1,0 +1,160 @@
+﻿<form name="CustomerTypeform" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" >
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Customer Type</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : CustomerTypeform.CustomerTypeName.$invalid && CustomerTypeform.CustomerTypeName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Customer Type Name">
+                    <div class="input-group">
+                        <input type="text" id="txtCustomerTypeName" name="CustomerTypeName" class="form-control" ng-blur="CheckDuplicateCustomertypeName()" ng-change="foundChange()" ng-model="ad_CustomerType.CustomerTypeName" placeholder="Customer Type Name" maxlength="50" ng-maxlength="49" autofocus required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="CustomerTypeform.CustomerTypeName.$error.required && CustomerTypeform.CustomerTypeName.$touched">Customer type name is required</span>
+                    <span class="help-block" ng-if="CustomerTypeform.CustomerTypeName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div hidden="hidden" class="form-group" ng-class="{ 'has-error' :CustomerTypeform.CouponPercentage.$invalid && CustomerTypeform.CouponPercentage.$touched }" data-toggle="tooltip" data-placement="bottom" title="Coupon Percentage">
+                    <div class="input-group">
+                        <input type="number" id="txtCommissionPercentage" name="CouponPercentage" class="form-control" ng-model="ad_CustomerType.CouponPercentage" ng-init="ad_CustomerType.CouponPercentage=0" placeholder="Coupon Percentage" maxlength="50" ng-maxlength="49" required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="CustomerTypeform.CouponPercentage.$error.required && CustomerTypeform.CouponPercentage.$touched">Coupon Percentage is required</span>
+                    <span class="help-block" ng-if="CustomerTypeform.CouponPercentage.$error.maxlength">50 Character Max</span>
+                </div>
+                <div hidden="hidden" class="form-group" ng-class="{ 'has-error' :CustomerTypeform.NonCouponPercentage.$invalid && CustomerTypeform.NonCouponPercentage.$touched }" data-toggle="tooltip" data-placement="bottom" title="Non Coupon Percentage">
+                    <div class="input-group">
+                        <input type="number" id="txtCommissionPercentage" name="NonCouponPercentage" class="form-control" ng-model="ad_CustomerType.NonCouponPercentage" ng-init="ad_CustomerType.NonCouponPercentage=0" placeholder="Non Coupon Percentage" maxlength="50" ng-maxlength="49" required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="CustomerTypeform.NonCouponPercentage.$error.required && CustomerTypeform.NonCouponPercentage.$touched">Non Coupon Percentage is required</span>
+                    <span class="help-block" ng-if="CustomerTypeform.NonCouponPercentage.$error.maxlength">50 Character Max</span>
+                </div>
+                    <div hidden="hidden" class="form-group">
+                        <div class="input-group">
+                            <label>Commission Applicable : </label>
+                            &nbsp;&nbsp;
+                            <input type="checkbox" checked="checked" ng-model="ad_CustomerType.IsCommissionApplicable">
+                        </div>
+                    </div>
+                    <div hidden="hidden" class="form-group" ng-class="{ 'has-error' :CustomerTypeform.CommissionPercentage.$invalid && CustomerTypeform.CommissionPercentage.$touched }" data-toggle="tooltip" data-placement="bottom" title="Commission Percentage">
+                        <div class="input-group">
+                            <input type="text" id="txtCommissionPercentage" name="CommissionPercentage" class="form-control" ng-model="ad_CustomerType.CommissionPercentage" placeholder=" Commission Percentage" maxlength="50" ng-maxlength="49" required>
+                            <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                        </div>
+                        <span class="help-block" ng-if="CustomerTypeform.CommissionPercentage.$error.required && CustomerTypeform.CommissionPercentage.$touched">Amout is required</span>
+                        <span class="help-block" ng-if="CustomerTypeform.CommissionPercentage.$error.maxlength">50 Character Max</span>
+                    </div>
+                    <div hidden="hidden" class="form-group">
+                        <div class="input-group">
+                            <label>Applicable Point : </label>
+                            &nbsp;&nbsp;
+                            <input type="checkbox" checked="checked" ng-model="ad_CustomerType.IsPointApplicable">
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' :CustomerTypeform.SinglePointForAmount.$invalid && CustomerTypeform.SinglePointForAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="One point for amount">
+                        <div class="input-group">
+                            <input type="text" id="txtSinglePointForAmount" name="SinglePointForAmount" class="form-control" ng-model="ad_CustomerType.SinglePointForAmount" placeholder="Amount Per Point" maxlength="50" ng-maxlength="49" required>
+                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                        </div>
+                        <span class="help-block" ng-if="CustomerTypeform.SinglePointForAmount.$error.required && CustomerTypeform.SinglePointForAmount.$touched">Point is required</span>
+                        <span class="help-block" ng-if="CustomerTypeform.SinglePointForAmount.$error.maxlength">50 Character Max</span>
+                    </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="true" ng-model="ad_CustomerType.IsActive"> Active
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="false" ng-model="ad_CustomerType.IsActive"> Inactive
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="SaveCustromerType()" class="customBtn custmoBtnSave" ng-disabled="!ad_CustomerType.CustomerTypeName||ad_CustomerType.CouponPercentage<0||ad_CustomerType.NonCouponPercentage<0">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave_Revise}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button id="btnReset" ng-click="Delete()" ng-show="btnShowDelete" class="customBtn custmoBtnDelete" title="Delete">
+                                    <i class="fa fa-crosshairs"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Customer type List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center"><span>Type name</span></th>
+                                <!--<th class="txt-center">Coupon Percentage</th>
+                                <th class="txt-center">Non Coupon Percentage</th>-->
+                                <th class="txt-center">Amount Per Point</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="acustomerTyoeList in customerTyoeList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="RowClickCustomerType(acustomerTyoeList)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{acustomerTyoeList.CustomerTypeName}}</td>
+                                <!--<td class="txt-center">{{acustomerTyoeList.CouponPercentage}}</td>
+                                <td class="txt-center">{{acustomerTyoeList.NonCouponPercentage}}</td>-->
+                                <td class="txt-center">{{acustomerTyoeList.SinglePointForAmount}}</td>
+                                <td class="txt-center">{{acustomerTyoeList.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="5">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+acustomerTyoeList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

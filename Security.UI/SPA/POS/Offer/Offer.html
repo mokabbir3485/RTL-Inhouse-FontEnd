@@ -1,0 +1,212 @@
+﻿<form name="OfferForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-bullhorn"></i>&nbsp;Offer Details</h3>
+            </div>
+            <div class="panel-footer">
+                <table class="responstable table-hover">
+                    <tbody>
+                        <tr>
+                            <th colspan="5" class="t-cell-center">Live Offers</th>
+                        </tr>
+                        <tr>
+                            <th class="t-cell-center">S/N</th>
+                            <th class="t-cell-center">Title</th>
+                            <th class="t-cell-center">Start Date</th>
+                            <th class="t-cell-center">End Date</th>
+                           <!-- <th class="t-cell-center">Maximum</th>-->
+                        </tr>
+                        <tr class="HoverTable" ng-repeat="aOffer in AllOfferList" ng-click="FillControll(aOffer)">
+                            <td class="t-cell-center">{{$index+1}}</td>
+                            <td class="t-cell-center">{{aOffer.OfferName}}</td>
+                            <td class="t-cell-center">{{aOffer.StartDate}}</td>
+                            <td class="t-cell-center">{{aOffer.EndDate }}</td>
+                            <!--<td class="t-cell-center">{{aOffer.OffPercentage}} &nbsp; %</td>-->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : OfferForm.OfferTitle.$dirty && OfferForm.OfferTitle.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Offer Title">
+                                <div class='input-group'>
+                                    <input type="text" ng-model="pos_Offer.OfferName" name="OfferTitle" class="form-control " placeholder="Offer Title" />
+                                    <span class="input-group-addon" id="title"><i class="fa fa-pencil"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="OfferForm.OfferTitle.$dirty && OfferForm.OfferTitle.$invalid">Offer Title required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3" >
+                            <div class="form-group" ng-class="{ 'has-error' : OfferForm.AutoriserRole.$dirty && OfferForm.AutoriserRole.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Autoriser Role">
+                                <div class="input-group input-group-md ddl">
+                                    <select ng-model="ddlAutoriserRole" class="form-control selectMendatory" ng-change="pos_Offer.RoleId=ddlAutoriserRole.RoleId" ng-options="Role.RoleName for Role in RoleList track by Role.RoleId" name="AutoriserRole">
+                                        <option value="" label="Autoriser Role"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="OfferForm.AutoriserRole.$dirty && OfferForm.AutoriserRole.$invalid">Autoriser Role required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2" >
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Date Range">
+                                <div class="input-group">
+                                    <label><input type="checkbox" ng-model="pos_Offer.HasDateRange">Date Range &nbsp;&nbsp;</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" ng-show="pos_Offer.HasDateRange">
+                            <div class="form-group">
+                                <div class='input-group'>
+                                    <input type="text" name="OpeningDate" id="txtOpeningDate" class="form-control" placeholder="Opening Date" readonly />
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" ng-show="pos_Offer.HasDateRange">
+                            <div class=" form-group">
+                                <div class='input-group'>
+                                    <input type="text" name="ColosingDate" id="txtColosingDate" class="form-control " placeholder="Colosing Date" readonly />
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-gift"></i>&nbsp;Offer Type</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-4"><label style="width:100%;"><label><input type="radio" ng-click="OfferTypeChange(pos_Offer.OfferTypeId)" value="1" name="OfferType" ng-model="pos_Offer.OfferTypeId" checked>Parcent Off &nbsp;&nbsp;</label><input ng-disabled="pos_Offer.OfferTypeId != 1" style="width:50px;" type="number" ng-model="pos_Offer.OffPercentage" name="ParcentOff" placeholder="0.00" />&nbsp;&nbsp;%</label></div>
+                                        <div class="col-md-4"><label style="width:100%;"><label><input type="radio" ng-click="OfferTypeChange(pos_Offer.OfferTypeId)" value="2" name="OfferType" ng-model="pos_Offer.OfferTypeId">Amount Off &nbsp;&nbsp;</label><input ng-disabled="pos_Offer.OfferTypeId !=2" style="width:50px;" type="number" ng-model="pos_Offer.OffAmount" name="pos_Offer.OffAmount" placeholder="0.00" />&nbsp;&nbsp;৳</label></div>
+                                        <div hidden="hidden" class="col-md-3"><label style="width:100%;"><label><input type="radio" ng-click="OfferTypeChange(pos_Offer.OfferTypeId)" value="3" name="OfferType" ng-model="pos_Offer.OfferTypeId">Manual Amount</label><input value="0" ng-disabled="pos_Offer.OfferTypeId != 3" style="width:50px;" type="number" ng-model="pos_Offer.ManualAmount" name="ManualAmount" placeholder="0.00" /></label></div>
+                                        <div class="col-md-4"><label style="width:100%;"><label><input type="radio" ng-click="OfferTypeChange(pos_Offer.OfferTypeId)" value="4" name="OfferType" ng-model="pos_Offer.OfferTypeId">Buy &nbsp;&nbsp;</label><input ng-disabled="pos_Offer.OfferTypeId != 4" style="width:50px;" type="number" ng-model="pos_Offer.BuyCount" name="OfferTitle" placeholder="0.00" /> &nbsp;Get &nbsp;<input ng-disabled="pos_Offer.OfferTypeId != 4" style="width:50px;" type="number" ng-model="pos_Offer.FreeCount" name="OfferTitle" placeholder="0.00" />&nbsp;&nbsp; Free</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-4" >
+                                        <div class="form-group">
+                                            <div class='input-group'>
+                                                <input type="number" class="form-control" ng-model="pos_Offer.MaxLimitAmount" value="100000000000" name="MaximumLimitAmount" placeholder="Maximum Limit Amount" />
+                                                <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <button class="customBtn custmoBtnSave" ng-click="SaveOffer()" title="Create Offer">
+                                            <i class="fa fa-diamond"></i>&nbsp;{{SaveBtnLbl}}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4 text-left">
+                                        <button class="customBtn custmoBtnReset" ng-click="ResetOffer()" title="Reset Offer">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset Offer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" >
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-bolt"></i>&nbsp;Apply On</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <ul style="list-style-type: none; padding:0;">
+                                            <li><label><input type="radio" ng-click="ApplyOnCrop(pos_Offer.ApplyOnTypeId)" value="1" name="ApplyOn" ng-model="pos_Offer.ApplyOnTypeId">All Subcategory</label></li>
+                                            <li><label><input type="radio" ng-click="ApplyOnCrop(pos_Offer.ApplyOnTypeId)" value="2" name="ApplyOn" ng-model="pos_Offer.ApplyOnTypeId">Select Subcategory</label></li>
+                                            <li><label><input type="radio" ng-click="ApplyOnCrop(pos_Offer.ApplyOnTypeId)" value="3" name="ApplyOn" ng-model="pos_Offer.ApplyOnTypeId">All Products</label></li>
+                                            <li><label><input type="radio" ng-click="ApplyOnCrop(pos_Offer.ApplyOnTypeId)" value="4" name="ApplyOn" ng-model="pos_Offer.ApplyOnTypeId">Select Product</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <ul style="list-style-type: none; padding:0; margin-bottom:0px; " ng-repeat="CropType in CropTypeList">
+                                            <li>
+                                                <input ng-model="CropType.CheckUncheckAll" value="CropType.SubCategoryId" ng-click="CheckOrUncheckAll(CropType.CheckUncheckAll,CropType.SubCategoryId)" type="checkbox" /><label>&nbsp; {{CropType.SubCategoryName}}<input style="visibility:hidden;" type="checkbox" ng-model="CropType.DisplaySta" /></label>
+                                                <div ng-show="CropType.DisplaySta">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table class="responstable table-hover">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th colspan="2" class="t-cell-center">Product Name</th>
+                                                                        <th class="t-cell-center">Sale Unit</th>
+                                                                        <th class="t-cell-center" ng-hide="pos_Offer.OfferTypeId != 4">Free Unit</th>
+                                                                    </tr>
+                                                                    <tr class="HoverTable" ng-repeat="Variety in VarietyList | filter: { SubCategoryId : CropType.SubCategoryId }:true">
+                                                                        <td class="t-cell-center"><input type="checkbox" name="Checked" ng-click="ParrentCheckboxSelector()" ng-model="Variety.Checked" /></td>
+                                                                        <td class="t-cell-center">{{Variety.ItemName}}</td>
+                                                                        <td class="t-cell-center">
+                                                                            <select ng-model="Variety.ddlSelMU" ng-change="Variety.SaleUnitId=ddlSelMU.ItemUnitId" ng-options="unit.UnitName for unit in ItemUnitlist  | filter: unitFilter(Variety) track by unit.ItemUnitId">
+                                                                                <option value="" label="Select Unit"></option>
+                                                                            </select>
+                                                                        </td>
+                                                                        <td class="t-cell-center" ng-hide="pos_Offer.OfferTypeId != 4">
+                                                                            <select ng-model="Variety.ddlFreeMU" ng-change="Variety.FreeUnitId=ddlFreeMU.ItemUnitId" ng-options="unit.UnitName for unit in ItemUnitlist  | filter: unitFilter(Variety) track by unit.ItemUnitId">
+                                                                                <option value="" label="Select Unit"></option>
+                                                                            </select>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtOpeningDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("txtOpeningDate").addEventListener("click", function () {
+        picker.show();
+    });
+
+    var picker2 = new Pikaday({
+        field: document.getElementById('txtColosingDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("txtColosingDate").addEventListener("click", function () {
+        picker2.show();
+    });
+
+</script>

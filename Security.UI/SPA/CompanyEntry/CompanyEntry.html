@@ -1,0 +1,417 @@
+﻿    <form name="companyEntryForm" novalidate>
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Company  Entry</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyName.$invalid && companyEntryForm.CompanyName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Company Name">
+                        <div class="input-group">
+                            <input type="text" id="txtCompanyName" name="CompanyName" class="form-control" ng-model="ad_Company.CompanyName" placeholder="Company Name" maxlength="100" ng-blur="CheckDuplicateCompanyName()" ng-change="foundChange()" ng-maxlength="99" autofocus required>
+                            <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                        </div>
+                        <span class="help-block" ng-if="companyEntryForm.CompanyName.$error.required && companyEntryForm.CompanyName.$touched">Company Name is required</span>
+                        <span class="help-block" ng-if="companyEntryForm.CompanyName.$error.maxlength">100 Character Max</span>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyCode.$invalid && companyEntryForm.CompanyCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Company Short Name">
+                        <div class="input-group">
+                            <input type="text" id="txtCompanyCode" name="CompanyCode" class="form-control" ng-model="ad_Company.CompanyCode" placeholder="Company Short Name" ng-blur="CheckDuplicateCompanyCode()" ng-change="foundChange()" maxlength="50" ng-maxlength="49" required>
+                            <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                        </div>
+                        <span class="help-block" ng-if="companyEntryForm.CompanyCode.$error.required && companyEntryForm.CompanyCode.$touched">Company Short Name required</span>
+                        <span class="help-block" ng-if="companyEntryForm.CompanyCode.$error.maxlength">50 Character Max</span>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : companyEntryForm.CompanyType.$dirty && companyEntryForm.CompanyType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Company  Type">
+                        <div class="input-group input-group-md ddl">
+                            <select id="selCompanyType" ng-model="ddlCompanyType" class="form-control selectMendatory" name="CompanyType" ng-options="companyType.CompanyTypeName for companyType in CompanyTypeList track by companyType.CompanyTypeId" required>
+                                <option value="" label="Select Company  Type"></option>
+                            </select>
+                        </div>
+                        <span class="help-block" ng-show="companyEntryForm.CompanyType.$dirty && companyEntryForm.CompanyType.$invalid">Company  Type is required</span>
+                    </div>
+                    <!--<div class="form-group" ng-class="{ 'has-error' : companyEntryForm.ddlEmployeeRef.$touched && companyEntryForm.ddlEmployeeRef.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Employee Reference">
+                        <div class="input-group input-group-md ddl">
+                            <select id="ddlEmployeeRef" ng-model="ddlEmployeeRef" class="form-control selectMendatory" name="ddlEmployeeRef" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId" required>
+                                <option value="" label="Select Ref. Employee"></option>
+                            </select>
+                        </div>
+                        <span class="help-block" ng-show="companyEntryForm.ddlEmployeeRef.$touched && companyEntryForm.ddlEmployeeRef.$invalid">Reference Employee is required.</span>
+                    </div>-->
+                    <div class="form-group" ng-class="{ 'has-error' : companyEntryForm.ddlEmployeeRef.$touched && companyEntryForm.ddlEmployeeRef.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Employee Reference">
+                        <input list="ddlEmployeeRefid" id="ddlEmployeeRef" ng-model="ddlEmployeeRef" ng-change="GetEmpId()" class="form-control selectMendatory" name="ddlEmployeeRef" placeholder="Referece Employee" />
+
+                        <datalist id="ddlEmployeeRefid">
+                            <option ng-repeat="Employee in EmployeeList" data-xyz="{{Employee.EmployeeId}}" value="{{Employee.FullName}}">
+                        </datalist>
+                      
+                        <span class="help-block" ng-show="companyEntryForm.ddlEmployeeRef.$touched && companyEntryForm.ddlEmployeeRef.$invalid">Reference Employee is required.</span>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyWebAddress.$invalid && companyEntryForm.CompanyWebAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Web Address">
+                        <div class="input-group">
+                            <input type="text" id="txtCustomerWebAddress" name="CompanyWebAddress" class="form-control" ng-model="ad_Company.Web" placeholder="Web Address" maxlength="50" ng-maxlength="49">
+                            <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                        </div>
+                        <span class="help-block" ng-if="companyEntryForm.CompanyWebAddress.$error.maxlength">50 Character Max</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <label>Status: </label>
+                            &nbsp;&nbsp;
+                            <div class="radio-inline" data-toggle="tooltip" data-placement="bottom" title="If Company is Active">
+                                <input type="radio" name="optionsRadios"
+                                       ng-value="true" ng-model="ad_Company.IsActive"> Active
+                            </div>
+                            <div class="radio-inline" data-toggle="tooltip" data-placement="bottom" title="If Company is Inactive">
+                                <input type="radio" name="optionsRadios"
+                                       ng-value="false" ng-model="ad_Company.IsActive"> Inactive
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <label>Payable ?: </label>
+                            &nbsp;&nbsp;
+                            <input type="checkbox" ng-model="ad_Company.IsPayable">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pencil-square"></i>&nbsp;Bill Policy </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.PolicyDescription.$invalid && companyEntryForm.PolicyDescription.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bill policy">
+                                    <div class="input-group">
+                                        <textarea rows="2" type="text" name="PolicyDescription" id="tbxPolicy" class="form-control" ng-model="ad_CompanyBillPolicy.PolicyDescription" placeholder="Policy" maxlength="500" ng-maxlength="499"></textarea>
+                                        <textarea rows="2" type="text" name="tbxPolicyHidden" id="tbxPolicyHidden" class="form-control" style="display:none;"></textarea>
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-show="companyEntryForm.PolicyDescription.$error.required && companyEntryForm.PolicyDescription.$touched">Policy is required</span>
+                                    <span class="help-block" ng-if="companyEntryForm.PolicyDescription.$error.maxlength">500 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="padding-left: 0%;padding-right: 0%;margin-right: 0%;margin-left: -1%;">
+                                <button id="btnAdd" class="customBtn custmoBtnReset" title="Add Bill Ploicy" ng-click="AddCompanyBillPolicy()" ng-disabled="companyEntryForm.PolicyDescription.$invalid">
+                                    <i class=" fa fa-plus-square">
+                                    </i>&nbsp;{{buttonBillPolicy}}
+                                </button>
+                            </div>
+                            <div class="col-md-12">
+                                <br />
+                                <table class="responstable table-hover">
+                                    <tbody>
+                                        <tr class="t-head">
+                                            <th class="t-cell-center">S/N</th>
+                                            <th class="t-cell-center" data-th="Bill Policy details"><span>Bill Policy</span></th>
+                                            <th class="t-cell-center">Remove</th>
+                                        </tr>
+                                        <tr class="HoverTable" ng-repeat="aBillPolicy in companyBillPolicylist">
+                                            <td class="t-cell-center" ng-click="SelCompanyBillPolicy(aBillPolicy)">{{aBillPolicy.SlNo}}</td>
+                                            <td class="t-cell-center" ng-click="SelCompanyBillPolicy(aBillPolicy)">{{aBillPolicy.PolicyDescription}}</td>
+                                            <td class="t-cell-center">
+                                                <button title="Remove" ng-click="removeBillPolicy(aBillPolicy)">
+                                                    <i class="fa fa-minus-square"></i>&nbsp;
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-home" style="color:red;"></i>&nbsp;Address<label style="color:red;">* </label> (Minimum 1 of Each Type is Required)</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label>Address Type: </label>
+                                    &nbsp;&nbsp;
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input type="radio" name="optionsRadios1"
+                                                   value="Billing" ng-model="ad_CompanyAddress.AddressType">Billing
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input type="radio" name="optionsRadios2"
+                                                   value="Delivery" ng-model="ad_CompanyAddress.AddressType">Delivery
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label>
+                                        <span>{{ad_CompanyAddress.AddressType}}</span>
+                                        Company Name:
+                                        &nbsp;
+                                        <input type="checkbox" ng-model="ad_CompanyAddress.IsCompany" ng-change="CheckCompanyAddress(ad_CompanyAddress.IsCompany)">
+                                        &nbsp;
+                                        Same As Company
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.AddressCompanyName.$invalid && companyEntryForm.AddressCompanyName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Address Company Name">
+                                <div class="input-group">
+                                    <span>
+                                        <input type="text" id="AddressCompanyName" name="AddressCompanyName" class="form-control" ng-model="ad_CompanyAddress.AddressCompanyName" placeholder="Address Company Name" maxlength="100" ng-maxlength="99" autofocus required>
+                                    </span>
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="companyEntryForm.AddressCompanyName.$error.required && companyEntryForm.AddressCompanyName.$touched">Address Company Name is required</span>
+                                <span class="help-block" ng-if="companyEntryForm.AddressCompanyName.$error.maxlength">100 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyAddress.$invalid && companyEntryForm.CompanyAddress.$touched }" data-toggle="tooltip" data-placem `t="bottom" title="Address">
+                                <div class="input-group">
+                                    <textarea rows="3" type="text" id="tbxCompanyAddress" name="CompanyAddress" class="form-control" ng-model="ad_CompanyAddress.Address" maxlength="500" ng-maxlength="499" placeholder="Address" required></textarea>
+                                    <textarea rows="3" type="text" id="tbxCompanyAddressHidden" style="display:none;"></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-paper-plane" style="color:red"></i></span>
+                                </div>
+                                <!--<span class="help-block" ng-show="companyEntryForm.CompanyAddress.$error.required && companyEntryForm.CompanyAddress.$touched">Address is required</span>-->
+                                <span class="help-block" ng-if="companyEntryForm.ContactPerson.$error.maxlength">500 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class=" { 'has-error' :companyEntryForm.CompanyConPerson.$invalid && companyEntryForm.CompanyConPerson.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Person">
+                                <div class="input-group">
+                                    <input type="text" id="txtCustomerConPerson" name="CompanyConPerson" class="form-control" ng-model="ad_CompanyAddress.ContactPerson" maxlength="50" ng-maxlength="49" placeholder="Contact Person">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="companyEntryForm.CompanyConPerson.$error.required && companyEntryForm.CompanyConPerson.$touched">Company Contact Person is required</span>
+                                <span class="help-block" ng-if="companyEntryForm.CompanyConPerson.$error.maxlength">50 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyConDesignation.$invalid && companyEntryForm.CompanyConDesignation.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Designation">
+                                <div class="input-group">
+                                    <input type="text" id="txtConDesignation" name="CompanyConDesignation" class="form-control" ng-model="ad_CompanyAddress.ContactDesignation" maxlength="20" ng-maxlength="19" placeholder="Contact Designation">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="companyEntryForm.CompanyConDesignation.$error.required && companyEntryForm.CompanyConDesignation.$touched">Contact Designation is required</span>
+                                <span class="help-block" ng-if="companyEntryForm.CompanyConDesignation.$error.maxlength">20 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyPhone.$invalid && companyEntryForm.CompanyPhone.$touched }" data-toggle="tooltip" data-placement="bottom" title="Phone">
+                                <div class="input-group">
+                                    <input type="text" id="txtCompanyPhone" name="CompanyPhone" class="form-control" ng-model="ad_CompanyAddress.Phone" placeholder="Phone" maxlength="50" ng-maxlength="49">
+                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="companyEntryForm.CompanyPhone.$error.required && companyEntryForm.CompanyPhone.$touched">Phone No. is required</span>
+                                <span class="help-block" ng-if="companyEntryForm.CompanyPhone.$error.maxlength">50 Character Max</span>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyMobile.$invalid && companyEntryForm.CompanyMobile.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile">
+                                <div class="input-group">
+                                    <input type="text" id="txtCompanyMobile" name="CompanyMobile" class="form-control" ng-model="ad_CompanyAddress.Mobile" placeholder="Mobile" maxlength="20" ng-maxlength="19" />
+                                    <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="companyEntryForm.CompanyMobile.$error.required && companyEntryForm.CompanyMobile.$touched">Mobile No. is required</span>
+                                <span class="help-block" ng-if="companyEntryForm.CompanyMobile.$error.maxlength">20 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyEmail.$invalid && companyEntryForm.CompanyEmail.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                                <div class="input-group">
+                                    <input type="email" id="txtCompanyEmail" name="CompanyEmail" class="form-control" ng-model="ad_CompanyAddress.Email" placeholder="Email" maxlength="50" ng-maxlength="49">
+                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="companyEntryForm.CompanyEmail.$error.required && companyEntryForm.CompanyEmail.$touched">Email is required</span>
+                                <span class="help-block" style="display: block;" ng-if="companyEntryForm.CompanyEmail.$error.email && companyEntryForm.CompanyEmail.$touched">Invalid Email</span>
+                                <span class="help-block" ng-if="companyEntryForm.CompanyEmail.$error.maxlength">50 Character Max</span>
+                            </div>
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Vat">
+                                <div class="input-group">
+                                    <input type="text" id="txtVatRegNo" name="VatRegNo" class="form-control" ng-model="ad_CompanyAddress.VatRegNo" placeholder="VAT Registration No" maxlength="50" ng-maxlength="49">
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:black"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="companyEntryForm.VatRegNo.$error.maxlength">50 Character Max</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" id="txtTIN" name="TIN" class="form-control" ng-model="ad_CompanyAddress.TIN" placeholder="TIN" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" id="txtBIN" name="BIN" class="form-control" ng-model="ad_CompanyAddress.Fax" placeholder="BIN" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <label>Default: </label>
+                                        &nbsp;&nbsp;
+                                        <input type="checkbox" name="DefaultAddress" ng-model="ad_CompanyAddress.IsDefault" ng-change="CheckDefault(ad_CompanyAddress.IsDefault)" value="default">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 5%; padding-right: 0%;">
+                                            <button id="btnAdd" class="customBtn custmoBtnReset" title="addAddress" ng-click="AddCompanyAddress()"
+                                                    ng-disabled="companyEntryForm.AddressCompanyName.$invalid
+                                                        || companyEntryForm.addressType.$invalid
+                                                        || companyEntryForm.CompanyAddress.$invalid
+                                                        ">
+                                                <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{buttonComAddress}}
+                                            </button>
+
+                                        </div>
+                                        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 6%;padding-right: 0%;">
+                                            <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="btnSuppAddressDeleteShow" ng-click="removeAddress()">
+                                                <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr class="t-head">
+                                        <th class="t-cell-center">S/N</th>
+                                        <th class="t-cell-center">Type</th>
+                                        <th class="t-cell-center" data-th="Address details"><span>Address</span></th>
+                                        <th class="t-cell-center">Default</th>
+                                        <th class="t-cell-center">Remove</th>
+                                    </tr>
+                                    <tr class="HoverTable" ng-repeat="aCompanyAddress in companyAddresslist" ng-click="SelCompanyAddress(aCompanyAddress)">
+                                        <td class="t-cell-center">{{aCompanyAddress.SlNo}}</td>
+                                        <td class="t-cell-center">{{aCompanyAddress.AddressType}}</td>
+                                        <td class="t-cell-center"><input ng-model="aCompanyAddress.Address" ng-click="stopProp()" /></td>
+                                        <td class="t-cell-center">{{aCompanyAddress.IsDefault?"Yes":"No"}}</td>
+                                        <td class="t-cell-center">
+                                            <button title="Remove" ng-click="removeAddress(aCompanyAddress)">
+                                                <i class="fa fa-minus-square"></i>&nbsp;
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+
+                            <div class="row">
+
+                                <button class="customBtn custmoBtnSave" ng-click="AddCompany()" ng-disabled="(companyEntryForm.CompanyName.$invalid
+                                                                                           || companyEntryForm.CompanyCode.$invalid
+                                                                                           ||!ddlEmployeeRef) ||(companyAddresslist.length==0)
+                                                                                           || btnSuppAddressDeleteShow ">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{buttonSupp}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="btnDelete" ng-show="btnDeleteShow" ng-click="Delete()" class="customBtn custmoBtnDelete" title="Delete">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+
+                                <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Company  List</h3>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-change="GetCompanySearch()" ng-model="SearchName" placeholder="Search By Company Name" />
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body custom-panal-body">
+                    <div class="tbl-outer">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th class="t-cell-center" width="5%">S/N</th>
+                                    <th class="t-cell-center" data-th="Company  Details"><span>Name</span></th>
+                                    <th class="t-cell-center" width="15%">Company  Type</th>
+                                    <th class="t-cell-center" width="10%">Company Code</th>
+                                    <th class="t-cell-center" width="15%">Payable</th>
+                                    <th class="t-cell-center" width="10%">Status</th>
+                                </tr>
+                                <tr class="HoverTable" dir-paginate="aCompany in companyList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelCompany(aCompany)">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="t-cell-center">{{aCompany.CompanyName}}</td>
+                                    <td class="t-cell-center">{{aCompany.CompanyTypeName}}</td>
+                                    <td class="t-cell-center">{{aCompany.CompanyCode}}</td>
+                                    <td class="t-cell-center">{{aCompany.IsPayable}}</td>
+                                    <td class="t-cell-center">{{aCompany.IsActive}}</td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+companyList.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<style>
+    .pika-label:nth-child(2) {
+        display: none;
+    }
+</style>
+

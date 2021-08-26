@@ -1,0 +1,207 @@
+﻿<form name="attendancePolicyForm" novalidate>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp;  &#9755;&nbsp; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-gear fa-spin" style="color:red;"></i>&nbsp;Attendance Policy Setup</h3>
+            </div>
+            <div class="panel-body">               
+                <div class="row">
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">                        
+                        <div class="form-group" ng-class="{ 'has-error' : attendancePolicyForm.PolicyName.$invalid && attendancePolicyForm.PolicyName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Shift Policy Name">
+                            <label for="PolicyName" class="myLabelFontWeight">Policy Name</label>
+                            <div class="input-group">
+                                <input type="text" id="txtPolicyName" name="PolicyName" maxlength="51" class="form-control" ng-model="AttendancePolice.PolicyName" placeholder="Policy Name" ng-blur="CheckDuplicatePolicyName()" ng-change="foundChange()" ng-maxlength="50" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="attendancePolicyForm.PolicyName.$error.required && attendancePolicyForm.PolicyName.$touched">This is required</span>
+                            <span class="help-block" ng-if="attendancePolicyForm.PolicyName.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>                    
+                    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+                        <div class="form-group" id="txtStartTimeDiv" ng-class="{ 'has-error' : attendancePolicyForm.StartTime.$invalid && attendancePolicyForm.StartTime.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Start Time">
+                            <label for="StartTime" class="myLabelFontWeight">Start Time</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtStartTime" name="StartTime" ng-model="AttendancePolice.StartTime" class="form-control input-small" required readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="attendancePolicyForm.StartTime.$error.required && attendancePolicyForm.StartTime.$touched">Start Time is required</span>
+                            <span class="help-block" ng-if="attendancePolicyForm.StartTime.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-3  col-xs-12">
+                        <div class="form-group" id="txtEndTimeDiv" ng-class="{ 'has-error' : attendancePolicyForm.EndTime.$invalid && attendancePolicyForm.EndTime.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select End Time">
+                            <label for="EndTime" class="myLabelFontWeight">End Time</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtEndTime" name="EndTime" maxlength="11" class="form-control" ng-model="AttendancePolice.EndTime" placeholder="End Time" ng-maxlength="10" required readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="attendancePolicyForm.EndTime.$error.required && attendancePolicyForm.EndTime.$touched">End Time is required</span>
+                            <span class="help-block" ng-if="attendancePolicyForm.EndTime.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>                    
+                    <div class="col-lg-2 col-md-3 col-sm-3  col-xs-12">
+                        <div class="form-group" id="txtLateInAfterDiv" ng-class="{ 'has-error' : attendancePolicyForm.LateInAfter.$invalid && attendancePolicyForm.LateInAfter.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Late After Time">
+                            <label for="LateInAfter" class="myLabelFontWeight">Late In</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtLateInAfter" name="LateInAfter" maxlength="10" class="form-control" ng-model="AttendancePolice.LateInAfter" placeholder="Late After" ng-maxlength="9" required readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block  hidden-xs" style="display: block;" ng-if="attendancePolicyForm.LateInAfter.$error.required && attendancePolicyForm.LateInAfter.$touched">Late After Time required</span>
+                            <span class="help-block  hidden-xs" ng-if="attendancePolicyForm.LateInAfter.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-3  col-xs-12">
+                        <div class="form-group" id="txtEarlyOutBeforeDiv" ng-class="{ 'has-error' : attendancePolicyForm.EarlyOutBefore.$invalid && attendancePolicyForm.EarlyOutBefore.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Early Out Time">
+                            <label for="EarlyOutBefore" class="myLabelFontWeight">Early Out</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtEarlyOutBefore" name="EarlyOutBefore" maxlength="11" class="form-control" ng-model="AttendancePolice.EarlyOutBefore"  ng-maxlength="9" readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="attendancePolicyForm.EarlyOutBefore.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group" id="txtHalfDayLateDiv" ng-class="{ 'has-error' : attendancePolicyForm.HalfDayLate.$invalid && attendancePolicyForm.HalfDayLate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Half Day Late">
+                            <label for="HalfDayLate" class="myLabelFontWeight">Half Day Late</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtHalfDayLate" name="HalfDayLate" maxlength="11" class="form-control" ng-model="AttendancePolice.HalfDayLate" placeholder="Half Day" ng-maxlength="10" readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="attendancePolicyForm.HalfDayLate.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="First Weekly Holiday"
+                             ng-class="{'has-error' : attendancePolicyForm.ddlFirstWeeklyHoliday.$dirty && attendancePolicyForm.ddlFirstWeeklyHoliday.$invalid}">
+                            <label for="FirstWeeklyHoliday" class="hidden-xs myLabelFontWeight"> Select First Week Day</label>
+                            <label for="FirstWeeklyHoliday" class="visible-xs myLabelFontWeight"> Select F.W. Day</label>
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlFirstWeeklyHoliday" ng-model="ddlFirstWeeklyHoliday" name="FirstWeeklyHoliday" class="form-control" ng-options="FirstWeeklyHoliday.WeekDayName for FirstWeeklyHoliday in FirstWeeklyHolidayList track by FirstWeeklyHoliday.WeekDayName">
+                                    <option value="" label="Select F. Week Day"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="attendancePolicyForm.ddlFirstWeeklyHoliday.$dirty && attendancePolicyForm.ddlFirstWeeklyHoliday.$invalid">Select First Weeek Holiday.</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Second Weekly Holiday"
+                             ng-class="{'has-error' : attendancePolicyForm.ddlSecondWeeklyHoliday.$dirty && attendancePolicyForm.ddlSecondWeeklyHoliday.$invalid}">
+                            <label for="FirstWeeklyHoliday" class="hidden-xs myLabelFontWeight"> Select Second Week Day</label>
+                            <label for="FirstWeeklyHoliday" class="visible-xs myLabelFontWeight">Select S.W. Day</label>
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlSecondWeeklyHoliday" ng-model="ddlSecondWeeklyHoliday" name="SecondWeeklyHoliday" class="form-control" ng-options="SecondWeeklyHoliday.WeekDayName for SecondWeeklyHoliday in SecondWeeklyHolidayList track by SecondWeeklyHoliday.WeekDayName" required>
+                                    <option value="" label="Select S. Week Day"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="attendancePolicyForm.ddlSecondWeeklyHoliday.$dirty && attendancePolicyForm.ddlSecondWeeklyHoliday.$invalid">Select Second Weeek Holiday.</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 CheckBoxDiv">
+                        <label for="IsHalfDay" class="myLabelFontWeight">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <div class="checkbox">
+                            <label class="MaterialCheckBox">
+                                Has Half-Day<input type="checkbox" name="IsHalfDay" value="" ng-model="AttendancePolice.IsHalfDay" ng-change="ShowOrHideHalfDayLate()">
+                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" ng-show="IsShowHalfDayLate">                        
+                        <div class="form-group" ng-class="{ 'has-error' : attendancePolicyForm.HalfDay.$touched && attendancePolicyForm.HalfDay.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Week Half">
+                            <label for="HalfDay" class="hidden-xs myLabelFontWeight"> Select Half Week Day</label>
+                            <label for="HalfDay" class="visible-xs myLabelFontWeight">Select H.W. Day</label>
+                            <div class="input-group input-group-md ddl">
+                                <select id="HalfDay" ng-model="ddlHalfDay" name="HalfDay" class="form-control selectMendatory" ng-options="HalfDay.WeekDayName for HalfDay in WeekHalfList track by HalfDay.WeekDayName" required>
+                                    <option value="" label="Select Week Half Day"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="attendancePolicyForm.HalfDay.$touched && attendancePolicyForm.HalfDay.$invalid">Week Half Day is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"  ng-show="IsShowHalfDayLate">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="form-group" id="txtHalfDayStartTimeDiv" ng-class="{ 'has-error' : attendancePolicyForm.HalfDayStartTime.$invalid && attendancePolicyForm.HalfDayStartTime.$touched }" data-toggle="tooltip" data-placement="bottom" title="Half Day Start Time">
+                            <label for="HalfDayStartTime" class="myLabelFontWeight">Half Day Start Time</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtHalfDayStartTime" name="HalfDayStartTime" maxlength="11" class="form-control" ng-model="AttendancePolice.HalfDayStartTime" ng-maxlength="10" readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="attendancePolicyForm.HalfDayStartTime.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3  col-xs-12">
+                        <div class="form-group" id="txtHalfDayEndTimeDiv" ng-class="{ 'has-error' : attendancePolicyForm.HalfDayEndTime.$invalid && attendancePolicyForm.HalfDayEndTime.$touched }" data-toggle="tooltip" data-placement="bottom" title="Half Day End Time">
+                            <label for="HalfDayEndTime" class="myLabelFontWeight">Half Day End Time</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtHalfDayEndTime" name="HalfDayEndTime" maxlength="11" class="form-control" ng-model="AttendancePolice.HalfDayEndTime" placeholder="End Time" ng-maxlength="10" readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="attendancePolicyForm.HalfDayEndTime.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3  col-xs-12">
+                        <div class="form-group" id="txtHalfDayLateInAfterDiv" ng-class="{ 'has-error' : attendancePolicyForm.HalfDayLateInAfter.$invalid && attendancePolicyForm.HalfDayLateInAfter.$touched }" data-toggle="tooltip" data-placement="bottom" title="Half Day Late In After">
+                            <label for="HalfDayLateInAfter" class="myLabelFontWeight">Half Day Late In</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtHalfDayLateInAfter" name="HalfDayLateInAfter" maxlength="10" class="form-control" ng-model="AttendancePolice.HalfDayLateInAfter" ng-maxlength="9" readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="attendancePolicyForm.HalfDayLateInAfter.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3  col-xs-12">
+                        <div class="form-group" id="txtHalfDayEarlyOutBeforeDiv" ng-class="{ 'has-error' : attendancePolicyForm.HalfDayEarlyOutBefore.$invalid && attendancePolicyForm.HalfDayEarlyOutBefore.$touched }" data-toggle="tooltip" data-placement="bottom" title="Half Day Early Out Before">
+                            <label for="HalfDayEarlyOutBefore" class="myLabelFontWeight">Half Day Early Out</label>
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <input type="text" id="txtHalfDayEarlyOutBefore" name="HalfDayEarlyOutBefore" maxlength="11" class="form-control" ng-model="AttendancePolice.HalfDayEarlyOutBefore" ng-maxlength="9" readonly="readonly">
+                                <span class="input-group-addon"><i class="fa fa-clock-o" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="attendancePolicyForm.HalfDayEarlyOutBefore.$error.maxlength">10 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 CheckBoxDiv">
+                        <div class="checkbox">
+                            <label class="MaterialCheckBox">
+                                Is Active<input type="checkbox" value="" ng-model="AttendancePolice.IsActive">
+                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <button ng-disabled="!AttendancePolice.PolicyName || !AttendancePolice.StartTime ||!AttendancePolice.EndTime|| (AttendancePolice.IsHalfDay && !ddlHalfDay)" ng-click="Save()" class="customBtn custmoBtnSave" title="Save">
+                            <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                        </button>                        
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">                        
+                        <button type="button" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {            
+            $('#txtStartTime').timepicker();
+            $('#txtEndTime').timepicker();
+            $('#txtHalfDayLate').timepicker();
+            $('#txtLateInAfter').timepicker();
+            $('#txtEarlyOutBefore').timepicker(); 
+            $('#txtHalfDayStartTime').timepicker();
+            $('#txtHalfDayEndTime').timepicker();
+            $('#txtHalfDayLateInAfter').timepicker();
+            $('#txtHalfDayEarlyOutBefore').timepicker();
+        });
+    </script>
+</form>

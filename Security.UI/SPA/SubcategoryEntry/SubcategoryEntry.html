@@ -1,0 +1,158 @@
+﻿<form name="subcategoryEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp;  &#9755;&nbsp; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" ng-show="CreatePermission||RevisePermission||RemovePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Subcategory Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : subcategoryEntryForm.AssetNature.$touched && subcategoryEntryForm.AssetNature.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Asset Nature" hidden>
+                    <div class="input-group ddl">
+                        <select ng-model="ddlAssetNature" name="AssetNature" class="form-control selectMendatory" ng-options="assetNature.AssetNatureName  for assetNature in AssetNaturelist track by assetNature.AssetNatureId " required>
+                            <option value="" label="Select Asset Nature"></option>
+                        </select>
+                    </div>
+                    <span class="help-block" ng-show="subcategoryEntryForm.AssetNature.$touched && subcategoryEntryForm.AssetNature.$invalid">Asset Nature is required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : subcategoryEntryForm.Category.$dirty && subcategoryEntryForm.Category.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                    <div class="input-group input-group-md ddl">
+                        <select id="ddlCategory" ng-model="ddlCategory" class="form-control selectMendatory" name="Category" ng-options="category.CategoryName for category in Categorylist track by category.CategoryId" autofocus required ng-change="ad_ItemSubCategory.CategoryId=ddlCategory.CategoryId">
+                            <option value="" label="Select Category"></option>
+                        </select>
+                    </div>
+                    <span class="help-block" ng-show="subcategoryEntryForm.Category.$dirty && subcategoryEntryForm.Category.$invalid">Category is required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : subcategoryEntryForm.SubcateroryName.$invalid && subcategoryEntryForm.SubcateroryName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Subcategory Name">
+                    <div class="input-group">
+                        <input type="text" id="txtSubcategoryName" name="SubcateroryName" class="form-control " ng-model="ad_ItemSubCategory.SubCategoryName" placeholder="Subcategory Name" ng-blur="CheckDuplicateSubcateroryName()" ng-change="foundChange()" maxlength="51" ng-maxlength="50" required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="subcategoryEntryForm.SubcateroryName.$error.required && subcategoryEntryForm.SubcateroryName.$touched">Subcategory Name is required</span>
+                    <span class="help-block" ng-if="subcategoryEntryForm.SubcateroryName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : subcategoryEntryForm.SubcateroryShortName.$invalid && subcategoryEntryForm.SubcateroryShortName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Subcategory Short Name">
+                    <div class="input-group">
+                        <input type="text" id="txtSubcategoryShortName" name="SubcateroryShortName" class="form-control" ng-model="ad_ItemSubCategory.SubShortName" placeholder="Subcategory Short Name" ng-blur="CheckDuplicateSubShortName()" ng-change="foundChangeShortName()" maxlength="16" ng-maxlength="15">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="subcategoryEntryForm.SubcateroryShortName.$error.maxlength">15 Character Max</span>
+                </div>
+                <div class="input-group">
+                    <label>Status: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_ItemSubCategory.IsActive"> Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_ItemSubCategory.IsActive"> Inactive
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button class="customBtn custmoBtnSave" ng-click="AddSubCategory()" ng-disabled="subcategoryEntryForm.$invalid ">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="btnDelete" class="customBtn custmoBtnDelete" ng-click="Delete()" ng-show="btnDeleteShow" title="Search">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnReset" class="customBtn custmoBtnReset" ng-click="resetForm()" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Subcategory List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetCropTypeSearch()" ng-model="SearchCropTypeName" placeholder="Subcategory Name" />
+                            <span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="ddlSearchCrop" ng-change="GetCropTypeSearch()" ng-options="category.CategoryName for category in Categorylist track by category.CategoryId" class="form-control selectNotMandetory">
+                                <option value="" label="Select Category"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="ddlSearchStatus" ng-change="GetCropTypeSearch()" class="form-control selectNotMandetory">
+                                <option value="" label="Select Status"></option>
+                                <option value="1" label="Active"></option>
+                                <option value="0" label="Inactive"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr>
+                                <th>S/N</th>
+                                <th class="txt-center">Category</th>
+                                <th data-th="Subcaterory Details"><span>Subcategory</span></th>
+                                <th class="txt-center">Short Name</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aSubcategory in SubcategoryList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelSubCategory(aSubcategory)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aSubcategory.CategoryName }}</td>
+                                <td>{{aSubcategory.SubCategoryName }}</td>
+                                <td class="txt-center">{{aSubcategory.SubShortName }}</td>
+                                <td class="txt-center">{{aSubcategory.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="5">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+SubcategoryList.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

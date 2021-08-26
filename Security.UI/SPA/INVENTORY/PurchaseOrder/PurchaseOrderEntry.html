@@ -1,0 +1,401 @@
+﻿<form name="purchaseOrderEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Purchase Order Entry</h3>
+            </div>
+
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialogs">
+                    <button type="button" style="position:absolute !important; padding-left:89% !important; background:#fff;" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <iframe src="/SPA/AdvancedSearch/AdvancedSearch.cshtml" width="100%" height="100%" class="embed-responsive-item"></iframe>
+                    <div class="col-md-12" style="background:white; margin-top:-7px;">
+                        <button type="button" class="customBtn loadBtn" data-dismiss="modal" ng-click="AdvanceSearch()"><i class="fa fa-undo" aria-hidden="true"></i>&nbsp;Load</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-offset-10" style="text-align:right;" data-toggle="modal" data-target="#myModal" ng-click="ForAdvanceSearch()"><a style="cursor:pointer;">Advance Search&nbsp;&nbsp;</a></div>
+            <!-- Modal end -->
+
+            <div class="panel-body">
+                <div class="row ">
+                    <p ng-if="Debug" data-toggle="collapse" data-target="#inv_PurchaseOrder">inv_PurchaseOrder</p>
+                    <div ng-if="Debug" id="inv_PurchaseOrder" class="collapse"><pre>{{inv_PurchaseOrder|json}}</pre></div>
+
+                    <!--------------------------------------------------------------Master Data------------------------------------------------>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <!--PO No-->
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.PoNo.$invalid && purchaseOrderEntryForm.PoNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO No">
+                                            <div class="input-group">
+                                                <input type="text" id="txtPoNo" name="PoNo" class="form-control " placeholder="PO No." ng-model="inv_PurchaseOrder.PONo" maxlength="200" ng-maxlength="199" required autofocus>
+                                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color "></i></span>
+                                            </div>
+                                            <span class="help-block" ng-if="purchaseOrderEntryForm.PoNo.$error.required && purchaseOrderEntryForm.PoNo.$touched">PO No. is required</span>
+                                            <span class="help-block" ng-if="purchaseOrderEntryForm.PoNo.$error.maxlength">10 Character Max</span>
+                                        </div>
+                                    </div>
+                                    <!--PO Date-->
+                                    <div class="col-md-6">
+                                        <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.PODate.$invalid && purchaseOrderEntryForm.PODate.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO Date">
+                                            <div class="input-group">
+                                                <input type="text" onkeydown="return false" name="PODate" ng-model="inv_PurchaseOrder.PODate " id="txtPODate" class="form-control datepicker" placeholder="PO Date" required />
+                                                <span class="input-group-addon" id="calender1"><i class="fa fa-calendar req-icon-color"></i></span>
+                                            </div>
+                                            <span class="help-block" style="display: block;" ng-if="purchaseOrderEntryForm.PODate.$error.required && purchaseOrderEntryForm.PODate.$touched">PO Date is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Select Supplier-->
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.Supplier.$invalid && purchaseOrderEntryForm.Supplier.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                                    <div class="input-group width-hundred-percent">
+                                        <select id="ddlSupplier" ng-model="ddlSupplier" ng-change="inv_PurchaseOrder.SupplierId=ddlSupplier.SupplierId;inv_PurchaseOrder.SupplierName=ddlSupplier.SupplierName;" class="form-control selectMendatory" name="Supplier" ng-options="supplier.SupplierName for supplier in Supplierlist track by supplier.SupplierId" required ng-disabled="inv_PurchaseOrderDetailList.length">
+                                            <option value="" label="Select Supplier"></option>
+                                        </select>
+                                        <span class="help-block" ng-if="purchaseOrderEntryForm.Supplier.$error.required && purchaseOrderEntryForm.Supplier.$touched">Supplier is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Shipment Info-->
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.ShipmentInfo.$invalid && purchaseOrderEntryForm.ShipmentInfo.$touched }" data-toggle="tooltip" data-placement="bottom" title="ShipmentInfo">
+                                    <div class="input-group">
+                                        <input type="text" ng-model="inv_PurchaseOrder.ShipmentInfo" name="ShipmentInfo" class="form-control" placeholder="Shipment Info" maxlength="200" ng-maxlength="199">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-if="purchaseOrderEntryForm.ShipmentInfo.$touched && purchaseOrderEntryForm.ShipmentInfo.$error.maxlength">200 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!--Select Prepared By-->
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.preparedBy.$invalid && purchaseOrderEntryForm.preparedBy.$touched }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlEmployee" name="preparedBy" ng-change="inv_PurchaseOrder.PreparedById=ddlEmployee.EmployeeId;inv_PurchaseOrder.PreparedBy=ddlEmployee.FullName;" class="form-control selectMendatory" ng-options="employee.FullName  for employee in EmployeeList track by employee.EmployeeId" required>
+                                            <option value="" label="Prepared By"></option>
+                                        </select>
+                                        <span class="help-block" ng-if="purchaseOrderEntryForm.preparedBy.$error.required && purchaseOrderEntryForm.preparedBy.$touched">Prepared By is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--PO Date-->
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.deliveryDate.$invalid && purchaseOrderEntryForm.deliveryDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO Date">
+                                    <div class="input-group">
+                                        <input type="text" onkeydown="return false" name="deliveryDate" ng-model="inv_PurchaseOrder.DeliveryDate " id="txtDeliveryDate" class="form-control datepicker" placeholder="Delivery Date" required />
+                                        <span class="input-group-addon" id="calender2"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="purchaseOrderEntryForm.deliveryDate.$error.required && purchaseOrderEntryForm.deliveryDate.$touched">Delivery Date is required</span>
+                                </div>
+                            </div>
+                            <!--Select Price Type-->
+                            <div class="col-md-4" ng-class="{ 'has-error' : purchaseOrderEntryForm.PriceType.$invalid && purchaseOrderEntryForm.PriceType.$touched }" data-toggle="tooltip" data-placement="bottom" title="Price Type">
+                                <div class="form-group">
+                                    <div class="input-group width-hundred-percent">
+                                        <select ng-model="ddlPriceType" ng-change="inv_PurchaseOrder.PriceTypeId=ddlPriceType.PriceTypeId;inv_PurchaseOrder.PriceTypeName=ddlPriceType.PriceTypeName" name="PriceType" class="form-control selectMendatory" ng-options="priceType.PriceTypeName  for priceType in pricetypeentrylist track by priceType.PriceTypeId" required ng-disabled="inv_PurchaseOrderDetailList.length || !ddlSupplier">
+                                            <option value="" label="Price type"></option>
+                                        </select>
+                                        <span class="help-block" ng-if="purchaseOrderEntryForm.PriceType.$error.required && purchaseOrderEntryForm.PriceType.$touched">Price Type is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Remarks-->
+                    <div class="col-md-12">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group">
+                                <input type="text" id="Remarks" ng-model="inv_PurchaseOrder.Remarks" name="Remarks" class="form-control" placeholder="Remarks" maxlength="1000" ng-maxlength="999">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="purchaseOrderEntryForm.Remarks.$error.maxlength">1000 Character Max</span>
+                        </div>
+                    </div>
+
+                    <p ng-if="Debug" data-toggle="collapse" data-target="#inv_PurchaseOrderDetail">inv_PurchaseOrderDetail</p>
+                    <div ng-if="Debug" id="inv_PurchaseOrderDetail" class="collapse"><pre>{{inv_PurchaseOrderDetail|json}}</pre></div>
+
+                    <!-------------------------------------------------------------------------Detail------------------------------------------------------------------>
+                    <!--Product-->
+                    <div class="col-md-12"><hr /></div>
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.Product.$dirty && purchaseBillEntry.Product.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Product">
+                            <div class="input-group">
+                                <input type="text" id="txtProduct" ng-model="Product" placeholder="Select Product Or Scan Barcode" ng-model-options='{ debounce: 300 }' ng-change="ItemSearch()" ng-blur="FilterUnit()" onclick="this.setSelectionRange(0, this.value.length)" ng-disabled="!ddlSupplier || !ddlPriceType" uib-typeahead="item.ItemName for item in ItemSearchResultList | filter:$viewValue | limitTo:500" class="form-control selectMendatory" style="width:100% !important" autocomplete="off" typeahead-min-length="0">
+                                <span class="input-group-addon popover-markup" style="padding:0 0;">
+                                    <i class="fa fa-filter" data-placement="bottom" style="padding: 9px; width: 100%;" data-toggle="modal" data-target="#myModal" ng-click="ForItemSearch()"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!--Unit-->
+                            <div class="col-md-2">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.unit.$dirty && purchaseOrderEntryForm.unit.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                    <div class="input-group input-group-md ddl" ng-init="inv_PurchaseOrderDetail.ItemUnitId=ddlUnit.ItemUnitId;inv_PurchaseOrderDetail.UnitName=ddlUnit.UnitName">
+                                        <select ng-model="ddlUnit" id="ddlUnit" name="Unit" class="form-control selectNotMandetory" ng-change=" GetItemDetails(ddlUnit.ItemUnitId); inv_PurchaseOrderDetail.ItemUnitId=ddlUnit.ItemUnitId;inv_PurchaseOrderDetail.UnitName=ddlUnit.UnitName" ng-options="unit.UnitName  for unit in unitlist | filter: unitFilter  track by unit.ItemUnitId">
+                                            <option value="" label="Select Unit"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Stock QTY-->
+                            <div class="col-md-2">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.StockQty.$invalid && purchaseOrderEntryForm.StockQty.$touched }" data-toggle="tooltip" data-placement="bottom" title="Stock QTY">
+                                    <div class="input-group">
+                                        <input type="number" id="txtStockQty" name="StockQty" class="form-control txt-center" ng-model="inv_PurchaseOrderDetail.StockQty" placeholder="Stock Qty" maxlength="200" ng-maxlength="199" disabled>
+                                    </div>
+                                    <span class="help-block" ng-if="purchaseOrderEntryForm.StockQty.$error.maxlength">200 Character Max</span>
+                                </div>
+                            </div>
+                            <!--Price-->
+                            <div class="col-md-2">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.Price.$invalid && purchaseOrderEntryForm.Price.$touched }" data-toggle="tooltip" data-placement="bottom" title="Price">
+                                    <div class="input-group">
+                                        <input type="number" ng-change="AddPODetailValidationChk(inv_PurchaseOrderDetail)" id="txtPrice" name="Price" class="form-control txt-center" ng-model="inv_PurchaseOrderDetail.POUnitPrice" placeholder="Price" maxlength="200" ng-maxlength="199">
+                                    </div>
+                                    <span class="help-block" ng-if="purchaseOrderEntryForm.Price.$error.maxlength"></span>
+                                </div>
+                            </div>
+                            <!--PO QTY-->
+                            <div class="col-md-2">
+                                <div class="form-group" ng-class="{ 'has-error' : purchaseOrderEntryForm.POQty.$invalid && purchaseOrderEntryForm.POQty.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO Qty">
+                                    <div class="input-group">
+                                        <input type="number" id="txtPOQty" name="POQty" class="form-control txt-center" ng-model="inv_PurchaseOrderDetail.POQuantity" placeholder="PO Qty" maxlength="200" ng-maxlength="199">
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="purchaseOrderEntryForm.POQty.$error.required && purchaseOrderEntryForm.POQty.$touched">PO Quantity is required</span>
+                                    <span class="help-block" ng-if="purchaseOrderEntryForm.POQty.$error.maxlength">200 Character Max</span>
+                                </div>
+                            </div>
+                            <!--Add Button-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button id="btnAdd" class="customBtn custmoBtnReset" ng-disabled="!Product || !ddlUnit || !inv_PurchaseOrderDetail.POQuantity || !purchaseOrderEntryForm.StockQty" title="Add Po Detail" ng-click="AddPODetail()">
+                                            <i class="fa fa-plus-square"></i>&nbsp;{{DetailAddBtn}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Remove Button-->
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="RemoveBtnShow" ng-click="RemovePODetail()">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover ">
+                                    <tbody>
+                                        <tr class="t-head">
+                                            <th>
+                                                <button type="button" ng-click="expandAll(allExpanded = !allExpanded)">
+                                                    <span ng-bind="allExpanded ? '-' : '+'"></span>
+                                                </button>
+                                            </th>
+                                            <th width="5%" class="t-cell-center">S/N</th>
+                                            <th data-th="Product Details"><span>Product Name</span></th>
+                                            <th class="t-cell-center" width="120">Product Code</th>
+                                            <th class="t-cell-center" width="90">Unit</th>
+                                            <th width="90" class="txt-center">Stock Qty</th>
+                                            <th width="90" class="txt-center">PO Qty</th>
+                                            <th width="90" class="txt-center">Price</th>
+                                            <th width="100"><span class="pull-right">Amount</span></th>
+                                        </tr>
+                                        <tr class="HoverTable" ng-repeat-start="aPurchaseOrderDetail in inv_PurchaseOrderDetailList" ng-click="SelPODetail(aPurchaseOrderDetail,$index)">
+                                            <td ng-click="$event.stopPropagation();">
+                                                <button ng-show="aPurchaseOrderDetail.ItemAddAtt.length" ng-click="expanded = !expanded ; " expand>
+                                                    <span ng-bind="expanded ? '-' : '+'"></span>
+                                                </button>
+                                            </td>
+                                            <td class="txt-center">{{$index+1}}</td>
+                                            <td>{{aPurchaseOrderDetail.ItemName }}</td>
+                                            <td class=" t-cell-center">{{aPurchaseOrderDetail.ItemCode  }}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrderDetail.UnitName }}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrderDetail.StockQty }}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrderDetail.POQuantity }}</td>
+                                            <td class="t-cell-center">{{aPurchaseOrderDetail.POUnitPrice }}</td>
+                                            <td><span class="pull-right" ng-init="$parent.TotalPOAmount = ($parent.TotalPOAmount + (aPurchaseOrderDetail.POQuantity*aPurchaseOrderDetail.POUnitPrice ));">{{ aPurchaseOrderDetail.POQuantity*aPurchaseOrderDetail.POUnitPrice | number:2}}</span></td>
+
+                                        </tr>
+                                        <tr ng-repeat-end ng-show="expanded && aPurchaseOrderDetail.ItemAddAtt.length">
+                                            <td></td>
+                                            <td colspan="9">
+                                                <table class="table table-condensed table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Qty</th>
+                                                            <th ng-repeat="FirstItemAddAtt in aPurchaseOrderDetail.ItemAddAtt[0].Detatil ">{{FirstItemAddAtt.AttributeName}}</th>
+                                                            <th class="t-cell-center">+ / -</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="aItemAddAtt in aPurchaseOrderDetail.ItemAddAtt " ng-init="aItemAddAtt.hover = false;" ng-mouseover="aItemAddAtt.hover = true" ng-mouseleave="aItemAddAtt.hover= false">
+                                                            <td>
+                                                                <input type="checkbox" ng-model="aItemAddAtt.selected" ng-disabled="true" />
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control" ng-change="AddAttValidationChk(aItemAddAtt)" ng-model="aItemAddAtt.AttributeQty" onclick="return this.select();" />
+                                                            </td>
+                                                            <td ng-if="inv_PurchaseOrder.POId==0" ng-repeat="aDetatil in aItemAddAtt.Detatil" ng-init="aDetatil.ValueSelect=null">
+                                                                <input ng-change="AddAttValidationChk(aItemAddAtt)" ng-show="!aDetatil.Values.length" type="text" class="form-control" ng-init="aDetatil.AttributeValue=''" ng-model="aDetatil.AttributeValue" />
+                                                                <select ng-show="aDetatil.Values.length" ng-model="aDetatil.ValueSelect" class="form-control" name="ddlUn234itReceive" ng-init="" ng-change="(aDetatil.ValueSelect.Value==null)? aDetatil.AttributeValue ='': aDetatil.AttributeValue =aDetatil.ValueSelect.Value; AddAttValidationChk(aItemAddAtt)" ng-options="value.Value for value in aDetatil.Values  track by value.Value">
+                                                                    <option value="" label="Select Value"></option>
+                                                                </select>
+                                                            </td>
+                                                            <td ng-if="inv_PurchaseOrder.POId>0" ng-repeat="aDetatil in aItemAddAtt.Detatil">
+                                                                <input ng-change="AddAttValidationChk(aItemAddAtt)" ng-show="!aDetatil.Values.length" type="text" class="form-control" ng-model="aDetatil.AttributeValue" />
+                                                                <select ng-show="aDetatil.Values.length" ng-model="aDetatil.ValueSelect" class="form-control" name="ValueSelect" ng-change="(aDetatil.ValueSelect.Value==null)? aDetatil.AttributeValue ='': aDetatil.AttributeValue =aDetatil.ValueSelect.Value; AddAttValidationChk(aItemAddAtt)" ng-options="value.Value for value in aDetatil.Values  track by value.Value">
+                                                                    <option value="" label="Select Value"></option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="t-cell-center" style="width:80px;" ng-init="AddAttValidationChk(aItemAddAtt)">
+                                                                <i ng-show="aItemAddAtt.hover" ng-click="PushAddAtt($index,aPurchaseOrderDetail.ItemAddAtt, aItemAddAtt)" style="font-size:1.5em;" class="glyphicon glyphicon-plus-sign"></i>
+                                                                <i ng-show="aItemAddAtt.hover && aPurchaseOrderDetail.ItemAddAtt.length>1" ng-click="RemoveAtt($index,aPurchaseOrderDetail.ItemAddAtt)" style="font-size:1.5em;" class="glyphicon glyphicon-minus-sign"></i>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <label>PO Total :</label>
+                                    <input style="font-weight:bold; font-size:large;" id="txtPOTotal" type="text" name="cal1" readonly="readonly" data-toggle="tooltip" data-placement="bottom" title="total" value="{{TotalPOAmount|number:2}}" class="form-control " placeholder="Total" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<p ng-if="Debug" data-toggle="collapse" data-target="#inv_PurchaseOrderDetailList">inv_PurchaseOrderDetailList</p>
+                    <div ng-if="Debug" id="inv_PurchaseOrderDetailList" class="collapse"><pre>{{inv_PurchaseOrderDetailList|json}}</pre></div>
+                    <br />-->
+                </div>
+            </div>
+         
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button class="customBtn custmoBtnSave" ng-click="AddPO()" title="save" ng-disabled="!inv_PurchaseOrder.PONo || !inv_PurchaseOrder.PODate || !ddlSupplier || !ddlEmployee || !inv_PurchaseOrder.DeliveryDate || !ddlPriceType || !inv_PurchaseOrderDetailList.length">
+                            <i class="fa fa-floppy-o"></i>&nbsp;{{buttonSave}}
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button class="customBtn custmoBtnDelete" ng-show="btnDeleleShow" ng-click="Cancel()" title="Cancel">
+                            <i class="fa fa-floppy-o"></i>&nbsp;Cancel
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                    <div class="row">
+                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtPODate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker.show();
+    });
+
+
+
+    var picker2 = new Pikaday({
+        field: document.getElementById('txtDeliveryDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender2").addEventListener("click", function () {
+        picker2.show();
+    });
+</script>
+
+<script>
+    function getCategory(x) {
+        document.getElementById('btnCat').value = x.rowIndex;
+        document.getElementById("btnCat").click();
+    }
+    function getSubCategory(x) {
+        document.getElementById('btnSubCat').value = x.rowIndex;
+        document.getElementById("btnSubCat").click();
+    }
+</script>
+
+<script>
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+
+    });
+    $("#popover-markup").click(function () {
+        $('.trigger').popover('toggle');
+    });
+</script>
+
+<style>
+    input::-webkit-calendar-picker-indicator {
+        display: none;
+    }
+</style>

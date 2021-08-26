@@ -1,0 +1,458 @@
+﻿<form name="customerEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Customer Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : customerEntryForm.Branch.$touched && customerEntryForm.Branch.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Outlet">
+                    <div class="input-group input-group-md ddl">
+                        <select ng-model="ddlBranch" id="ddlBranch" class="form-control selectMendatory" name="Branch" ng-change="ad_Customer.BranchId=ddlBranch.BranchId;ad_Custome.BranchName=ddlBranch.BranchName" ng-options="branch.BranchName for branch in Branchlist track by branch.BranchId" autofocus required>
+                            <option value="" label="Select Outlet"></option>
+                        </select>
+                    </div>
+                    <span class="help-block" ng-show="customerEntryForm.Branch.$touched && customerEntryForm.Branch.$invalid">Outlet is required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : customerEntryForm.CustomerType.$dirty && customerEntryForm.CustomerType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Customer Type">
+                    <div class="input-group input-group-md ddl">
+                        <select id="selCustomerType" ng-model="ddlCustomerType" class="form-control selectMendatory" name="CustomerType" ng-change="ad_Customer.CustomerTypeId=ddlCustomerType.CustomerTypeId;ad_Customer.CustomerTypeName=ddlCustomerType.CustomerTypeName" ng-options="customerTypoe.CustomerTypeName for customerTypoe in customerTypeList track by customerTypoe.CustomerTypeId" required autofocus>
+                            <option value="" label="Select Customer Type"></option>
+                        </select>
+                    </div>
+                    <span class="help-block" ng-show="customerEntryForm.CustomerType.$dirty && customerEntryForm.CustomerType.$invalid">Customer Type is required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : customerEntryForm.CustomerTitle.$invalid && customerEntryForm.CustomerTitle.$touched }" data-toggle="tooltip" data-placement="bottom" title="Title">
+                    <div class="input-group">
+                        <input type="text" id="txtCustomerTitle" name="CustomerTitle" class="form-control" ng-model="ad_Customer.Title" placeholder="Title" maxlength="16" ng-maxlength="15">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerTitle.$error.required && customerEntryForm.CustomerTitle.$touched">Customer Title is required</span>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerTitle.$error.maxlength">15 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerFirstName.$invalid && customerEntryForm.CustomerFirstName.$touched }" data-toggle="tooltip" data-placement="bottom" title="First Name">
+                    <div class="input-group">
+                        <input type="text" id="txtCustomerFirstName" name="CustomerFirstName" class="form-control" ng-model="ad_Customer.FirstName" placeholder="First Name" maxlength="50" ng-maxlength="49" required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerFirstName.$error.required && customerEntryForm.CustomerFirstName.$touched">First Name is required</span>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerFirstName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerMiddleName.$invalid && customerEntryForm.CustomerMiddleName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Middle Name">
+                    <div class="input-group">
+                        <input type="text" id="txtCustomerMiddleName" name="CustomerMiddleName" class="form-control" ng-model="ad_Customer.MiddleName" placeholder="Middle Name" maxlength="50" ng-maxlength="49">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerMiddleName.$error.maxlength">50 Character Max</span>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerLastName.$invalid && customerEntryForm.CustomerLastName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Last Name">
+                    <div class="input-group">
+                        <input type="text" id="txtCustomerLastName" name="CustomerLastName" class="form-control" ng-model="ad_Customer.LastName" placeholder="Last Name" maxlength="50" ng-maxlength="49">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerLastName.$error.maxlength">50 Character Max</span>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerLastName.$error.required && customerEntryForm.CustomerLastName.$touched">Last Name is required</span>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : customerEntryForm.dateOfBirth.$invalid && customerEntryForm.dateOfBirth.$touched }" data-toggle="tooltip" data-placement="bottom" title="Date of Birth">
+                    <div class="input-group">
+                        <input type="text" onkeydown="return false" name="dateOfBirth" ng-model="ad_Customer.DateOfBirth" id="txtDateOfBirth" class="form-control datepicker" placeholder="Date of Birth" />
+                        <span class="input-group-addon" id="calender1"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <span class="help-block" style="display: block;" ng-if="customerEntryForm.dateOfBirth.$error.required && customerEntryForm.dateOfBirth.$touched">Date of Birth is required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerTradingAs.$invalid && customerEntryForm.CustomerTradingAs.$touched }" data-toggle="tooltip" data-placement="bottom" title="Trading As">
+                    <div class="input-group">
+                        <input type="text" id="txtCustomerTradingAs" name="CustomerTradingAs" class="form-control" ng-model="ad_Customer.TradingAs" placeholder="Trading As" maxlength="100" ng-maxlength="99">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerTradingAs.$error.maxlength">100 Character Max</span>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerWebAddress.$invalid && customerEntryForm.CustomerWebAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Web Address">
+                    <div class="input-group">
+                        <input type="text" id="txtCustomerWebAddress" name="CustomerWebAddress" class="form-control" ng-model="ad_Customer.Web" placeholder="Web Address" maxlength="50" ng-maxlength="49">
+                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="customerEntryForm.CustomerWebAddress.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.armCode.$invalid && customerEntryForm.armCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="ARM Code">
+                    <div class="input-group">
+                        <input type="text" id="txtarmCode" name="armCode" class="form-control" ng-model="ad_Customer.ManualCustomerCode" placeholder="ARM Code" maxlength="50" ng-maxlength="49">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="customerEntryForm.armCode.$error.required && customerEntryForm.armCode.$touched">ARM Code is required</span>
+                    <span class="help-block" ng-if="customerEntryForm.armCode.$error.maxlength">50 Character Max</span>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Gender: </label>
+                        <label style="color:red;">* </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="gender" value="Male" ng-model="ad_Customer.Gender" required>
+                            Male&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="gender" value="Female" ng-model="ad_Customer.Gender" required>
+                            Female<br>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="true" ng-model="ad_Customer.IsActive"> Active
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="false" ng-model="ad_Customer.IsActive"> Inactive
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-hide="hidePayable">
+                    <div class="input-group">
+                        <label>Payable ?: </label>
+                        &nbsp;&nbsp;
+                        <input type="checkbox" ng-model="ad_Customer.IsPayable">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" >
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-globe"></i>&nbsp;Address<label style="color:red;">* </label> (Minimum 1 Required)</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label>Address Type: </label>
+                                &nbsp;&nbsp;
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="optionsRadios2"
+                                               value="Mailing" ng-model="ad_CustomerAddress.AddressType">Mailing
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" name="optionsRadios2"
+                                               value="Billing" ng-model="ad_CustomerAddress.AddressType">Billing
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerAddress.$invalid && customerEntryForm.CustomerAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Address">
+                            <div class="input-group">
+                                <textarea rows="3" type="text" id="tbxCustomerAddress" name="CustomerAddress" class="form-control" ng-model="ad_CustomerAddress.Address" maxlength="500" ng-maxlength="499" placeholder="Address"></textarea>
+                                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="customerEntryForm.CustomerAddress.$error.required && customerEntryForm.CustomerAddress.$touched">Address is required</span>
+                            <span class="help-block" ng-if="customerEntryForm.CustomerAddress.$error.maxlength">500 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class=" { 'has-error' :customerEntryForm.CustomerConPerson.$invalid && customerEntryForm.CustomerConPerson.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Person">
+                            <div class="input-group">
+                                <input type="text" id="txtCustomerConPerson" name="CustomerConPerson" class="form-control" ng-model="ad_CustomerAddress.ContactPerson" maxlength="50" ng-maxlength="49" placeholder="Contact Person">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="customerEntryForm.CustomerConPerson.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerConDesignation.$invalid && customerEntryForm.CustomerConDesignation.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Designation">
+                            <div class="input-group">
+                                <input type="text" id="txtConDesignation" name="CustomerConDesignation" class="form-control" ng-model="ad_CustomerAddress.ContactDesignation" maxlength="20" ng-maxlength="19" placeholder="Contact Designation">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="customerEntryForm.CustomerConDesignation.$error.maxlength">20 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerPhone.$invalid && customerEntryForm.CustomerPhone.$touched }" data-toggle="tooltip" data-placement="bottom" title="Phone">
+                            <div class="input-group">
+                                <input type="text" id="txtCustomerPhone" name="CustomerPhone" class="form-control" ng-model="ad_CustomerAddress.Phone" placeholder="Phone" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="customerEntryForm.CustomerPhone.$error.maxlength">50 Character Max</span>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerMobile.$invalid && customerEntryForm.CustomerMobile.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile">
+                            <div class="input-group">
+                                <input type="text" id="txtCustomerMobile" name="CustomerMobile" class="form-control" ng-model="ad_CustomerAddress.Mobile" placeholder="Mobile" maxlength="20" ng-maxlength="19" ng-blur="CheckDuplicateMobileNo()" ng-change="foundChange()" required>
+                                <span class="input-group-addon"><i class="fa fa-mobile" style="color:red"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="customerEntryForm.CustomerMobile.$error.maxlength">20 Character Max</span>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.CustomerEmail.$invalid && customerEntryForm.CustomerEmail.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                            <div class="input-group">
+                                <input type="email" id="txtCustomerEmail" name="CustomerEmail" class="form-control" ng-model="ad_CustomerAddress.Email" placeholder="Email" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="customerEntryForm.CustomerEmail.$error.email && customerEntryForm.CustomerEmail.$touched">Invalid Email</span>
+                            <span class="help-block" ng-if="customerEntryForm.CustomerEmail.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label>Default: </label>
+                                &nbsp;&nbsp;
+                                <input type="checkbox" name="DefaultAddress" ng-model="ad_CustomerAddress.IsDefault" ng-change="CheckDefault(ad_CustomerAddress.IsDefault)" value="default">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="row">
+                                    <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 5%; padding-right: 4%;">
+                                        <button id="btnAdd" class="customBtn custmoBtnReset" title="addAddress" ng-click="AddCustomerAddress()" ng-disabled="customerEntryForm.addressType.$invalid
+                                                                                                                                                   || customerEntryForm.CustomerAddress.$invalid
+                                                                                                                                                   || customerEntryForm.CustomerConPerson.$invalid
+                                                                                                                                                   || customerEntryForm.CustomerConDesignation.$invalid
+                                                                                                                                                   || customerEntryForm.CustomerPhone.$invalid
+                                                                                                                                                   || customerEntryForm.CustomerMobile.$invalid
+                                                                                                                                                   || customerEntryForm.CustomerEmail.$invalid">
+                                            <i class="fa fa-plus-square"></i>&nbsp;&nbsp;{{buttonSuppAddress}}
+                                        </button>
+
+                                    </div>
+                                    <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                        <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="btnSuppAddressDeleteShow" ng-click="removeAddress()">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Address details"><span>Address</span></th>
+                                    <th>Phone</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Default</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aCustomerAddress in customerAddresslist" ng-click="SelCustomerAddress(aCustomerAddress,$index)">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{aCustomerAddress.Address}}</td>
+                                    <td>{{aCustomerAddress.Phone}}</td>
+                                    <td>{{aCustomerAddress.Mobile}}</td>
+                                    <td>{{aCustomerAddress.Email}}</td>
+                                    <td>{{aCustomerAddress.Status}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil-square"></i>&nbsp;Bill Policy </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error' :customerEntryForm.PolicyDescription.$invalid && customerEntryForm.PolicyDescription.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bill policy">
+                            <div class="input-group">
+                                <textarea rows="2" type="text" name="PolicyDescription" id="tbxPolicy" class="form-control" ng-model="ad_CustomerBillPolicy.PolicyDescription" placeholder="Policy" maxlength="500" ng-maxlength="499" required></textarea>
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="customerEntryForm.PolicyDescription.$error.required && customerEntryForm.PolicyDescription.$touched">Policy is required</span>
+                            <span class="help-block" ng-if="customerEntryForm.PolicyDescription.$error.maxlength">500 Character Max</span>
+                        </div>
+                        <div class="col-md-7">
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 5%; padding-right: 4%;">
+                                    <div class="row">
+                                        <button id="btnAdd" class="customBtn custmoBtnReset" title="addAddress" ng-click="AddCustomerBillPolicy()" ng-disabled="customerEntryForm.PolicyDescription.$invalid">
+                                            <i class=" fa fa-plus-square">
+                                            </i>&nbsp;{{buttonBillPolicy}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                    <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="btnSuppBillPolicyDeleteShow" ng-click="removeBillPolicy()">
+                                        <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br />
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Bill Policy details"><span>Bill Policy</span></th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aBillPolicy in customerBillPolicylist" ng-click="SelCustomerBillPolicy(aBillPolicy,$index)">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{aBillPolicy.PolicyDescription}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="row">
+                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+
+                        <div class="row">
+
+                            <button class="customBtn custmoBtnSave" ng-click="AddCustomer()" ng-disabled="(customerEntryForm.CustomerTitle.$invalid
+                                                                                           || customerEntryForm.CustomerFirstName.$invalid
+                                                                                           || customerEntryForm.CustomerLastName.$invalid
+                                                                                           || customerEntryForm.dateOfBirth.$invalid ||!ddlCustomerType
+                                                                                           || customerEntryForm.gender.$invalid) ||(customerAddresslist.length==0)
+                                                                                           || btnSuppAddressDeleteShow
+
+                                ">
+                                <i class="fa fa-floppy-o"></i>&nbsp;{{buttonSupp}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                        <div class="row">
+                            <button id="btnDelete" ng-show="btnDeleteShow" ng-click="Delete()" class="customBtn custmoBtnDelete" title="Delete">
+                                <i class="fa fa-trash"></i>&nbsp;Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                        <div class="row">
+
+                            <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+    <div class="col-md-12" >
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Customer List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="SearchOutlet" class="form-control selectNotMandetory" ng-change="GetCustSearch()" ng-options="branch.BranchName for branch in Branchlist track by branch.BranchId">
+                                <option value="" label="Select Outlet"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetCustSearch()" ng-model="SearchName" placeholder="Name" />
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetCustSearch()" ng-model="SearchCode" placeholder="ARM Code" />
+                            <span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetCustSearch()" ng-model="SearchPhone" placeholder="Mobile No." />
+                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th class="t-cell-center" width="5%">S/N</th>
+                                <th data-th="Customer Details"><span>Name</span></th>
+                                <th class="t-cell-center" width="15%">Outlet</th>
+                                <th class="t-cell-center" width="15%">Customer Type</th>
+                                <th class="t-cell-center" width="10%">ARM Code</th>
+                                <th class="t-cell-center" width="10%">Customer Code</th>
+                                <th class="t-cell-center" width="15%">Mobile No.</th>
+                                <th class="t-cell-center" width="10%">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aCustomer in customerlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelCustomer(aCustomer)">
+                                <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td>{{aCustomer.fullName}}</td>
+                                <td class="t-cell-center">{{aCustomer.BranchName}}</td>
+                                <td class="t-cell-center">{{aCustomer.CustomerTypeName}}</td>
+                                <td class="t-cell-center">{{aCustomer.ManualCustomerCode}}</td>
+                                <td class="t-cell-center">{{aCustomer.CustomerCode}}</td>
+                                <td class="t-cell-center">{{aCustomer.Mobile}}</td>
+                                <td class="t-cell-center">{{aCustomer.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="8">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+customerlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtDateOfBirth'),
+        firstDay: 1,
+        format: "DD MMM",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker.show();
+    });
+</script>
+<style>
+    .pika-label:nth-child(2) {
+        display: none;
+    }
+</style>
+

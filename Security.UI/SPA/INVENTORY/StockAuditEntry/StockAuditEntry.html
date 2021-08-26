@@ -1,0 +1,226 @@
+﻿<form name="stockAuditEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Stock Audit Entry</h3>
+            </div>
+            <div class="panel-body">
+                <p ng-if="Debug" data-toggle="collapse" data-target="#inv_StockAudit">inv_StockAudit</p>
+                <div ng-if="Debug" id="inv_StockAudit" class="collapse"><pre>{{inv_StockAudit|json}}</pre></div>
+                <!--row-->
+                <div class="row">
+                    <div class="col-md-4">
+                        <!--Audit No-->
+                        <div class="form-group" ng-class="{ 'has-error' : stockAuditEntryForm.AuditNo.$invalid && stockAuditEntryForm.AuditNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Audit No">
+                            <div class="input-group ">
+                                <input type="text" id="txtAuditNo" name="AuditNo" class="form-control" ng-model="inv_StockAudit.AuditNo" placeholder="Audit No" maxlength="51" ng-maxlength="50" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="stockAuditEntryForm.AuditNo.$error.required && stockAuditEntryForm.AuditNo.$touched">Audit No is Required</span>
+                            <span class="help-block" style="display: block;" ng-if="stockAuditEntryForm.AuditNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <!--Audit Date-->
+                        <div class="form-group" ng-class="{ 'has-error' : stockAuditEntryForm.AuditDate.$invalid && stockAuditEntryForm.AuditDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Audit Date">
+                            <div class='input-group'>
+                                <input type="text" name="AuditDate" id="txtAuditDate" onkeydown="return false" ng-model="inv_StockAudit.AuditDate" class="form-control " placeholder="Audit Date" required />
+                                <span class="input-group-addon" id="calender1"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="stockAuditEntryForm.AuditDate.$error.required && stockAuditEntryForm.AuditDate.$touched">Audit Date is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <!--Select Store-->
+                        <div class="form-group" ng-class="{ 'has-error' : stockAuditEntryForm.ddlStore.$dirty && stockAuditEntryForm.ddlStore.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Store">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlStore" ng-model="ddlStore" ng-change="inv_StockAudit.DepartmentId=ddlStore.DepartmentId;inv_StockAudit.DepartmentName=ddlStore.DepartmentName" class="form-control selectMendatory" name="ddlStore" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" required>
+                                    <option value="" label="Select Store"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="stockAuditEntryForm.ddlStore.$dirty && stockAuditEntryForm.ddlStore.$invalid">Store is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <!--row-->
+                <div class="row">
+                    <div class="col-md-4">
+                        <!--Audit By-->
+                        <div class="form-group" ng-class="{ 'has-error' : stockAuditEntryForm.preparedBy.$dirty && stockAuditEntryForm.preparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlEmployee" name="preparedBy" ng-change="inv_StockAudit.AuditedById=ddlEmployee.EmployeeId;inv_StockAudit.AuditedBy=ddlEmployee.FullName;" class="form-control selectMendatory" ng-options="employee.FullName  for employee in EmployeeList track by employee.EmployeeId" required>
+                                    <option value="" label="Audit By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="stockAuditEntryForm.ddlStore.$dirty && stockAuditEntryForm.ddlStore.$invalid">Audit By is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <!--Remarks-->
+                        <div class="form-group" ng-class="{ 'has-error' : stockAuditEntryForm.Remarks.$invalid && stockAuditEntryForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <input type="text" id="txtRemarks" name="Remarks" class="form-control" ng-model="inv_StockAudit.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500">
+                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="stockAuditEntryForm.Remarks.$error.required && stockAuditEntryForm.Remarks.$touched">Remarks is Required</span>
+                            <span class="help-block" style="display: block;" ng-if="stockAuditEntryForm.Remarks.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <p ng-if="Debug" data-toggle="collapse" data-target="#inv_StockAuditDetail">inv_StockAuditDetail</p>
+                <div ng-if="Debug" id="inv_StockAuditDetail" class="collapse"><pre>{{inv_StockAuditDetail|json}}</pre></div>
+                <!--row-->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Product">
+                            <div class="input-group input-group-md ddl">
+                                <select id="Product" ng-model="ddlProduct" class="form-control selectNotMandetory" name="Product" ng-change="inv_StockAuditDetail.ItemId =ddlProduct.ItemId; inv_StockAuditDetail.ItemName =ddlProduct.ItemName;inv_StockAuditDetail.ItemCode =ddlProduct.ItemCode;inv_StockAuditDetail.UnitId=ddlProduct.UnitId;inv_StockAuditDetail.PackageId=ddlProduct.PackageId;inv_StockAuditDetail.ContainerId=ddlProduct.ContainerId;AddDetailValidationChk(inv_StockAuditDetail)" ng-options="item.ItemName for item in ItemList track by item.ItemId">
+                                    <option value="" label="Select Product"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : stockAuditEntryForm.AuditQuantity.$invalid && stockAuditEntryForm.AuditQuantity.$touched }" data-toggle="tooltip" data-placement="bottom" title="Audit Quantity">
+                                    <div class="input-group">
+                                        <input type="number" ng-change="AddDetailValidationChk(inv_StockAuditDetail)" id="txtAuditQuantity" name="AuditQuantity" class="form-control txt-center" ng-model="inv_StockAuditDetail.AuditQuantity" placeholder="Audit Qty" maxlength="200" ng-maxlength="199">
+                                    </div>
+                                    <span class="help-block" ng-if="stockAuditEntryForm.AuditQuantity.$error.maxlength"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : stockAuditEntryForm.SettleQuantity.$invalid && stockAuditEntryForm.SettleQuantity.$touched }" data-toggle="tooltip" data-placement="bottom" title="Settle Quantity">
+                                    <div class="input-group">
+                                        <input type="number" ng-change="AddDetailValidationChk(inv_StockAuditDetail)" id="txtSettleQuantity" name="SettleQuantity" class="form-control txt-center" ng-model="inv_StockAuditDetail.SettleQuantity" placeholder="Settle Qty" maxlength="200" ng-maxlength="199">
+                                    </div>
+                                    <span class="help-block" ng-if="stockAuditEntryForm.SettleQuantity.$error.maxlength"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlUnit" class="form-control" name="unit" ng-change="inv_StockAuditDetail.AuditUnitId =ddlUnit.ItemUnitId;inv_StockAuditDetail.AuditUnitName =ddlUnit.UnitName; AddDetailValidationChk(inv_StockAuditDetail)" ng-options="unit.UnitName for unit in ItemUnitlist  | filter: unitFilter(ddlProduct) track by unit.ItemUnitId">
+                                    <option value="" label="Select Unit"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Add/Deduct">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlStockAuditGroup" class="form-control" name="ddlStockAuditGroup" ng-change="inv_StockAuditDetail.AuditUnitId =ddlUnit.ItemUnitId;inv_StockAuditDetail.AuditUnitName =ddlUnit.UnitName;AddDetailValidationChk(inv_StockAuditDetail)" ng-options="SAGroup.AuditGroupName for SAGroup in StockAuditGroupList  track by SAGroup.AuditGroupId">
+                                    <option value="" label="Add/Deduct"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Audit Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlStockAuditType" class="form-control" name="ddlStockAuditType" ng-disabled="!ddlStockAuditGroup" ng-change="inv_StockAuditDetail.AuditTypeId =ddlStockAuditType.AuditTypeId;inv_StockAuditDetail.AuditTypeName =ddlStockAuditType.AuditTypeName;inv_StockAuditDetail.AuditGroupId =ddlStockAuditType.AuditGroupId; AddDetailValidationChk(inv_StockAuditDetail)" ng-options="SAType.AuditTypeName for SAType in StockAuditTypeList | filter: {AuditGroupId:ddlStockAuditGroup.AuditGroupId}  track by SAType.AuditTypeId">
+                                    <option value="" label="Select Audit Type"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <button id="btnAdd" class="customBtn custmoBtnReset btn-add" ng-disabled="DetailAddBtnDisabled" title="Add Detail" ng-click="AddDetail()">
+                                    <i class="fa fa-plus"></i>&nbsp;{{DetailAddBtn}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="RemoveBtnShow" ng-click="RemoveDetail()">
+                                    <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Audits Details"><span>Product Name</span></th>
+                                    <th width="120" class="t-cell-center">Product Code</th>
+                                    <th width="60" class="t-cell-center">Add/Deduct</th>
+                                    <th class="t-cell-center t-qty-width">Qty</th>
+                                    <th class="t-cell-center t-unit-width">Unit</th>
+                                    <th width="15%">Reason/Remarks</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aStockAuditDetail in inv_StockAuditDetailList" ng-click="SelDetail(aStockAuditDetail,$index)">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{aStockAuditDetail.ItemName}}</td>
+                                    <td class=" t-cell-center">{{aStockAuditDetail.ItemCode}}</td>
+                                    <td class=" t-cell-center">{{aStockAuditDetail.AuditTypeName}}</td>
+                                    <td class="t-cell-center">{{aStockAuditDetail.AuditQuantity}}</td>
+                                    <td class="t-cell-center">{{aStockAuditDetail.AuditUnitName}}</td>
+                                    <td>-------</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br />
+                    <p ng-if="Debug" data-toggle="collapse" data-target="#inv_StockAuditDetailList">inv_StockAuditDetailList</p>
+                    <div ng-if="Debug" id="inv_StockAuditDetailList" class="collapse"><pre>{{inv_StockAuditDetailList|json}}</pre></div>
+                    <div class="row">
+
+
+                        <div class="col-md-1 col-xs-12">
+                            <div class="input-group">
+                                <button ng-click="AddStockAudit()" ng-disabled="stockAuditEntryForm.$invalid" id="Button1" style="margin-left: -15px;" class="btn btn-success" title="Save">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-xs-12">
+                            <div class="input-group">
+                                <button type="button" id="btnReset" ng-click="resetForm()" class="btn btn-primary" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker1 = new Pikaday({
+        field: document.getElementById('txtAuditDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker1.show();
+    });
+</script>
+

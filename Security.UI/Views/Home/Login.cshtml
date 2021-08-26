@@ -1,0 +1,37 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RTL Login</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/vendors")
+    @*<script src="../../../Scripts/angularjs-dropdown-multiselect.js"></script>*@
+    <script src="~/SPA/app.js"></script>
+    <script src="~/Scripts/dirPagination.js"></script>
+    <script src="~/SPA/Login/LoginController.js"></script>
+
+    @*<script src="http://hrajchert.github.io/angular-screenfull/js/marked.js"></script>
+    <script src="http://hrajchert.github.io/angular-screenfull/js/dist/angular-screenfull.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/2.0.0/screenfull.js"></script>*@
+
+</head>
+<body ng-app="AngularDemoApp">
+    <section class="content">
+        <div class="row">
+            <br /><br /><br />
+            <div class="col-md-12">
+                <div ng-view>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

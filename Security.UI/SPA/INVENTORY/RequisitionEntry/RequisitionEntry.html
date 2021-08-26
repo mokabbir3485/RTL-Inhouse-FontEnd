@@ -1,0 +1,671 @@
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<form name="requisitionEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Requisition</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group" style="margin-bottom: 25px;">
+                                <label>Req Type : </label>
+                                <label style="color:red;">* </label>
+                                &nbsp;&nbsp;
+                                <!--<div class="radio-inline">
+                                    <input type="radio" name="RequisitionType" ng-change="RequisitionTypeChange()" ng-model="RequisitionType" value="General" />General
+                                </div>-->
+                                <div class="radio-inline">
+                                    <input type="radio" name="RequisitionType" ng-change="RequisitionTypeChange()" ng-model="RequisitionType" value="IWO" />IWO
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Requisition Date.">
+                            <div class="input-group">
+                                <input type="text" id="txtDate" name="reqDate" onkeydown="return false" ng-model="inv_Requisition.RequisitionDate" ng-change="getMaxRequNoByDate()" class="form-control datepicker" placeholder="Req. Date" required readonly="readonly" />
+                                <span class="input-group-addon" id="calender"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : requisitionEntryForm.ReqNo.$invalid && requisitionEntryForm.ReqNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Requisition No.">
+                            <div class="input-group">
+                                <input type="text" id="tbxReqNo" ng-model="inv_Requisition.RequisitionNo" name="ReqNo" class="form-control" placeholder="Req. No" maxlength="51" ng-maxlength="50" required readonly="readonly" disabled="disabled">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="requisitionEntryForm.ReqNo.$error.required && requisitionEntryForm.ReqNo.$touched">Requisition No is required</span>
+                            <span class="help-block" ng-if="requisitionEntryForm.ReqNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>                    
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : requisitionEntryForm.ddlPreparedBy.$dirty && requisitionEntryForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="To Prepared By.">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlPreparedBy" ng-model="ddlPreparedBy" class="form-control selectMendatory" name="ddlPreparedBy" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId" required>
+                                    <option value="" label="-- Prepared By --"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="requisitionEntryForm.ddlPreparedBy.$dirty && requisitionEntryForm.ddlPreparedBy.$invalid">Prepared By is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Requisition From Department">
+                                <select name="Department" ng-model="ddlDepartment" class="form-control selectMendatory" ng-change="inv_Requisition.FromDepartmentId=ddlDepartment.DepartmentId;inv_Requisition.FromDepartmentName=ddlDepartment.DepartmentName;GetByCombinationLike()" ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId" required>
+                                    <option value="" label="Requisiton From Department"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Requisition To Department">
+                            <select ng-model="ddlStore" class="form-control selectMendatory" name="Store" ng-change="inv_Requisition.ToDepartmentId=ddlStore.DepartmentId;inv_Requisition.ToDepartmentName=ddlStore.DepartmentName" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" required>
+                                <option value="" label="Requisition To Department"></option>
+                            </select>
+                        </div>
+                    </div>                    
+                    <div class="col-md-6">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Remarks.">
+                            <div class="input-group">
+                                <input type="text" id="Remarks" ng-model="inv_Requisition.Remarks" name="Remarks" class="form-control" placeholder="Remarks" maxlength="200" ng-maxlength="199">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="requisitionEntryForm.Remarks.$error.maxlength">200 Character Max</span>
+                        </div>
+                    </div>                   
+                </div>
+                <hr />
+                <div ng-if="RequisitionType=='IWO'">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;IWO List</h3>
+                            <div class="clearfix">
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="responstable table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="t-cell-center">S/N</th>
+                                                <th class="t-cell-center">IWO No</th>
+                                                <th class="t-cell-center">IWO Date</th>
+                                                <th class="t-cell-center">Company Name</th>
+                                                <th class="t-cell-center">Remanrks</th>
+                                                <th class="t-cell-center">Action</th>
+                                            </tr>
+                                            <tr ng-show="iwolist.length" class="HoverTable searchRow" ng-repeat="iwo in iwolist" onclick="RowSelect(this)" ng-click="getWorkOrderDetails(iwo);">
+                                                <td class="t-cell-center">{{$index+1}}</td>
+                                                <td class="t-cell-center">{{iwo.InternalWorkOrderNo}}</td>
+                                                <td class="t-cell-center">{{iwo.InternalWorkOrderDate}}</td>
+                                                <td class="t-cell-center">{{iwo.CompanyName}}</td>
+                                                <td class="t-cell-center">{{iwo.Remarks}}</td>
+                                                <td class="t-cell-center">
+                                                    <button class="btn btn-lg" style="font-size:13px; padding:12.5px"
+                                                            ng-click="OpenReport(iwo.InternalWorkOrderId)">
+                                                        Report
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;IWO Product List</h3>
+                            <div class="clearfix">
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="responstable table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="t-cell-center">S/N</th>
+                                                <th class="t-cell-center">Finished Item</th>
+                                                <th class="t-cell-center">Order Qty</th>
+                                                <th class="t-cell-center">Raw Material</th>
+                                                <th class="t-cell-center">Core (MM)</th>
+                                                <th class="t-cell-center">Qty/Roll (Pcs)</th>
+                                                <th class="t-cell-center">Roll Direction</th>
+                                                <th class="t-cell-center">Delivery Date</th>
+                                                <th class="t-cell-center">Remarks</th>
+                                            </tr>
+                                            <tr ng-show="inv_InternalOrderDetailList.length" class="HoverTable searchRow" ng-repeat="iwoDetail in inv_InternalOrderDetailList" onclick="RowSelect(this)">
+                                                <td class="t-cell-center">{{$index+1}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.FinishedItemName}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.OrderQty}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.RawItemName}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.Core}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.QtyPerRoll}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.RollDirection}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.DeliveryDate}}</td>
+                                                <td class="t-cell-center">{{iwoDetail.DetailRemarks}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="panel-footer">
+                  <div class="row">
+                      <div class="col-md-4">
+                          <div class="radio-inline">
+
+                              <label>
+                                  <input type="radio" name="SelectListDdl" value="true" ng-model="SelectListDdl" checked ng-click="ClearDDl1()">Regular Dropdown
+                              </label>
+                          </div>
+                          <div class="radio-inline">
+                              <label>
+                                  <input type="radio" name="SelectListDdl" value="false" ng-model="SelectListDdl"ng-click="ClearDDl2()">Custom Dropdown
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div ng-show="SelectListDdl=='false'">
+                                <div class="input-group-btn search-panel" >
+                                    <input type="text" onkeydown="newControl(this)" id="SearchTextBox" ng-disabled="!ddlDepartment" ng-model="ItemSearchCombination" ng-change="ItemSearchCombinationTextChange()" autocomplete="off" class="form-control arrow-togglable" placeholder="Type Item Name Or Any Other Related Info" />
+                                    <div id="SearchResults">
+                                        <ul ng-show="ItemSearchCombination.length && VisibilityOfSuggession" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9; ">
+                                            <li ng-hide="AllCombinationSearch.length">
+                                                <label class="form-control"><a>No Result Found &nbsp;&nbsp;<i class="fa fa-circle-o-notch fa-spin fa-xing fa-fw"></i></a></label>
+                                            </li>
+
+                                            <li ng-repeat="aCombination in AllCombinationlist" ng-bind-html-unsafe="aCombination.Combination" id="ReqDdlCl">
+                                                <button ng-click="LoadACombination(aCombination)" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                                    {{aCombination.Combination}}
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                            <div ng-show="SelectListDdl=='true'">
+                                <select  ng-disabled="!ddlStore" id="requestionDDl" ng-model="ddlRequestionDdl" ng-options="aCombination.Combination  for aCombination in AllCombinationlist track by aCombination.ItemId" ng-change="LoadACombination(aCombination=ddlRequestionDdl)" class="form-control">
+                                    <option value="">Select </option>
+                                </select>
+                            </div>
+                          
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Current Quantity.">
+                                <div class="input-group">
+                                    <input type="number" name="issueQty" class="form-control txt-center" disabled="disabled" ng-model="ItemCombination.CurrentQuantity" placeholder="Curr. Qty">
+                                    <span class="input-group-addon"><i class="fa fa-qq"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Requisition Quantity">
+                                <div class="input-group">
+                                    <input type="number" id="txtIssueQty" class="form-control txt-center" min="0" step=".01" ng-model="ItemCombination.AttributeQty" placeholder="Req. Qty">
+                                    <span class="input-group-addon"><i class="fa fa-qq"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddRequisitionDetail()" ng-disabled="!ItemCombination.Combination || ItemCombination.AttributeQty < 0.01">
+                                <i class=" fa fa-plus-square"></i>&nbsp;{{buttonAddIssue}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center"></th>
+                                <th class="t-cell-center">Product Name</th>
+                                <th class="t-cell-center">Description 1</th>
+                                <th class="t-cell-center">Description 2</th>
+                                <th class="t-cell-center">Requisition Quantity</th>
+                            </tr>
+                            <tbody ng-repeat="aIssue in SingleIssuelist track by $index">
+                                <tr>
+                                    <td class="t-cell-center"><label><i ng-show="!aIssue.DisplaySta && aIssue.HeaderOfAttribute.length" class="fa fa-plus-square"></i><i ng-show="aIssue.DisplaySta && aIssue.HeaderOfAttribute.length" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aIssue.DisplaySta" /></label></td>
+                                    <td class="t-cell-center">{{aIssue.ItemName}}</td>
+                                    <td class="t-cell-center">{{aIssue.ItemDescription}}</td>
+                                    <td class="t-cell-center">{{aIssue.ItemDescriptionTwo}}</td>
+                                    <td class="t-cell-center">{{aIssue.IssueQuantity}}</td>
+                                </tr>
+                                <tr ng-show="aIssue.DisplaySta && aIssue.HeaderOfAttribute.length">
+                                    <td></td>
+                                    <td colspan="4">
+                                        <div>
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <th class="t-cell-center">Barcode</th>
+                                                    <th class="t-cell-center">Current Quantity</th>
+                                                    <th class="t-cell-center">Req. Quantity</th>
+                                                    <th class="t-cell-center">Req. Purpose</th>
+                                                    <th class="t-cell-center">Action</th>
+                                                </tr>
+                                                <tr class="HoverTable" ng-repeat="aIssueDetailAdAttribute in _inv_StockIssueDetailAdAttribute | filter: { ItemId : aIssue.ItemId }:true">
+                                                    <td class="t-cell-center">{{aIssueDetailAdAttribute.Barcode}}</td>
+                                                    <td class="t-cell-center">{{aIssueDetailAdAttribute.CurrentQuantity}}</td>
+                                                    <td class="t-cell-center text-center">
+                                                        <input type="number" style="text-align:center" min="0" step=".01" ng-change="SumAttQty()" ng-model="aIssueDetailAdAttribute.AttributeQty" />
+                                                    </td>
+                                                    <td class="t-cell-center">
+                                                        <select ng-model="ddlRequisitionPurpose" name="RequisitionPurpose" ng-init="ddlRequisitionPurpose=ProductionRequisitionPurpose;aIssueDetailAdAttribute.RequisitionPurposeId=ProductionRequisitionPurpose.RequisitionPurposeId;aIssueDetailAdAttribute.RequisitionPurposeName=ProductionRequisitionPurpose.RequisitionPurposeName" ng-change="aIssueDetailAdAttribute.RequisitionPurposeId=ddlRequisitionPurpose.RequisitionPurposeId;aIssueDetailAdAttribute.RequisitionPurposeName=ddlRequisitionPurpose.RequisitionPurposeName" ng-options="requisition.RequisitionPurposeName   for requisition in RequisitionPurposeList track by requisition.RequisitionPurposeId ">
+                                                            <option value="" label="Purpose"></option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="t-cell-center">
+                                                        <button title="Remove" ng-click="aIssue.IssueQuantity = inv_StockReceiveDetail.IssueQuantity - aIssue.AttributeQty; RemoveItemAttr(aIssueDetailAdAttribute)">
+                                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <button class="btn btn-success" ng-disabled="!_inv_StockIssueDetailAdAttribute.length||!inv_Requisition.RequisitionNo||!inv_Requisition.RequisitionDate||!ddlDepartment||!ddlStore||!ddlPreparedBy" ng-click="SaveRequsition()">
+                        <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4" style="display: none">
+                <div class="input-group">
+                    <button id="Button3" class="btn btn-danger" title="Search">
+                        <i class="fa fa-trash"></i>&nbsp;Delete
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <button id="Button3" class="btn btn-primary" title="Search" ng-click="resetForm()">
+                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+</form>
+<pre>{{AllCombinationSearch | json}}</pre>
+<style>
+    .typeahead-demo .custom-popup-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        background-color: #f9f9f9;
+    }
+
+        .typeahead-demo .custom-popup-wrapper > .message {
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            color: #868686;
+        }
+
+        .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+            position: static;
+            float: none;
+            display: block;
+            min-width: 100%;
+            background-color: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+</style>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>
+
+<script>
+    function getData() {
+        var comboplete = new Awesomplete('input.dropdown-input', {
+            minChars: 0,
+        });
+        Awesomplete.$('.dropdown-btn').addEventListener("click", function () {
+            if (comboplete.ul.childNodes.length === 0) {
+                comboplete.minChars = 0;
+                comboplete.evaluate();
+            }
+            else if (comboplete.ul.hasAttribute('hidden')) {
+                comboplete.open();
+            }
+            else {
+                comboplete.close();
+            }
+        });
+    }</script>
+
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender").addEventListener("click", function () {
+        picker.show();
+    });
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+    }
+</script>
+<!--Filter-->
+<script>
+    function getCategory(x) {
+        document.getElementById('btnCat').value = x.rowIndex;
+        document.getElementById("btnCat").click();
+    }
+    function getSubCategory(x) {
+        document.getElementById('btnSubCat').value = x.rowIndex;
+        document.getElementById("btnSubCat").click();
+    }
+</script>
+
+<script>
+    $('.popover-markup>.trigger').popover({
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+
+    });
+    $("#popover-markup").click(function () {
+        $('.trigger').popover('toggle');
+    });
+
+    $("#requestionDDl").select2();
+</script>
+
+
+

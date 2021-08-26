@@ -1,0 +1,112 @@
+﻿<form name="paymentGroupForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" >
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Payment Group Entry </h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="form-group" ng-class="{ 'has-error' : paymentGroupForm.PaymentGroupName.$invalid && paymentGroupForm.PaymentGroupName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payment Group Name">
+                    <div class="input-group">
+                        <input type="text" id="txtPaymentGroupName" maxlength="50" name="PaymentGroupName" class="form-control" ng-model="ad_PaymentGroup.PaymentGroupName" ng-blur="CheckDuplicateBranchTypeName()" ng-change="foundChange()" placeholder="Payment Group Name" ng-maxlength="49" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="paymentGroupForm.PaymentGroupName.$error.required && paymentGroupForm.PaymentGroupName.$touched">Payment Group Name is required</span>
+                    <span class="help-block" ng-if="paymentGroupForm.PaymentGroupName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status:</label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_PaymentGroup.IsActive">Active
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_PaymentGroup.IsActive">Inactive
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <br />
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button type="submit" id="Button1" class="customBtn custmoBtnSave" ng-click="Save()" title="{{button}}" ng-disabled="paymentGroupForm.$invalid ">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" title="Delete" ng-click="Delete()" ng-show="Show">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Payment Group List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <thead>
+                            <tr class="t-head">
+                                <th class="txt-center">S/N</th>
+                                <th class="txt-center" data-th="Payment Details"><span>Payment Group Name</span></th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="BranchTypelist.length <= 0">
+                                <td colspan="2" style="text-align:center;">Loading new data!!<img src="/UploadedFiles/spinner.gif"></td>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aPaymentGroup in paymentGroupList|itemsPerPage:itemsPerPage" current-page="currentPage" total-items="total_count" ng-click="RowClickPaymentType(aPaymentGroup)">
+                                <td class="txt-center">{{$index + ((currentPage-1) * itemsPerPage) + 1}}</td>
+                                <td class="txt-center">{{aPaymentGroup.PaymentGroupName}}</td>
+                                <td class="txt-center">{{aPaymentGroup.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>itemsPerPage">
+                                <th colspan="3">
+                                    <dir-pagination-controls max-size="9"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="itemsPerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*itemsPerPage)+1}} to {{((currentPage-1)*itemsPerPage)+PaymentTypelist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

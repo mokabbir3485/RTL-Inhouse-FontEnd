@@ -1,0 +1,636 @@
+﻿
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<form name="warrentyAndSerialNo" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Warrenty And Serial No</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 CheckBoxDiv">
+                        <div class="checkbox">
+                            <label class="MaterialCheckBox">
+                                Manual<input type="checkbox" name="IsManual" value="" ng-model="IsManual" ng-click="ShowOrHideSerialGrid()">
+                                <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="IsManual">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Department">
+                                <select ng-model="ddlDepartment" class="form-control selectMendatory" name="Department" ng-options="department.DepartmentName for department in DepartmentList | orderBy:'DepartmentName' track by department.DepartmentId" required>
+                                    <option value="" label="Select Department"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group-btn search-panel">
+                            <input type="text" onkeydown="newControl(this)" id="SearchTextBox" ng-model="ItemSearchCombination" ng-change="ItemSearchCombinationTextChange()" autocomplete="off" class="form-control arrow-togglable" placeholder="Type Item Name Or Any Other Related Info" />
+                            <div id="SearchResults">
+                                <ul ng-show="ItemSearchCombination.length && VisibilityOfSuggession" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9; ">
+                                    <li ng-hide="AllCombinationSearch.length">
+                                        <label class="form-control"><a>No Result Found &nbsp;&nbsp;<i class="fa fa-circle-o-notch fa-spin fa-xing fa-fw"></i></a></label>
+                                    </li>
+                                    <li ng-repeat="aCombination in AllCombinationSearch" ng-bind-html-unsafe="aCombination.Combination">
+                                        <button ng-click="LoadACombination(aCombination)" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                            {{aCombination.Combination}}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="number" id="txtQty" class="form-control txt-center" ng-blur="CheckItemQty();" ng-model="ItemCombination.AttributeQty" placeholder="Qty">
+                                <span class="input-group-addon"><i class="fa fa-qq"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="addManualSerail()" ng-disabled="!ddlDepartment || !ItemCombination.Combination || ItemCombination.AttributeQty < 1">
+                            <i class="fa fa-plus-square"></i>&nbsp;Add
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Warrenty and Serial </h3>
+                            </div>
+
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select class="form-control" id="ddlWarrenatyAndSeral" ng-model="IPBAndLPBDdl" ng-options="pb.Name  for pb  in warrentyAndPbList track by pb.Id" ng-change="LocalWarrantyAndSerialNumber(IPBAndLPBDdl.Id);ImportWarrantyAndSerialNumber()">
+                                            <option value="">--Select--</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 text-right">
+                                        <button class="btn btn-primary" ng-click="localAndImportWarrantyAndSerialNumber()"> <span><i class="glyphicon glyphicon-ok-circle"></i>&nbsp;Load </span></button>
+                                    </div>
+                                    <!--<div class="col-md-1">
+                                        <button class="btn btn-primary" ng-click="ClearLoad()"> <span><i class="fa fa-refresh"></i>&nbsp;Clear </span></button>
+                                    </div>-->
+                                    <div class="col-md-5">
+
+                                    </div>
+
+                                </div>
+                                <hr />
+                                <br />
+
+                                <!--<div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class="input-group " data-toggle="tooltip" title="From Date">-->
+
+                                                <!--<input type="text" name="FromDate" id="txtFromDateForWarenty" ng-model="FromDate" ng-change="WarrentySearch();" class="form-control " placeholder="From Date" readonly />
+                                                <span class="input-group-addon" ng-click="FormDateChangeForWarrenty()" id="FormDateChangeForWarrenty"><i class="fa fa-calendar req-icon-color"></i></span>-->
+                                                <!--<div class='input-group'>
+                                                    <input type="text" ng-model="FromDate" id="txtFromDate" class="form-control " placeholder="Form Date" readonly />
+                                                    <span class="input-group-addon" id="calenderFormdate"><i class="fa fa-calendar" style="color:red;"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>-->
+                                    <!--<div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class="input-group " data-toggle="tooltip" title="To Date">
+                                                <input type="text" name="ToDate" id="txtToDateForWarenty" ng-model="ToDate" ng-change="WarrentySearch();" class="form-control " placeholder="To Date" readonly />
+                                                <span class="input-group-addon" ng-click="ToDateChangeForWarrenty()" id="ToDateChangeForWarrenty"><i class="fa fa-calendar req-icon-color"></i></span>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>-->
+
+                                    <!--<div class="col-md-3">
+                                        <div class="form-group" data-toggle="tooltip" title="Search Company and Sales Order No">
+                                            <input type="text" class="form-control" id="PBAndCompany" ng-model="SearchPBAndCompanyName" ng-change="WarrentySearch();" name="name" placeholder="Suppiler Name / IPB or LPB No..." />
+                                        </div>
+                                    </div>-->
+                                    <!--<div class="col-md-3">
+                                        <button id="btnSearch" ng-click="SearchBtn();ImportSearchBtn()" class="customBtn custmoBtnSearch" title="Search">
+                                            <i class="fa fa-refresh"></i>&nbsp;Search
+                                        </button>
+                                    </div>-->
+                                    <!--<div class="col-md-2">
+                                        <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                            <i class="fa fa-refresh"></i>&nbsp;Clear
+                                        </button>
+                                    </div>
+
+                                </div>-->
+
+                                <hr />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="responstable table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="t-cell-center">S/N</th>
+                                                    <th class="t-cell-center">PB No.</th>
+                                                    <th class="t-cell-center">PB Date</th>
+                                                    <th class="t-cell-center">Supplier</th>
+
+                                                    <th class="t-cell-center">Remanrks</th>
+                                                </tr>
+                                                <tr class="HoverTable searchRow" onclick="RowSelect(this)" ng-repeat="aPurchaseBill in WarrentyAndSerialNoList | filter:SearchPBAndCompanyName | filter : FromDate " ng-click="GetPBDetails(aPurchaseBill);GetLocalPBDetails(aPurchaseBill)">
+                                                    <td class="t-cell-center">{{$index + 1}}</td>
+                                                    <td class="t-cell-center">{{aPurchaseBill.PBNo}}</td>
+                                                    <td class="t-cell-center">{{aPurchaseBill.PBDate}}</td>
+                                                    <td class="t-cell-center">{{aPurchaseBill.SupplierName}}</td>
+
+                                                    <td class="t-cell-center">{{aPurchaseBill.Remarks}}</td>
+                                                </tr>
+                                                <!--<tr class="t-foot" ng-show="total_count>PerPage">
+                                                    <th colspan="8" ng-show="pageSizeHide">
+                                                        <dir-pagination-controls max-size="8"
+                                                                                 direction-links="true"
+                                                                                 boundary-links="true"
+                                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                        </dir-pagination-controls>
+                                                    </th>
+                                                </tr>-->
+                                            </tbody>
+                                        </table>
+                                        <!--<div class="row pagination-footer">
+                                            <div class="col-md-6">
+                                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + WarrentyAndSerialNoList.length}} of {{total_count}} Records</span>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <table class="responstable table-hover">
+                        <tr>
+                            <th class="t-cell-center"></th>
+                            <th class="t-cell-center">SL.No</th>
+                            <th class="t-cell-center">Product Name</th>
+                            <th class="t-cell-center">Description</th>
+                            <th class="t-cell-center">PB Qty</th>
+                            <th class="t-cell-center">Warrenty(Days)</th>
+                        </tr>
+                        <tbody ng-repeat="WarrentyAndSerialNoDetail in WarrentyAndSerialNoDetailList">
+                            <tr>
+                                <td ng-click="$event.stopPropagation();" class="t-cell-center"><label><i ng-show="!WarrentyAndSerialNoDetail.DisplaySta" class="fa fa-plus-square"></i><i ng-show="WarrentyAndSerialNoDetail.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="WarrentyAndSerialNoDetail.DisplaySta" /></label></td>
+                                <td class="t-cell-center">{{$index+1}}</td>
+                                <td class="t-cell-center">{{WarrentyAndSerialNoDetail.ItemName}}</td>
+                                <td class="t-cell-center">{{WarrentyAndSerialNoDetail.Description}}</td>
+                                <td class="t-cell-center">{{WarrentyAndSerialNoDetail.PBQty}}</td>
+                                <td class="t-cell-center">
+                                    <input type="number" style="text-align:center" min="0" ng-model="WarrentyAndSerialNoDetail.WarrentyInDays" onclick="return this.select();" required />
+                                </td>
+                            </tr>
+
+                            <tr ng-click="$event.stopPropagation();" ng-show="WarrentyAndSerialNoDetail.DisplaySta">
+                                <td></td>
+                                <td colspan="5">
+                                    <div>
+                                        <table class="responstable table-hover " id="attributeDetailsTable">
+                                            <tr>
+                                                <!--<th class="t-cell-center">Barcode</th>
+                                                <th class="t-cell-center" ng-repeat="AttributeName in WarrentyAndSerialNoDetail.HeaderOfAttribute">{{AttributeName}}</th>
+                                                <th class="t-cell-center" ng-show="!IsManual">PB Qty</th>
+                                                <th class="t-cell-center" ng-show="IsManual">Manual Qty</th>
+                                                <th class="t-cell-center">Warrenty In Days</th>-->
+                                                <th class="t-cell-center">Serial No</th>
+                                            </tr>
+                                            <!--<tr class="HoverTable Edit" ng-repeat="WarrentyAndSerialNoDetailAdAttribute in WarrentyAndSerialNoDetailAdAttributeLst | filter: { ItemId : WarrentyAndSerialNoDetail.ItemId }:true">-->
+                                            <tr class="HoverTable Edit" ng-repeat="WarrentyAndSerialNoDetailAdAttribute in WarrentyAndSerialNoDetailAdAttributeLst">
+                                                <!--<td class="t-cell-center">{{WarrentyAndSerialNoDetailAdAttribute.Barcode}}</td>
+                                                <td class="t-cell-center" ng-repeat="AttributeValue in WarrentyAndSerialNoDetailAdAttribute.ValueOfAttribute">{{AttributeValue}}</td>
+                                                <td class="t-cell-center" ng-repeat="AttributeValue in WarrentyAndSerialNoDetail.ValueOfAttribute">{{AttributeValue}}</td>
+                                                <td class="t-cell-center">{{WarrentyAndSerialNoDetailAdAttribute.PBQty}}</td>
+                                                <td class="t-cell-center text-center">
+                                                    <input type="number" id="txtWarrentyInDays" style="text-align:center" min="0" ng-model="WarrentyAndSerialNoDetailAdAttribute.WarrentyInDays" onclick="return this.select();" ng-change="autoWarrantyInDaysValue(WarrentyAndSerialNoDetailAdAttribute)" required />
+                                                </td>-->
+                                                <td class="t-cell-center text-center">
+                                                    <!--<input type="text" style="text-align:center" ng-model="WarrentyAndSerialNoDetailAdAttribute.SerialNo" ng-blur="setEmptyStringIfNull(WarrentyAndSerialNoDetailAdAttribute);CheckDuplicateSerialNo(WarrentyAndSerialNoDetailAdAttribute);" ng-keypress="serialChange($event)" required />-->
+                                                    <input type="text" onkeydown="nextControl(this)" ng-model="WarrentyAndSerialNoDetailAdAttribute.SerialNo" class="form-control enter-focus-next" ng-change="CheckDuplicateSerialNo(WarrentyAndSerialNoDetailAdAttribute); WarrentyAndSerialNoDetailAdAttribute.WarrentyInDays = WarrentyAndSerialNoDetail.WarrentyInDays; WarrentyAndSerialNoDetailList[0].SerialNo = WarrentyAndSerialNoDetailAdAttribute.SerialNo" style="text-align:center" ng-disabled="!WarrentyAndSerialNoDetail.WarrentyInDays" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row" style="padding-left: 29px !important;">
+                    <div class="col-md-4">
+                        <button id="saveButton" ng-click="Save()" style="margin-left: -15px;" ng-disabled="!WarrentyAndSerialNoDetailAdAttributeLst.length " class="customBtn custmoBtnSave" title="Save">
+                            <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" id="resetButton" ng-click="Reset()" class="customBtn custmoBtnReset" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Warranty And Serial No List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <!--<div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="From Date">
+                                <input type="text" name="FromDate" id="txtFromDateForCI" ng-model="FromDate" ng-change="CommercialInvoiceSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForCi()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group " data-toggle="tooltip" title="To Date">
+                                    <input type="text" name="ToDate" id="txtToDateForCI" ng-model="ToDate" ng-change="CommercialInvoiceSearch();" class="form-control " placeholder="To Date" readonly />
+                                    <span class="input-group-addon" ng-click="ToDateChangeForCI()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" title="Search Item Name">
+                            <input type="text" class="form-control" id="textItemName" ng-model="SearchItemName" ng-change="WarrantyAndSerialNoSearch();" name="name" placeholder="Item  Name Or Serial No" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <!--<button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="getToAndFormDate();CommercialInvoiceSearch()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Item Name</th>
+                                    <th class="txt-center">Serial No</th>
+                                    <th class="txt-center">Warrenty In Days</th>
+                                    <th class="txt-center">PB Type</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aWarrentyAndSerialNo in WarrentyAndSerialNoListPaged | itemsPerPage: PerPage" ng-click="SelWarrentyAndSerialNo(aWarrentyAndSerialNo);" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{aWarrentyAndSerialNo.ItemName }}</td>
+                                    <td class="txt-center">{{aWarrentyAndSerialNo.SerialNo }}</td>
+                                    <td class="txt-center">{{aWarrentyAndSerialNo.WarrentyInDays }}</td>
+                                    <td class="txt-center">{{aWarrentyAndSerialNo.PBType }}</td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + CommercialInvoiceListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--<pre>{{WarrentyAndSerialNoDetailList | json}}</pre>
+<pre>{{WarrentyAndSerialNoDetailAdAttributeLst | json}}</pre>-->
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+    var indx = 0;
+
+    function nextControl(e) {
+        var elements2 = document.getElementsByClassName("enter-focus-next");
+        if (window.event.which == 13) {
+            indx = ((indx + 1) == elements2.length) ? 0 : ++indx;
+            elements2[indx].focus();
+        }
+    }
+
+
+    //var picker1 = new Pikaday({
+    //    field: document.getElementById('txtFromDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calenderFormdate").addEventListener("click", function () {
+    //    picker1.show();
+    //});
+
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+       
+    }
+    $("#ddlWarrenatyAndSeral").select2();
+</script>

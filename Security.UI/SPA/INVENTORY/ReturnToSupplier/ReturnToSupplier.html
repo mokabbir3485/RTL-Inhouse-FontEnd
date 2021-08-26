@@ -1,0 +1,452 @@
+﻿<form name="returnToSupplierForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Return To Supplier</h3>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-3 col-md-offset-5" style="text-align:right;" data-toggle="modal" data-target="#myModal" ng-click="SearchReceive()">
+                            <a style="cursor:pointer;"><i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;Receive </a>
+                        </div>
+                        <div class="col-md-4" style="text-align:right;" data-toggle="modal" data-target="#myModal" ng-click="SearchReturnToSupplierForEdit()">
+                            <a style="cursor:pointer;" ng-show="HasApprovalForReturn"><i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;Return To Supplier</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal For  Requesition-->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialogs">
+                    <button type="button" style="position:absolute !important; padding-left:89% !important; background:#fff;" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <iframe id="AdSearch" src="/SPA/AdvancedSearch/AdvancedSearch.cshtml" width="100%" height="100%" class="embed-responsive-item"></iframe>
+                    <div class="col-md-12" style="background:white; margin-top:-7px;">
+                        <button type="button" class="customBtn loadBtn" data-dismiss="modal" ng-click="LoadAdvanceSearch()"><i class="fa fa-undo" aria-hidden="true"></i>&nbsp;Load</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-7">
+                    <div class="col-md-offset-12"></div>
+                </div>
+                <div class="col-md-5">
+
+                </div>
+                <br />
+            </div>
+            <!-- Modal end -->
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class='input-group'>
+                                        <input type="text" onkeydown="return false" ng-model="SearchItem.FromDate" name="OpeningDate" id="txtOpeningDate" class="form-control " placeholder="From" />
+                                        <span class="input-group-addon" id="calender"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class='input-group'>
+                                        <input type="text" onkeydown="return false" ng-model="SearchItem.ToDate" name="OpeningDate" id="txtOpeningDate2" class="form-control " placeholder="To" />
+                                        <span class="input-group-addon" id="calender2"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="SearchItem.ddlStore" class="form-control selectMendatory" name="Store" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId">
+                                    <option value="" label="From Store"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" ng-model="SearchItem.PBNo" class="form-control" placeholder="PB No" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" ng-model="SearchItem.ReceiveNo" class="form-control" placeholder="Receive No" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" ng-model="SearchItem.ChallanNo" class="form-control" placeholder="Challan No" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom">
+                                <select id="ddlSupplier" ng-model="SearchItem.ddlSupplier" ng-change="inv_PurchaseOrder.SupplierId=ddlSupplier.SupplierId;inv_PurchaseOrder.SupplierName=ddlSupplier.SupplierName" class="form-control selectMendatory" name="supplier" ng-options="supplier.SupplierName for supplier in Supplierlist track by supplier.SupplierId" required>
+                                    <option value="" label="Select Supplier"></option>
+                                </select>
+                                <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom">
+                                <select class="form-control selectNotMandetory" ng-model="SearchItem.ddlProduct" ng-options="item.ItemName for item in ItemList track by item.ItemId">
+                                    <option value="" label="Select Product"></option>
+                                </select>
+                                <span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <div class="input-group width-hundred-percent" data-toggle="tooltip" data-placement="bottom">
+                                        <select id="ddlReceivedBy" ng-model="SearchItem.ddlReceivedBy" class="form-control selectNotMandetory" name="ddlReceivedBy" ng-change="inv_ReturnFromDepartment.ReceivedById=ddlReceivedBy.EmployeeId;inv_ReturnFromDepartment.ReceivedBy=ddlReceivedBy.FullName" ng-options="employee.FullName  for employee in EmployeeList track by employee.EmployeeId">
+                                            <option value="" label="Received By"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <button id="Button4" class="btn btn-info pull-right" ng-click="Search()" title="Search" ng-disabled="!SearchItem.FromDate&&!SearchItem.PBNo&&!SearchItem.ddlStore&&!SearchItem.ReceiveNo&&!SearchItem.ChallanNo&&!SearchItem.ddlSupplier&&!SearchItem.ddlProduct&&!SearchItem.ddlReceivedBy">
+                                            <i class="fa fa-search"></i>&nbsp;Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p ng-if="Debug" data-toggle="collapse" data-target="#inv_StockReceiveList">inv_StockReceiveList</p>
+                <div ng-if="Debug" id="inv_StockReceiveList" class="collapse"><pre>{{inv_StockReceiveList|json}}</pre></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th width="5%">S/N</th>
+                                    <th width="15%" data-th="Receive Details"><span class="t-cell-center" style="margin: 0px 19px;">PB No</span></th>
+                                    <th width="15%" class="t-cell-center">Receive No</th>
+                                    <th width="15%" class="t-cell-center">Challan No</th>
+                                    <th width="15%" class="txt-center t-data-width">Receive Date</th>
+                                    <th width="15%">Receive By</th>
+                                    <th width="20%">Supplier</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" onclick="RowSelect(this)" ng-repeat="aStockReceive in inv_StockReceiveList" ng-click="SelReceive(aStockReceive)">
+                                    <td>{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aStockReceive.PBNo}}</td>
+                                    <td class="t-cell-center">{{aStockReceive.ReceiveNo}}</td>
+                                    <td class="t-cell-center">{{aStockReceive.ChallanNo}}</td>
+                                    <td class="txt-center">{{aStockReceive.ReceiveDate}}</td>
+                                    <td>{{aStockReceive.ReceivedBy}}</td>
+                                    <td>{{aStockReceive.SupplierName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <p ng-if="Debug" data-toggle="collapse" data-target="#inv_ReturnToSupplier">inv_ReturnToSupplier</p>
+                <div ng-if="Debug" id="inv_ReturnToSupplier" class="collapse"><pre>{{inv_ReturnToSupplier|json}}</pre></div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!--Receive No-->
+                                <div class="form-group" ng-class="{ 'has-error' : returnToSupplierForm.ReceiveNo.$invalid && returnToSupplierForm.ReceiveNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Receive No">
+                                    <div class="input-group ">
+                                        <input disabled type="text" id="txtReceiveNo" name="ReturReceivenNo" class="form-control" ng-model="inv_ReturnToSupplier.ReceiveNo" placeholder="Receive No" maxlength="51" ng-maxlength="50">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.ReturnNo.$error.required && returnToSupplierForm.ReturnNo.$touched">Return No is Required</span>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.ReturnNo.$error.maxlength">50 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!--Receive Date-->
+                                <div class="form-group" ng-class="{ 'has-error' : returnToSupplierForm.ReceiveDate.$invalid && returnToSupplierForm.ReceiveDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Receive Date">
+                                    <div class='input-group'>
+                                        <input disabled type="text" name="ReceiveDate" id="txtReceiveDate" onkeydown="return false" ng-model="inv_ReturnToSupplier.ReceiveDate" class="form-control " placeholder="Receive Date" />
+                                        <span class="input-group-addon" id="calender1"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.ReceiveDate.$error.required && returnToSupplierForm.ReceiveDate.$touched">Return Date is Required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                        <!--chalan No-->
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="{ 'has-error' : returnToSupplierForm.chalanNo.$invalid && returnToSupplierForm.chalanNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Chalan No">
+                                <div class="input-group ">
+                                    <input disabled type="text" id="txtChalanNo" name="chalanNo" class="form-control" ng-model="inv_ReturnToSupplier.ChallanNo" placeholder="Chalan No" maxlength="501" ng-maxlength="500">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.chalanNo.$error.required && returnToSupplierForm.chalanNo.$touched">Remarks is Required</span>
+                                <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.chalanNo.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <!-- supplier -->
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-md ddl">
+                                        <select disabled ng-model="ddlDepartment" class="form-control selectNotMandetory" name="Department" ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId" required>
+                                            <option value="" label="Select Department"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group width-hundred-percent" ng-init="inv_ReturnToSupplier.SupplierId=ddlSupplier.SupplierId;inv_ReturnToSupplier.SupplierName=ddlSupplier.SupplierName" data-toggle="tooltip" data-placement="bottom" title="Supplier">
+                                            <select disabled class="form-control selectNotMandetory" id="ddlSupplier" name="ddlSupplier" ng-model="ddlSupplier" ng-options="supplier.SupplierName  for supplier in Supplierlist track by supplier.SupplierId">
+                                                <option value="" label="Supplier"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!--Return No-->
+                                <div class="form-group" ng-class="{ 'has-error' : returnToSupplierForm.ReturnNo.$invalid && returnToSupplierForm.ReturnNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Return No">
+                                    <div class="input-group ">
+                                        <input type="text" id="txtReturnNo" name="ReturnNo" class="form-control" ng-model="inv_ReturnToSupplier.ReturnNo" placeholder="Return No" maxlength="51" ng-maxlength="50" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.ReturnNo.$error.required && returnToSupplierForm.ReturnNo.$touched">Return No is Required</span>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.ReturnNo.$error.maxlength">50 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!--Return Date-->
+                                <div class="form-group" ng-class="{ 'has-error' : returnToSupplierForm.ReturnDate.$invalid && returnToSupplierForm.ReturnDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Return Date">
+                                    <div class='input-group'>
+                                        <input type="text" name="ReturnDate" id="txtReturnDate" onkeydown="return false" ng-model="inv_ReturnToSupplier.ReturnDate" class="form-control " placeholder="Return Date" required />
+                                        <span class="input-group-addon" id="calender1"><i class="fa fa-calendar" style="color:red;"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.ReturnDate.$error.required && returnToSupplierForm.ReturnDate.$touched">Return Date is Required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Return By -->
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group width-hundred-percent" data-toggle="tooltip" data-placement="bottom">
+                                        <select class="form-control selectNotMandetory" id="ddlReturnBy" name="ddlReturnBy" ng-model="ddlReturnBy" ng-change="inv_ReturnToSupplier.ReturnById=ddlReturnBy.EmployeeId;inv_ReturnToSupplier.ReturnBy=ddlReturnBy.FullName" ng-options="employee.FullName  for employee in EmployeeList track by employee.EmployeeId">
+                                            <option value="" label="Return by"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <!--Remarks-->
+                                <div class="form-group" ng-class="{ 'has-error' : returnToSupplierForm.Remarks.$invalid && returnToSupplierForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                                    <div class="input-group ">
+                                        <input type="text" id="txtRemarks" name="Remarks" class="form-control" ng-model="inv_ReturnToSupplier.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500">
+                                        <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.Remarks.$error.required && returnToSupplierForm.Remarks.$touched">Remarks is Required</span>
+                                    <span class="help-block" style="display: block;" ng-if="returnToSupplierForm.Remarks.$error.maxlength">500 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>
+                                        <button type="button" ng-click="expandAll(allExpanded = !allExpanded)">
+                                            <span ng-bind="allExpanded ? '-' : '+'"></span>
+                                        </button>
+                                    </th>
+                                    <th width="5%" class="t-cell-center t-qty-width">S/N</th>
+                                    <th width="20%" class="text-left" data-th="Return Product Details"><span>Product Name</span></th>
+                                    <th width="10%" class="t-cell-center">Code</th>
+                                    <th width="10%" class="t-cell-center t-unit-width">SR Unit</th>
+                                    <th width="5%" class="t-cell-center t-qty-width">SR Qty</th>
+                                    <th width="5%" class="t-cell-center t-qty-width">Returned Qty</th>
+                                    <th width="5%" class="t-cell-center t-qty-width">Return Qty</th>
+                                    <th width="10%" class="t-cell-center t-qty-width">Unit Price</th>
+                                    <th width="20%" class="t-cell-center">Reason</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat-start="aReturnToSupplierDetail in inv_ReturnToSupplierDetailList" ng-init="aReturnToSupplierDetail.ReturnUnitPrice=aReturnToSupplierDetail.SRUnitPrice;   aReturnToSupplierDetail.ReturnUnitId=aReturnToSupplierDetail.SRUnitId;     aReturnToSupplierDetail.ReturnUnitName=aReturnToSupplierDetail.SRUnitName;">
+                                    <td ng-click="$event.stopPropagation();">
+                                        <button ng-show="aReturnToSupplierDetail.ItemAddAtt.length" ng-click="expanded = !expanded ; " expand>
+                                            <span ng-bind="expanded ? '-' : '+'"></span>
+                                        </button>
+                                    </td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td>{{aReturnToSupplierDetail.ItemName}}</td>
+                                    <td class="t-cell-center">{{aReturnToSupplierDetail.ItemCode}}</td>
+                                    <td class="t-cell-center">{{aReturnToSupplierDetail.ReturnUnitName}}</td>
+                                    <td class="t-cell-center">{{aReturnToSupplierDetail.SRQuantity}}</td>
+                                    <td class="t-cell-center">{{aReturnToSupplierDetail.ReturnedQuantity}}</td>
+                                    <td class="t-cell-center"><input type="number" class="form-control text-center" ng-model="aReturnToSupplierDetail.ReturnQuantity" ng-init="aReturnToSupplierDetail.ReturnQuantity=0" placeholder="Qty" onclick="return this.select();" /> </td>
+                                    <td class="t-cell-center">{{aReturnToSupplierDetail.ReturnUnitPrice}}</td>
+                                    <td class="t-cell-center">
+                                        <select ng-model="aReturnToSupplierDetail.ddlReturnReason" class="form-control selectNotMandetory" style="width: 100%" name="ddlReturnReason" ng-change="aReturnToSupplierDetail.ReturnReasonId =aReturnToSupplierDetail.ddlReturnReason.ReturnReasonId;aReturnToSupplierDetail.ReturnReasonName =aReturnToSupplierDetail.ddlReturnReason.ReturnReasonName;" ng-options="RReason.ReturnReasonName for RReason in ReturnReasonList track by RReason.ReturnReasonId">
+                                            <option value="" label="Select Reason"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end ng-show="expanded && aReturnToSupplierDetail.ItemAddAtt.length">
+                                    <td></td>
+                                    <td colspan="9">
+                                        <table class="table table-condensed table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Qty</th>
+                                                    <th ng-repeat="FirstItemAddAtt in aReturnToSupplierDetail.ItemAddAtt[0].Detatil ">{{FirstItemAddAtt.AttributeName}}</th>
+                                                    <th class="t-cell-center">+ / -</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="aItemAddAtt in aReturnToSupplierDetail.ItemAddAtt " ng-init="aItemAddAtt.hover = false;" ng-mouseover="aItemAddAtt.hover = true" ng-mouseleave="aItemAddAtt.hover= false">
+                                                    <td>
+                                                        <input type="checkbox" ng-model="aItemAddAtt.selected" ng-disabled="true" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control" ng-change="AddAttValidationChk(aItemAddAtt)" ng-model="aItemAddAtt.AttributeQty" onclick="return this.select();" />
+                                                    </td>
+                                                    <td ng-if="inv_ReturnToSupplier.receiveId==0" ng-repeat="aDetatil in aItemAddAtt.Detatil" ng-init="aDetatil.ValueSelect=null">
+                                                        <input ng-change="AddAttValidationChk(aItemAddAtt)" ng-show="!aDetatil.Values.length" type="text" class="form-control" ng-init="aDetatil.AttributeValue=''" ng-model="aDetatil.AttributeValue" />
+                                                        <select ng-show="aDetatil.Values.length" ng-model="aDetatil.ValueSelect" class="form-control" name="ddlUn234itReceive" ng-init="" ng-change="(aDetatil.ValueSelect.Value==null)? aDetatil.AttributeValue ='': aDetatil.AttributeValue =aDetatil.ValueSelect.Value; AddAttValidationChk(aItemAddAtt)" ng-options="value.Value for value in aDetatil.Values  track by value.Value">
+                                                            <option value="" label="Select Value"></option>
+                                                        </select>
+                                                    </td>
+                                                    <td ng-if="inv_ReturnToSupplier.ReturnId>0" ng-repeat="aDetatil in aItemAddAtt.Detatil">
+                                                        <input ng-change="AddAttValidationChk(aItemAddAtt)" ng-show="!aDetatil.Values.length" type="text" class="form-control" ng-model="aDetatil.AttributeValue" />
+                                                        <select ng-show="aDetatil.Values.length" ng-model="aDetatil.ValueSelect" class="form-control" name="ValueSelect" ng-change="(aDetatil.ValueSelect.Value==null)? aDetatil.AttributeValue ='': aDetatil.AttributeValue =aDetatil.ValueSelect.Value; AddAttValidationChk(aItemAddAtt)" ng-options="value.Value for value in aDetatil.Values  track by value.Value">
+                                                            <option value="" label="Select Value"></option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="t-cell-center" style="width:80px;" ng-init="AddAttValidationChk(aItemAddAtt)">
+                                                        <i ng-show="aItemAddAtt.hover" ng-click="PushAddAtt($index,aReturnToSupplierDetail.ItemAddAtt, aItemAddAtt)" style="font-size:1.5em;" class="glyphicon glyphicon-plus-sign"></i>
+                                                        <i ng-show="aItemAddAtt.hover && aReturnToSupplierDetail.ItemAddAtt.length>1" ng-click="RemoveAtt($index,aReturnToSupplierDetail.ItemAddAtt)" style="font-size:1.5em;" class="glyphicon glyphicon-minus-sign"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <p ng-if="Debug" data-toggle="collapse" data-target="#inv_ReturnToSupplierDetailList">inv_ReturnToSupplierDetailList</p>
+                <div ng-if="Debug" id="inv_ReturnToSupplierDetailList" class="collapse"><pre>{{inv_ReturnToSupplierDetailList|json}}</pre></div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-1 col-xs-12">
+                            <div class="input-group">
+                                <button ng-click="SaveReturnToSupplier()" ng-disabled="!inv_ReturnToSupplier.ReturnNo|| !inv_ReturnToSupplier.ReturnDate||!inv_ReturnToSupplier.Remarks || !ddlReturnBy" id="Button1" style="margin-left: -15px;" class="btn btn-success" title="Save">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-xs-12">
+                            <div class="input-group">
+                                <button type="button" id="btnReset" ng-click="resetForm()" class="btn btn-primary" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>
+
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtOpeningDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender").addEventListener("click", function () {
+        picker.show();
+    });
+
+    var picker = new Pikaday({
+        field: document.getElementById('txtOpeningDate2'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender2").addEventListener("click", function () {
+        picker.show();
+    });
+</script>
+
+<script>
+    var picker1 = new Pikaday({
+        field: document.getElementById('txtReturnDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker1.show();
+    });
+</script>
+
+

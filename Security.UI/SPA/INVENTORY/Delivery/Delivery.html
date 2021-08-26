@@ -1,0 +1,500 @@
+﻿<form name="deliveryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp;</div>
+        </div>
+    </div>
+    <div class="col-md-12" id="successMesg">
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row panel-title">
+                    <div class="col-sm-6">
+                        <i class="fa fa-list"></i>&nbsp;<label style="font-weight:bold">Delivery</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="pull-right">
+                            <input type="checkbox" ng-model="IsNonSO" ng-change="resetFormChk()" />&nbsp;<label>NON IWO</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row" ng-show="!IsNonSO">
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.deliveryDate.$invalid && deliveryForm.deliveryDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery Date">
+                            <div class="input-group">
+                                <input type="text" name="deliveryDate" id="txtDeliveryDate" ng-blur="getMaxDeliveryNo()" ng-model="inv_StockDelivery.DeliveryDate" onkeydown="return false" class="form-control datepicker" placeholder="Delivery Date" readonly="readonly" required />
+                                <span class="input-group-addon" id="calender1"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="deliveryForm.deliveryDate.$error.required && deliveryForm.deliveryDate.$touched">Delivery Date is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.BillDate.$invalid && deliveryForm.BillDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bill Date">
+                            <div class="input-group">
+                                <input type="text" name="BillDate" id="txtBillDate" ng-model="inv_StockDelivery.BillDate" class="form-control datepicker" placeholder="Bill Date" readonly="readonly" required disabled="disabled" />
+                                <span class="input-group-addon" id="calender2"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="deliveryForm.BillDate.$error.required && deliveryForm.BillDate.$touched">Bill Date is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : deliveryForm.DeliveryNo.$invalid && DeliveryNo.DeliveryId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery No">
+                                    <div class="input-group ">
+                                        <input type="text" min="1" ng-model="inv_StockDelivery.DeliveryNo" id="deliveryNo" class="form-control" name="DeliveryNo" placeholder="Delivery No" maxlength="21" ng-maxlength="20" readonly="readonly" disabled="disabled" />
+                                    </div>
+                                    <span class="help-block" style="display: block;color:red" ng-if="deliveryForm.DeliveryNo.$error.maxlength">20 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error':deliveryForm.OrderNo.$invalid && deliveryForm.OrderNo.$touched}" data-toggle="tooltip" data-placement="bottom" title="Order No">
+                                    <div class="input-group">
+                                        <input type="text" id="txtOrderNo" name="OrderNo" class="form-control txt-center" ng-model="inv_StockDelivery.OrderNo" placeholder="Order No" required readonly="readonly" disabled="disabled">
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="deliveryForm.OrderNo.$error.maxlength">9 Character Max</span>
+                                    <span class="help-block" style="display: block;" ng-if="deliveryForm.OrderNo.$error.required && deliveryForm.OrderNo.$touched">Order No is required</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="from-group" ng-class="{'has-error' : deliveryForm.ddlStore.$dirty && deliveryForm.ddlStore.$invalid}" data-toggle="tooltip" data-placement="bottom" title="Delivery From Departemnt">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlStore" class="form-control selectMendatory" name="ddlStore" ng-change="inv_StockDelivery.DeliveryFromDepartmentId=ddlStore.DepartmentId;inv_StockDelivery.DeliveryFromDepartmentName=ddlStore.DepartmentName;LoadDataWhenDepartmentChange();" ng-options="department.DepartmentName for department in Storelist track by department.DepartmentId" ng-disabled="DeliveryDetailList.length" required>
+                                    <option value="" label="Select Department"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="deliveryForm.ddlStore.$dirty && deliveryForm.ddlStore.$invalid">Select Store</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="!IsNonSO">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.ddlDeliverydBy.$dirty && deliveryForm.ddlDeliverydBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Deliveryd By">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlDeliverydBy" name="ddlDeliverydBy" class="form-control selectMendatory" ng-change="inv_StockDelivery.DeliverydById=ddlDeliverydBy.EmployeeId;inv_StockDelivery.DeliverydBy=ddlDeliverydBy.FullName" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId" required>
+                                    <option value="" label="Deliveryd By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="deliveryForm.ddlDeliverydBy.$dirty && deliveryForm.ddlDeliverydBy.$invalid">Delivery by is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group" ng-class="{'has-error':deliveryForm.Remarks.$invalid && deliveryForm.Remarks.$touched}" data-toggle="tooltip" data-placement="bottom" title="Remarks ">
+                            <div class="input-group">
+                                <input type="text" id="txtRemarks" name="Remarks" class="form-control txt-center" ng-model="inv_StockDelivery.ReceivedBy" placeholder="Remarks" maxlength="501" ng-maxlength="500">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block " style="color:red;" ng-if="deliveryForm.Remarks.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" ng-show="IsNonSO">
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.challanDate.$invalid && deliveryForm.challanDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery Date">
+                            <div class="input-group">
+                                <input type="text" name="challanDate" id="txtChallanDate" ng-blur="getMaxchallanNo()" ng-model="inv_StockDeliveryNonSO.DeliveryDate" onkeydown="return false" class="form-control datepicker" placeholder="Delivery Date" readonly="readonly" required />
+                                <span class="input-group-addon" id="calenderChallan"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="deliveryForm.challanDate.$error.required && deliveryForm.challanDate.$touched">Delivery Date is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : deliveryForm.challanNo.$invalid && deliveryForm.challanNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery No">
+                            <div class="input-group ">
+                                <input type="text" min="1" ng-model="inv_StockDeliveryNonSO.DeliveryNo" id="challanNo" class="form-control" name="challanNo" placeholder="Delivery No" maxlength="21" ng-maxlength="20" style="text-align:center" disabled />
+                            </div>
+                            <span class="help-block" style="display: block;color:red" ng-if="deliveryForm.challanNo.$error.maxlength">20 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="from-group" ng-class="{'has-error' : deliveryForm.ddlChallanStore.$dirty && deliveryForm.ddlChallanStore.$invalid}" data-toggle="tooltip" data-placement="bottom" title="Delivery From Departemnt">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlChallanStore" class="form-control selectMendatory" name="ddlChallanStore" ng-change="inv_StockDeliveryNonSO.DeliveryFromDepartmentId=ddlChallanStore.DepartmentId;inv_StockDeliveryNonSO.DeliveryFromDepartmentName=ddlChallanStore.DepartmentName;" ng-options="department.DepartmentName for department in Storelist track by department.DepartmentId" required>
+                                            <option value="" label="Select Store"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="deliveryForm.ddlChallanStore.$dirty && deliveryForm.ddlChallanStore.$invalid">Select Store</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : deliveryForm.ddlChallanBy.$dirty && deliveryForm.ddlChallanBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Delivery By">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlChallanBy" name="ddlChallanBy" class="form-control selectMendatory" ng-change="inv_StockDeliveryNonSO.DeliverydBy=ddlChallanBy.FullName" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId" required>
+                                            <option value="" label="Delivery By"></option>
+                                        </select>
+                                    </div>
+                                    <span class="help-block" ng-show="deliveryForm.ddlChallanBy.$dirty && deliveryForm.ddlChallanBy.$invalid">Delivery by is Required</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{'has-error':deliveryForm.RcvBy.$invalid && deliveryForm.RcvBy.$touched}" data-toggle="tooltip" data-placement="bottom" title="Receive By ">
+                                    <div class="input-group">
+                                        <input type="text" id="txtRcvBy" name="RcvBy" class="form-control txt-center" ng-model="inv_StockDeliveryNonSO.ReceivedBy" placeholder="Receive By" maxlength="201" ng-maxlength="200">
+                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                    </div>
+                                    <span class="help-block " style="color:red;" ng-if="deliveryForm.RcvBy.$error.maxlength">200 Character Max</span>
+                                    <span class="help-block" style="display: block;" ng-if="deliveryForm.RcvBy.$error.required && deliveryForm.RcvBy.$touched">Receive By is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row" ng-show="StockDeliveryList.length && !IsNonSO">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Order No</th>
+                                    <th class="t-cell-center">Order Date</th>
+                                    <th class="t-cell-center">Company Name</th>
+                                    <th class="t-cell-center">Remanrks</th>
+                                    <!--<th class="t-cell-center">Actions</th>-->
+                                </tr>
+                                <tr class="HoverTable searchRow" ng-repeat="aSaleOrder in StockDeliveryList" ng-click="GetSalesOrderDetails(aSaleOrder)" onclick="RowSelect(this)">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.SalesOrderNo}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.SalesOrderDate}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.CompanyName}}</td>
+                                    <td class="t-cell-center">{{aSaleOrder.Remarks}}</td>
+
+                                    <!--<td class="t-cell-center">
+                                <button class="btn btn-lg" style="font-size:13px; padding:12.5px"
+                                        ng-click="OpenReport(aSaleOrder.SaleOrderId)">
+                                    Report
+                                </button>
+
+                            </td>-->
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row" ng-show="IsNonSO">
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Item Description">
+                            <input type="text" id="txtItemDesc" class="form-control" ng-model="inv_StockDeliveryNonSODetail.ItemDescription" placeholder="Item Description" maxlength="250">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Item Remarks">
+                            <input type="text" class="form-control" ng-model="inv_StockDeliveryNonSODetail.ItemRemarks" placeholder="Item Remarks" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Quantity">
+                            <input type="number" class="form-control text-center" ng-model="inv_StockDeliveryNonSODetail.DeliveryQuantity" placeholder="Quantity" min="1" max="999999" maxlength="500">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="customBtn custmoBtnReset" ng-disabled="!inv_StockDeliveryNonSODetail.ItemDescription || !inv_StockDeliveryNonSODetail.DeliveryQuantity
+                                || inv_StockDeliveryNonSODetail.DeliveryQuantity" ng-click="addChallanItem()" title="Add Product">
+                            <i class="fa fa-arrow-down"></i>&nbsp;Add Product
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12" ng-show="!IsNonSO">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center"></th>
+                                <th class="t-cell-center">SL.No</th>
+
+                                <th class="t-cell-center">Product Name</th>
+                            </tr>
+                            <tbody ng-repeat="inv_stockDeliveryDetail in inv_stockDeliveryDetailList track by $index">
+                                <tr>
+                                    <td ng-click="$event.stopPropagation();" class="t-cell-center"><label><i ng-show="!inv_stockDeliveryDetail.DisplaySta" class="fa fa-plus-square"></i><i ng-show="inv_stockDeliveryDetail.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="inv_stockDeliveryDetail.DisplaySta" /></label></td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+
+                                    <td class="t-cell-center">{{inv_stockDeliveryDetail.ItemName}}</td>
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="inv_stockDeliveryDetail.DisplaySta && inv_stockDeliveryDetail.HeaderOfAttribute.length">
+                                    <td></td>
+                                    <td colspan="2">
+                                        <div>
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <!--<th style="text-align:center;" width="10%">Last Delivery</th>-->
+                                                    <th class="t-cell-center">Barcode</th>
+                                                    <th class="t-cell-center" ng-repeat="AttributeName in inv_stockDeliveryDetail.HeaderOfAttribute">{{AttributeName}}</th>
+                                                    <th class="t-cell-center">Stock Qty</th>
+                                                    <th class="t-cell-center">{{inv_stockDeliveryDetail.OrderProQty}}</th>
+                                                    <th class="t-cell-center">Delivered Qty</th>
+                                                    <th class="t-cell-center">Deu Date</th>
+                                                    <th class="t-cell-center">Delivery Qty</th>
+                                                    <th class="t-cell-center" ng-show="inv_stockDeliveryDetail.HasSerialNo">Serial No</th>
+                                                    <th class="t-cell-center">Remove</th>
+                                                </tr>
+                                                <tr class="HoverTable" ng-repeat="inv_stockDeliveryDetailAdAttribute in inv_stockDeliveryDetailAttributeLst | filter: { SalesOrderDetailId : inv_stockDeliveryDetail.SalesOrderDetailId }:true">
+                                                    <!--<td style="text-align:center;">
+                                        <input type="checkbox" ng-model="inv_stockDeliveryDetailAdAttribute.IsLastDelivery">
+                                    </td>-->
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.Barcode}}</td>
+                                                    <td class="t-cell-center" ng-repeat="AttributeValue in inv_stockDeliveryDetailAdAttribute.ValueOfAttribute">{{AttributeValue}}</td>
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.StockQty}}</td>
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.OrderQty}}</td>
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.DeliveredQty}}</td>
+                                                    <td class="t-cell-center">{{inv_stockDeliveryDetailAdAttribute.DueDate}}</td>
+                                                    <td class="t-cell-center text-center">
+                                                        <input type="number" min="0" style="text-align:center" ng-change="SumAttQty()" ng-model="inv_stockDeliveryDetailAdAttribute.DeliveryQuantity" onclick="return this.select();" />
+                                                    </td>
+                                                    <td ng-show="inv_stockDeliveryDetailAdAttribute.SerialList.length">
+                                                        <span class="chk-box-alinment"></span>
+                                                        <label class="checkbox-inline" ng-repeat="serial in inv_stockDeliveryDetailAdAttribute.SerialList">
+                                                            <input type="checkbox" ng-model="serial.IsChecked" ng-click="CountCheckedDeliveryQuantity(inv_stockDeliveryDetailAdAttribute);" />{{serial.SerialNo}}
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <button title="Remove" ng-click="RemoveItemAttr(inv_stockDeliveryDetailAdAttribute)">
+                                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12" ng-show="IsNonSO">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Item Description</th>
+                                    <th class="t-cell-center">Item Remarks</th>
+                                    <th class="t-cell-center">Quantity</th>
+                                    <th class="t-cell-center">Remove</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" ng-repeat="aDetail in StockDeliveryNonSODetailList">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aDetail.ItemDescription}}</td>
+                                    <td class="t-cell-center">{{aDetail.ItemRemarks}}</td>
+                                    <td class="t-cell-center">{{aDetail.DeliveryQuantity}}</td>
+                                    <td class="t-cell-center">
+                                        <button title="Remove" ng-click="removeItem(aDetail)">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                    <div class="row">
+                                        <button ng-show="!IsNonSO" id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveStockDelivery()" title="Save" ng-disabled="!inv_StockDelivery.DeliveryDate||!ddlStore||!inv_StockDelivery.OrderNo||deliveryForm.Remarks.$invalid || deliveryForm.DeliveryNo.$invalid">
+                                            <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                                        </button>
+                                        <button ng-show="IsNonSO" id="btnSaveChallan" class="customBtn custmoBtnSave" ng-click="SaveChallan()" title="Save" ng-disabled="!inv_StockDeliveryNonSO.DeliveryDate
+                                || !inv_StockDeliveryNonSO.DeliveryNo || !inv_StockDeliveryNonSO.DeliveryFromDepartmentId || !inv_StockDeliveryNonSO.DeliveryFromDepartmentName
+                                || !inv_StockDeliveryNonSO.DeliverydBy|| !inv_StockDeliveryNonSO.ReceivedBy || !StockDeliveryNonSODetailList.length">
+                                            <i class="fa fa-save"></i>&nbsp;Save
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                    <div class="row">
+                                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title pull-left "><i class="fa fa-check"></i>&nbsp;IWO Approved List</h3>
+                                    <div class="clearfix">
+                                    </div>
+                                </div>
+
+                                <div class="panel-footer">
+
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="input-group " data-toggle="tooltip" title="From Date">
+
+                                                    <input type="text" name="FromDate" id="txtFromDateForDC" ng-model="FromDate" ng-change="DeliverySearch();" class="form-control " placeholder="From Date" readonly />
+                                                    <span class="input-group-addon" ng-click="FormDateChangeForDelivery()" id="FormDateChangeForDelivery"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="input-group " data-toggle="tooltip" title="To Date">
+                                                    <input type="text" name="ToDate" id="txtToDateForDC" ng-model="ToDate" ng-change="DeliverySearch();" class="form-control " placeholder="To Date" readonly />
+                                                    <span class="input-group-addon" ng-click="ToDateChangeForDelivery()" id="ToDateChangeForSO"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group" data-toggle="tooltip" title="Search Company and Sales Order No">
+                                                <input type="text" class="form-control" id="IWOAndCompany" ng-model="SearchDcOredrDcNoAndCompanyName" ng-change="DeliverySearch();" name="name" placeholder="Company Name / IWO NO..." />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                    <hr />
+                                    <table class="responstable table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="t-cell-center">S/N</th>
+                                                <th class="t-cell-center">Order No</th>
+                                                <th class="t-cell-center">Delivery No</th>
+                                                <th class="t-cell-center">Delivery Date </th>
+                                                <th class="t-cell-center">Company Name</th>
+
+                                                <th class="t-cell-center">Action</th>
+                                            </tr>
+                                            <tr class="HoverTable searchRow" dir-paginate="delivery in deliveryListForGrid | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="getForIWODetailsUpdate(iwo)">
+                                                <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                                <td class="t-cell-center">{{delivery.OrderNo}}</td>
+                                                <td class="t-cell-center">{{delivery.DeliveryNo}}</td>
+                                                <td class="t-cell-center">{{delivery.DeliveryDate}}</td>
+                                                <td class="t-cell-center">{{delivery.CompanyName}}</td>
+
+
+
+                                                <td class="t-cell-center">
+                                                    <button class="btn btn-lg" style="font-size:13px; padding:12.5px"
+                                                            ng-click="OpenReport(delivery)">
+                                                        Report
+                                                    </button>
+
+                                                </td>
+
+
+                                            </tr>
+                                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                                <th colspan="8">
+                                                    <dir-pagination-controls max-size="8"
+                                                                             direction-links="true"
+                                                                             boundary-links="true"
+                                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                    </dir-pagination-controls>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row pagination-footer">
+                                        <div class="col-md-6">
+                                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+           
+
+        </div>
+    </div>
+    
+    <!--<pre>{{inv_stockDeliveryDetailAttributeLst | json}}</pre>-->
+</form>
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    var picker = new Pikaday({
+        field: document.getElementById('txtDeliveryDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker.show();
+    });
+
+
+    var picker2 = new Pikaday({
+        field: document.getElementById('txtBillDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender2").addEventListener("click", function () {
+        picker2.show();
+    });
+
+    var picker3 = new Pikaday({
+        field: document.getElementById('txtChallanDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calenderChallan").addEventListener("click", function () {
+        picker3.show();
+    });
+</script>

@@ -1,0 +1,142 @@
+﻿<form name="salesOrderApproveForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Sale Order Approve</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#NewApproval"><span><i class="fa fa-list"></i></span>&nbsp;New Approval</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#AmendmentRequest"><span><i class="fa fa-list"></i></span>&nbsp;Amendment Request</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="NewApproval" class="tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th class="t-cell-center">S/N</th>
+                                            <th class="t-cell-center">Chk</th>
+                                            <th class="t-cell-center">Invoice No.</th>
+                                            <th class="t-cell-center">Invoice Date</th>
+                                            <th class="t-cell-center">Company</th>
+                                            <th class="t-cell-center">Amount</th>
+                                            <th class="txt-center">Action</th>
+                                        </tr>
+                                        <tr class="HoverTable searchRow" ng-repeat="aSalesApprove in SalesApproveList1">
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <td class="t-cell-center">
+                                                <input type="checkbox" ng-model="selected"
+                                                       ng-click="SelectSalesOrderApproveList(aSalesApprove,selected)" ng-checked="aSalesApprove.IsCheck" />
+                                            </td>
+                                            <td class="t-cell-center">{{aSalesApprove.DocNo}}</td>
+                                            <td class="t-cell-center">{{aSalesApprove.DocDate}}</td>
+                                            <td class="t-cell-center">{{aSalesApprove.Party}}</td>
+                                            <td style="text-align:right; padding-right:10px">{{aSalesApprove.Amount.toFixed(2)}}</td>
+                                            <td class="t-cell-center">
+                                                <button class="btn btn-lg" style="font-size:13px; padding:12.5px"
+                                                        ng-click="OpenReport(aSalesApprove.DocumentId)">
+                                                    Report
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                    <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveSalesOrderApprove()" ng-disabled="!DisBtn" title="Save">
+                                        <i class="fa fa-save"></i>&nbsp;Submit
+                                    </button>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                    <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="ResetForm()">
+                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="AmendmentRequest" class="tab-pane fade">
+                        <div class="col-md-12 tabBorder">
+                            <div class="panel-footer">
+                                <div class="clearfix">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="responstable table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="t-cell-center">S/N</th>
+                                                    <th class="t-cell-center">Chk</th>
+                                                    <th class="t-cell-center">SalesOrder No</th>
+                                                    <th class="t-cell-center">ApprovalId</th>
+                                                    <th class="t-cell-center">ApprovalType</th>
+                                                    <th class="t-cell-center">DocType</th>
+                                                    <th class="t-cell-center">DocumentId</th>
+                                                    <th class="t-cell-center">Party</th>
+                                                    <th class="txt-center">Action</th>
+                                                </tr>
+                                                <tr ng-show="SalesOrderAmendmentList.length" class="HoverTable searchRow" ng-repeat="aSalesOrderAmendment in SalesOrderAmendmentList">
+                                                    <td class="t-cell-center">{{$index+1}}</td>
+                                                    <td class="t-cell-center">
+                                                        <input type="radio" name="rakin" value="rakin" ng-model="selectedAmendment"
+                                                               ng-click="SelectAmendmentRequestList(aSalesOrderAmendment,selectedAmendment)" />
+                                                    </td>
+                                                    <td class="t-cell-center">{{aSalesOrderAmendment.DocNo}}</td>
+                                                    <td class="t-cell-center">{{aSalesOrderAmendment.ApprovalId}}</td>
+                                                    <td class="t-cell-center">{{aSalesOrderAmendment.ApprovalType}}</td>
+                                                    <td class="t-cell-center">{{aSalesOrderAmendment.DocType}}</td>
+                                                    <td class="t-cell-center">{{aSalesOrderAmendment.DocumentId}}</td>
+                                                    <td class="t-cell-center">{{aSalesOrderAmendment.Party}}</td>
+                                                    <td class="t-cell-center">
+                                                        <button class="btn btn-lg" style="font-size:13px; padding:12.5px"
+                                                                ng-click="OpenReport(aSalesOrderAmendment.DocumentId)">
+                                                            Report
+                                                        </button>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <input type="text" name="OTP" class="form-control" ng-model="aPassword" id="txtPassword" ng-blur="CheckDuplicatePassword(aPassword)" placeholder="One Time Password">
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveAmendmentRequest()" title="Save" ng-disabled="!btnAmendmentReqDis || !aPassword">
+                                            <i class="fa fa-save"></i>&nbsp;Submit
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="ResetForm()">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</form>

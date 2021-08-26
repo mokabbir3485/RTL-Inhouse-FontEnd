@@ -1,0 +1,1565 @@
+﻿<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />-->
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.min.css" rel="stylesheet" />
+<form name="purchaseBillEntry" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <p style="font-weight:bold;font-size:18px;">
+                <span><i class="fa fa-list"></i></span>
+                Import Purchase Bill
+            </p>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div>
+
+                    <div>
+                        <div class="col-md-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Import Purchase Bill Entry</h3>
+                                </div>
+                                <div class="panel-footer">
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.ChallanNo.$invalid && purchaseBillEntry.ChallanNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Challan No">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtPONo" name="Pono" class="form-control" ng-model="inv_PurchaseBill.ChallanNo" placeholder="Challan No" maxlength="50" ng-maxlength="49">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-show="purchaseBillEntry.ChallanNo.$dirty && purchaseBillEntry.ChallanNo.$invalid">Challan No is required</span>
+                                                <span class="help-block" ng-if="purchaseBillEntry.ChallanNo.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.PONo.$invalid && purchaseBillEntry.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO Type">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtPONo" name="Pono" class="form-control" ng-model="inv_PurchaseBill.PONo" placeholder="PO/LC NO" maxlength="50" ng-maxlength="49" ng-disabled="HasPO">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-show="purchaseBillEntry.PONo.$dirty && purchaseBillEntry.PONo.$invalid">PO No. is required</span>
+                                                <span class="help-block" ng-if="purchaseBillEntry.PONo.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.PriceType.$dirty && purchaseBillEntry.PriceType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Price Type">
+                                                <div class="input-group width-hundred-percent">
+                                                    <select ng-model="ddlPriceType" ng-disabled="ddlPriceType" name="PriceType" class="form-control selectMendatory" ng-options="priceType.PriceTypeName  for priceType in pricetypeentrylist track by priceType.PriceTypeId" >
+                                                        <option value="" label="-- Price Type --"></option>
+                                                    </select>
+                                                    <span class="help-block" ng-show="purchaseBillEntry.PriceType.$dirty && purchaseBillEntry.PriceType.$invalid">Price Type is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.Shipment.$invalid && purchaseBillEntry.Shipment.$touched }" data-toggle="tooltip" data-placement="bottom" title="Shipment Info">
+                                                <div class="input-group">
+                                                    <input type="text" name="Shipment" class="form-control" ng-model="inv_PurchaseBill.ShipmentInfo" placeholder="Shipment Info" ng-maxlength="199" maxlength="200">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-if="purchaseBillEntry.Shipment.$error.maxlength">200 Character Max</span>
+                                            </div>
+                                        </div>
+
+                                       
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.dateOfPB.$invalid && purchaseBillEntry.dateOfPB.$touched }" data-toggle="tooltip" data-placement="bottom" title="PB Date">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtDateOfPB1" ng-model="inv_PurchaseBill.PBDate" ng-blur="getMaxPBIdByDate();" class="form-control datepicker" placeholder="PB Date" readonly />
+                                                    <span class="input-group-addon" id="txtDateOfPB2"><i class="fa fa-calendar " style="color:gray;"></i></span>
+                                                </div>
+                                                <span class="help-block" style="display: block;" ng-if="purchaseBillEntry.dateOfPB.$error.required && purchaseBillEntry.dateOfPB.$touched">PB Date is required</span>
+                                            </div>
+                                            <!--<div class="form-group" ng-class="{ 'has-error' : LocalPurchaseBill.dateOfPB.$invalid && LocalPurchaseBill.dateOfPB.$touched }" data-toggle="tooltip" data-placement="bottom" title="PB Date">
+            <div class="input-group">
+                <input type="text" id="txtDateOfPB1" ng-model="inv_PurchaseBillLocal.PBDate" ng-blur="getMaxPBIdByDate()" class="form-control datepicker" placeholder="PB Date" readonly />
+                <span class="input-group-addon" ng-click="PBImportDateChange()" id="PBImportDateChange"><i class="fa fa-calendar " style="color:gray;"></i></span>
+            </div>
+
+            <span class="help-block" style="display: block;" ng-if="LocalPurchaseBill.dateOfPB.$error.required && LocalPurchaseBill.dateOfPB.$touched">PB Date is required</span>
+        </div>-->
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.PBNo.$invalid && purchaseBillEntry.PBNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="PB No">
+                                                <div class="input-group">
+                                                    <input type="text" id="PbNo" name="PbNo" min="0" class="form-control" ng-change="CheckDuplicatePBNo();" ng-model="inv_PurchaseBill.PBNo" placeholder="PB No" ng-maxlength="99" maxlength="100" required>
+                                                    <span class="input-group-addon"><i class="fa fa-text-width "></i></span>
+                                                </div>
+                                                <span class="help-block" ng-if="purchaseBillEntry.PBNo.$error.required && purchaseBillEntry.PBNo.$touched">PB No. is required</span>
+                                                <span class="help-block" ng-if="purchaseBillEntry.PBNo.$error.maxlength">100 Character Max</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.ddlSupplier.$dirty && purchaseBillEntry.ddlSupplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                                                <div class="input-group width-hundred-percent">
+                                                    <select ng-model="ddlSupplier" name="supplier" class="form-control selectMendatory" ng-options="supplier.SupplierName for supplier in supplierlist track by supplier.SupplierId" ng-change="SupplierCombineAddressAndRegNo(inv_PurchaseBill.SupplierId=ddlSupplier.SupplierId)" required ng-disabled="SinglePBlist.length || HasPO">
+                                                        <option value="" label="-- Select Supplier --"></option>
+                                                    </select>
+                                                    <span class="help-block" ng-show="purchaseBillEntry.ddlSupplier.$dirty && purchaseBillEntry.ddlSupplier.$invalid">Supplier is required</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.preparedBy.$dirty && purchaseBillEntry.preparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                                                <div class="input-group width-hundred-percent">
+                                                    <select ng-model="ddlEmployee" name="preparedBy" class="form-control selectMendatory" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId" required>
+                                                        <option value="" label="Prepared By"></option>
+                                                    </select>
+                                                    <span class="help-block" ng-show="purchaseBillEntry.preparedBy.$dirty && purchaseBillEntry.preparedBy.$invalid">Prepared By is required</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Suppiler Type">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtPONo" name="SuppilerTypeName" class="form-control" placeholder="Suppiler Type" value="{{inv_PurchaseBill.SuppilerTypeName}}">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group" title="Supplier Address">
+                                                    <input type="text" class="form-control" ng-model="inv_PurchaseBill.Address" placeholder="Supplier Address">
+
+                                                    <span class="input-group-addon"><i class="fas fa-address-card"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group" title="Supplier Reg No">
+                                                    <input type="text" class="form-control" ng-model="inv_PurchaseBill.NID" placeholder="Supplier Reg No">
+                                                    <span class="input-group-addon"><i class="fa fa-qrcode"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <div class="input-group" title="Port">
+                                                    <input type="text" class="form-control" ng-model="inv_PurchaseBill.Port" placeholder="Port">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Additional Discount">
+                                                <input type="number" id="discount" name="txtRemarks" class="form-control" ng-model="inv_PurchaseBill.AdditionDiscount" placeholder="Additional Discount" >
+                                                <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                                                <input type="text" id="txtRemarks" name="txtRemarks" class="form-control" ng-model="inv_PurchaseBill.Remarks" placeholder="Remarks" ng-maxlength="200">
+                                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="radio-inline">
+
+                                                <label>
+                                                    <input type="radio" name="purchesBillOption" value="true" ng-model="inv_PurchaseBill.isRawMaterials" ng-click="RawMatrialEmpty()">Raw Matrial
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label>
+                                                    <input type="radio" name="purchesBillOption" value="false" ng-model="inv_PurchaseBill.isRawMaterials" ng-click="RawMatrialEmpty()">Hardware
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" ng-model="inv_PurchaseBill.isVDS" value="true" id="scales" name="scales">
+                                            <label style="margin-left:20px;" for="scales">VDS Applicable</label>
+                                        </div>
+
+
+                                    </div>
+                                    <br />
+                                    <hr />
+
+
+                                    <div ng-show="inv_PurchaseBill.isRawMaterials=='true'">
+
+
+                                        <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Raw Matrials</h3>
+                                        <br />
+
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="input-group-btn search-panel">
+                                                    <input type="text" onkeydown="newControl(this)" id="SearchTextBox" ng-model="ItemSearchCombination" ng-change="ItemSearchCombinationTextChange()" autocomplete="off" class="form-control arrow-togglable" placeholder="Type Item Name Or Any Other Related Info" />
+                                                    <div id="SearchResults">
+                                                        <ul ng-show="ItemSearchCombination.length && VisibilityOfSuggession" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9; ">
+                                                            <li ng-hide="AllCombinationSearch.length">
+                                                                <label class="form-control"><a>No Result Found &nbsp;&nbsp;<i class="fa fa-circle-o-notch fa-spin fa-xing fa-fw"></i></a></label>
+                                                            </li>
+                                                            <li ng-repeat="aCombination in AllCombinationSearchRaw" ng-bind-html-unsafe="aCombination.Combination">
+                                                                <button ng-click="LoadACombination(aCombination);itemCombinationCalculation(aCombination.HsCodeId);GetByCurrentStockWithItemId(aCombination)" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                                                    {{aCombination.Combination}}
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group" ng-class="{ 'has-error' : SaleForm.Unit.$dirty && SaleForm.Unit.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                                    <div class="input-group input-group-md ddl" style="color:gray;">
+                                                        <select class="form-control selectMendatory" ng-model="ddlMu" name="Unit" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId">
+                                                            <option value="" label="Unit"></option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="help-block" ng-show="SaleForm.Unit.$dirty && SaleForm.Unit.$invalid">Unit is required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtQty" class="form-control txt-center" ng-blur="CheckItemQty();" ng-model="ItemCombination.AttributeQty" placeholder="Qty">
+                                                        <span class="input-group-addon"> Quantity <i class="fas fa-bell" style="color:red;"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="EXCL Price (Tk.)">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="ItemCombination.PurchaseUnitPrice" ng-change="PBConversionRateMethod()" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" required>
+                                                        <span class="input-group-addon"> Price (EXCL) <i class="fas fa-bell" style="color:red;font-size:12px;"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                        <p style="font-size:16px;font-weight:bold"> Fractional Points:</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="col-md-1">
+                                                        <i ng-show="!invPBDetailsFiledHide" style="font-size: 2.00em;" class="fa fa-plus-square" ng-click="hideBtnColapse()"></i><i style="font-size: 2.00em;" ng-show="invPBDetailsFiledHide  " ng-click="hideBtnColapse()" class="fa fa-minus-square"></i>
+                                                        <br />
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        <div class="input-group width-hundred-percent" title="Currency Type">
+                                                            <select class="form-control selectMendatory" ng-model="convertValueDdl" ng-options="num.Number for num in convertValueDdlList track by num.Id" ng-change="ConvertToFixedValue(num=convertValueDdl);ConvertToFixedValueItem(num=convertValueDdl)">
+                                                                <option value="">Fraction Points</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                      
+                                        <div ng-show="invPBDetailsFiledHide">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Current Stock ">
+                                                                <div class="input-group">
+                                                                    <input style="width:100%;" type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.CurrentStock" maxlength="10" onfocus="this.select();" placeholder="0.00" min="0" readonly>
+                                                                    <span class="input-group-addon">Current Stock <i class="fas fa-store" style="font-size:12px;"> </i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group width-hundred-percent" title="Currency Type">
+                                                                <select ng-model="ddlCurrencyType" name="CurrencyType" class="form-control selectMendatory" ng-options="currency.CurrencyType for currency in CurrencyList track by currency.Id" ng-change="CurrencyTypeConvertion(currency.Id=ddlCurrencyType.Id)" required style="color:gray;">
+                                                                    <option value="" label="Currency Type"></option>
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Conversion Rate ">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control" ng-disabled="!ddlCurrencyType" ng-model="ItemCombination.ConversionRate" ng-change="ConversionRateMethod()" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" required>
+                                                            <span class="input-group-addon"> CONV. Rate (<i class="fa fa-percent" style="color:gray;font-size:12px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Total Conversion">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TotalConversion" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">Total Conv. <i class="fa fa-money" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="SD  (%) ">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control" ng-model="ItemCombination.SdPercentage"  maxlength="10" onfocus="this.select();" ng-change="ItemCalculationImportPB1()" placeholder="0(%) " min="0" required>
+                                                            <span class="input-group-addon">SD Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="SD  Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control" ng-model="ItemCombination.SdAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">SD Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="CD %">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.CdPercentage" ng-change="ItemCalculationImportPB1()" maxlength="10" onfocus="this.select();" placeholder="0 (%) " min="0" required>
+                                                            <span class="input-group-addon"> CD Percent (<i class=" fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="CD Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.CdAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">Cd Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Vat (%)">
+                                                        <div class="input-group">
+                                                            <input type="text" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.VatPercentage" ng-change="ItemCalculationImportPB1()" maxlength="10" onfocus="this.select();" placeholder="0(% )" min="0" required>
+                                                            <span class="input-group-addon">Vat Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Vat Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.VatAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">Vat Amount <i class="fa fa-text-width" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="RD (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.RdPercentage" ng-change="ItemCalculationImportPB1()" maxlength="10" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">RD Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="RD Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.RdAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">RD Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="TIT (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TtiPercentage" maxlength="10" ng-change="ItemCalculationImportPB1()" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">TTI Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="TTI Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TtiAmount" maxlength="10" onfocus="this.select();" placeholder="0.00" min="0" readonly>
+                                                            <span class="input-group-addon">TTI Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AIT (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AitPercentage" maxlength="10" ng-change="ItemCalculationImportPB1()" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">AIT Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AIT Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AitAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">AIT Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AT (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AtPercentage" maxlength="10"  ng-change="ItemCalculationImportPB1()" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">AT Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AT Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AtAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">AT Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Discount Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-change="discountAmountMethod();discountMinusPBUnitPrice()"  ng-model="ItemCombination.DiscountAmount" maxlength="10" placeholder="0.00">
+                                                            <span  class="input-group-addon">Discount  (<i class="fa fa-percent" style="color:gray;font-size:12px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3 text-right">
+                                                    <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddPBDetail()" ng-disabled="!ddlPriceType || !ddlMu || (ItemCombination.PurchaseUnitPrice < 0) || !ItemCombination.Combination || !ItemCombination.AttributeQty || ItemCombination.AttributeQty < 1">
+                                                        <i class="fa fa-plus-square"></i>&nbsp;{{AddProductLbl}}
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Price (INCL.)">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TotalCost" maxlength="10" onfocus="this.select();" placeholder="0.00" min="0" readonly>
+                                                        <span class="input-group-addon">Price (Incl.)  <i class="fas fa-calculator" style="font-size:12px;"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div ng-show="inv_PurchaseBill.isRawMaterials=='false'">
+
+
+                                        <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Hardware</h3>
+                                        <br />
+
+
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="input-group-btn search-panel">
+                                                    <input type="text" onkeydown="newControl(this)" id="SearchTextBox" ng-model="ItemSearchCombination" ng-change="ItemSearchCombinationTextChange()" autocomplete="off" class="form-control arrow-togglable" placeholder="Type Item Name Or Any Other Related Info" />
+                                                    <div id="SearchResults">
+                                                        <ul ng-show="ItemSearchCombination.length && VisibilityOfSuggession" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9; ">
+                                                            <li ng-hide="AllCombinationSearch.length">
+                                                                <label class="form-control"><a>No Result Found &nbsp;&nbsp;<i class="fa fa-circle-o-notch fa-spin fa-xing fa-fw"></i></a></label>
+                                                            </li>
+                                                            <li ng-repeat="aCombination in AllCombinationSearchHardware" ng-bind-html-unsafe="aCombination.Combination">
+                                                                <button ng-click="LoadACombination(aCombination);itemCombinationCalculation(aCombination.HsCodeId);GetByCurrentStockWithItemId(aCombination)" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                                                    {{aCombination.Combination}}
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group" ng-class="{ 'has-error' : SaleForm.Unit.$dirty && SaleForm.Unit.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                                    <div class="input-group input-group-md ddl" style="color:gray;">
+                                                        <select class="form-control selectMendatory" ng-model="ddlMu" name="Unit" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId">
+                                                            <option value="" label="Unit"></option>
+                                                        </select>
+                                                    </div>
+                                                    <span class="help-block" ng-show="SaleForm.Unit.$dirty && SaleForm.Unit.$invalid">Unit is required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtQty" class="form-control txt-center" ng-blur="CheckItemQty();" ng-model="ItemCombination.AttributeQty" placeholder="Qty">
+                                                        <span class="input-group-addon"> Quantity <i class="fas fa-bell" style="color:red;"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="EXCL Price (Tk.)">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="ItemCombination.PurchaseUnitPrice" ng-change="PBConversionRateMethod()" maxlength="10" onfocus="this.select();" placeholder="0.00" min="0" required>
+                                                        <span class="input-group-addon">Excl. Price <i class="fas fa-bell" style="color:red;font-size:12px;"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <p style="font-size:16px;font-weight:bold"> Fractional Points:</p>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="col-md-1">
+                                                        <i ng-show="!invPBDetailsFiledHide" style="font-size: 2.00em;" class="fa fa-plus-square" ng-click="hideBtnColapse()"></i><i style="font-size: 2.00em;" ng-show="invPBDetailsFiledHide  " ng-click="hideBtnColapse()" class="fa fa-minus-square"></i>
+                                                        <br />
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group width-hundred-percent" title="Currency Type">
+                                                            <select class="form-control selectMendatory" ng-model="convertValueDdl" ng-options="num.Number for num in convertValueDdlList track by num.Id" ng-change="ConvertToFixedValue(num=convertValueDdl);ConvertToFixedValueItem(num=convertValueDdl)">
+                                                            <option value="">Fraction Points</option>
+                                                        </select>
+
+                                                        </div>
+
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div ng-show="invPBDetailsFiledHide">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Current Stock ">
+                                                                <div class="input-group">
+                                                                    <input style="width:100%;" type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.CurrentStock" maxlength="10" onfocus="this.select();" placeholder="0.00" min="0" readonly>
+                                                                    <span class="input-group-addon">Current Stock <i class="fas fa-store" style="font-size:12px;"> </i></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group width-hundred-percent" title="Currency Type">
+                                                                <select ng-model="ddlCurrencyType" name="CurrencyType" class="form-control selectMendatory" ng-options="currency.CurrencyType for currency in CurrencyList track by currency.Id" ng-change="CurrencyTypeConvertion(currency.Id=ddlCurrencyType.Id)" required style="color:gray;">
+                                                                    <option value="" label="Currency Type"></option>
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Conversion Rate ">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control" ng-disabled="!ddlCurrencyType" ng-model="ItemCombination.ConversionRate" ng-change="ConversionRateMethod()" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" required>
+                                                            <span class="input-group-addon"> CONV. Rate (<i class="fa fa-percent" style="color:gray;font-size:12px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Total Conversion">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TotalConversion" maxlength="10" onfocus="this.select();" placeholder="0.00" min="0" readonly>
+                                                            <span class="input-group-addon">Total Conv. <i class="fa fa-money" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="SD  (%) ">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control" ng-model="ItemCombination.SdPercentage" ng-change="ItemCalculationImportPB1()" maxlength="10" onfocus="this.select();" placeholder="0 (%) " min="0">
+                                                            <span class="input-group-addon">SD Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="SD  Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control" ng-model="ItemCombination.SdAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">SD Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="CD %">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.CdPercentage" ng-change="totalCalculationCD();ItemCalculationImportPB1()" maxlength="10" onfocus="this.select();" placeholder="0 (%) " min="0" required>
+                                                            <span class="input-group-addon"> CD Percent (<i class=" fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="CD Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.CdAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">Cd Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Vat (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.VatPercentage" ng-change="totalCalculationVat();ItemCalculationImportPB1()" maxlength="10" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">Vat Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Vat Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.VatAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">Vat Amount <i class="fa fa-text-width" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="RD (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.RdPercentage" maxlength="10" ng-change="ItemCalculationImportPB1()" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">RD Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="RD Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.RdAmount" maxlength="10" onfocus="this.select();" placeholder="0.00  " min="0" readonly>
+                                                            <span class="input-group-addon">RD Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="TIT (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TtiPercentage" maxlength="10" ng-change="ItemCalculationImportPB1()" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">TTI Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="TTI Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TtiAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">TTI Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AIT (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AitPercentage" maxlength="10" ng-change="ItemCalculationImportPB1()" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">AIT Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AIT Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AitAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">AIT Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AT (%)">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AtPercentage" maxlength="10" ng-change="ItemCalculationImportPB1()" onfocus="this.select();" placeholder="0 (% )" min="0" required>
+                                                            <span class="input-group-addon">AT Percent (<i class="fa fa-percent" style="color:gray;font-size:10px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="AT Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.AtAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0" readonly>
+                                                            <span class="input-group-addon">AT Amount <i class="fa fa-bell" style="color:gray;font-size:12px;"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Discount Amount">
+                                                        <div class="input-group">
+                                                            <input type="number" id="txtPurchasePrice" class="form-control " ng-change="discountAmountMethod();discountMinusPBUnitPrice()" ng-model="ItemCombination.DiscountAmount" maxlength="10" onfocus="this.select();" placeholder="0.00 " min="0">
+                                                            <span class="input-group-addon">Discount  (<i class="fa fa-percent" style="color:gray;font-size:12px;"></i>)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddPBDetail()" ng-disabled="!ddlPriceType || !ddlMu || (ItemCombination.PurchaseUnitPrice < 0) || !ItemCombination.Combination || !ItemCombination.AttributeQty || ItemCombination.AttributeQty < 1">
+                                                        <i class="fa fa-plus-square"></i>&nbsp;{{AddProductLbl}}
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title=" Price (INCL.)">
+                                                    <div class="input-group">
+                                                        <input type="number" id="txtPurchasePrice" class="form-control " ng-model="ItemCombination.TotalCost" maxlength="10" onfocus="this.select();" placeholder=" 0.00 " min="0" readonly>
+                                                        <span class="input-group-addon"> Price (Incl.)  <i class="fas fa-calculator" style="font-size:12px;"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <th class="t-cell-center"></th>
+                                                    <th class="t-cell-center">Product Name</th>
+                                                    <th class="t-cell-center">Unit </th>
+                                                    <th class="t-cell-center">Qty </th>
+                                                    <th class="t-cell-center">Exclusive Price </th>
+                                                    <th class="t-cell-center">Total Price (Inclusive)</th>
+                                                    <th class="t-cell-center">After Discount </th>
+                                                    <!--<th class="t-cell-center">Description 2</th>-->
+                                                </tr>
+                                                <tbody ng-repeat="inv_StockReceiveDetail in inv_PurchaseBillDetaillst">
+                                                    <tr>
+                                                        <td ng-click="$event.stopPropagation();" class="t-cell-center">
+                                                            <label>
+                                                                <i ng-show="!inv_StockReceiveDetail.DisplaySta && inv_StockReceiveDetail.HeaderOfAttribute.length" class="fa fa-plus-square"></i><i ng-show="inv_StockReceiveDetail.DisplaySta  && inv_StockReceiveDetail.HeaderOfAttribute.length" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="inv_StockReceiveDetail.DisplaySta" />
+                                                            </label>
+                                                        </td>
+                                                        <td class="t-cell-center">{{inv_StockReceiveDetail.ItemName}} {{inv_StockReceiveDetail.ItemDescription }} {{inv_StockReceiveDetail.ItemDescriptionTwo}}</td>
+                                                        <td class="t-cell-center">{{inv_StockReceiveDetail.UnitName}}</td>
+                                                        <td style="text-align:right">{{inv_StockReceiveDetail.PBQty}}</td>
+                                                        <td style="text-align:right">{{inv_StockReceiveDetail.PBPrice}}</td>
+                                                        <td style="text-align:right">{{inv_StockReceiveDetail.TotalCost}}</td>
+                                                        <td style="text-align:right">{{inv_StockReceiveDetail.TotalCostAfterDiscount}}</td>
+
+                                                    </tr>
+
+
+                                                    <tr ng-click="$event.stopPropagation();" ng-show="inv_StockReceiveDetail.DisplaySta && inv_StockReceiveDetail.HeaderOfAttribute.length">
+
+                                                        <!--<td ng-click="$event.stopPropagation();" class="t-cell-center">
+                                                            <div ng-repeat="inv_StockReceiveDetailAdAttribute in inv_StockPBDetailAdAttributeLst | filter: { ItemId : inv_StockReceiveDetail.ItemId }:true">
+                                                                <label>
+                                                                    <i ng-show="!inv_StockReceiveDetailAdAttribute.DisplaySerial && inv_StockReceiveDetailAdAttribute.SerialAndWarrentyList.length" class="fa fa-plus-square"></i><i ng-show="inv_StockReceiveDetailAdAttribute.DisplaySerial  &&  inv_StockReceiveDetailAdAttribute.SerialAndWarrentyList.length" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="inv_StockReceiveDetailAdAttribute.DisplaySerial" />
+                                                                </label>
+                                                            </div>
+
+                                                        </td>-->
+
+
+                                                        <td colspan="6">
+                                                            <table style="width:100%;">
+                                                                <tr>
+                                                                    <td style="width:90%">
+                                                                        <div>
+                                                                            <table class="responstable table-hover">
+                                                                                <tr>
+                                                                                    <th class="t-cell-center" style="width:10%;">Current Stock</th>
+                                                                                    <th class="t-cell-center">SD %</th>
+                                                                                    <th class="t-cell-center">SD Amount</th>
+                                                                                    <th class="t-cell-center">CD %</th>
+                                                                                    <th class="t-cell-center">CD Amount</th>
+
+                                                                                    <th class="t-cell-center">Vat %</th>
+                                                                                    <th class="t-cell-center">Vat Amount</th>
+
+
+                                                                                </tr>
+                                                                                <tbody ng-repeat="inv_StockReceiveDetailAdAttribute in inv_StockPBDetailAdAttributeLst | filter: { ItemId : inv_StockReceiveDetail.ItemId }:true">
+                                                                                    <tr class="HoverTable">
+                                                                                        <td class="t-cell-center" style="width:10%;">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.CurrentStock" value=" {{inv_StockReceiveDetailAdAttribute.CurrentStock}}" maxlength="10" onfocus="this.select();" placeholder="Current Stock  " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.SdPercentage" value=" {{inv_StockReceiveDetailAdAttribute.SdPercentage}}" maxlength="10" onfocus="this.select();" placeholder="SD % " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.SdAmount" value=" {{inv_StockReceiveDetailAdAttribute.SdAmount}}" maxlength="10" onfocus="this.select();" placeholder="SD Amount " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.CdPercentage" value="{{inv_StockReceiveDetailAdAttribute.CdPercentage}}" maxlength="10" onfocus="this.select();" placeholder="CD % " min="0">
+
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.CdAmount" value=" {{inv_StockReceiveDetailAdAttribute.CdAmount}}" maxlength="10" onfocus="this.select();" placeholder="CD Amount " min="0">
+
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.VatPercentage" value="{{inv_StockReceiveDetailAdAttribute.VatPercentage}}" maxlength="10" onfocus="this.select();" placeholder="Vat % " min="0">
+
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.VatAmount" value=" {{inv_StockReceiveDetailAdAttribute.VatAmount}}" maxlength="10" onfocus="this.select();" placeholder="Vat Amount " min="0">
+
+
+                                                                                        </td>
+
+
+                                                                                    </tr>
+
+                                                                                </tbody>
+
+                                                                            </table>
+                                                                        </div>
+                                                                        <div>
+                                                                            <table class="responstable table-hover">
+                                                                                <tr>
+                                                                                    <th class="t-cell-center" style="width:10%;">RD %</th>
+                                                                                    <th class="t-cell-center">RD Amount</th>
+                                                                                    <th class="t-cell-center">AIT %</th>
+                                                                                    <th class="t-cell-center">AIT Amount</th>
+
+                                                                                    <th class="t-cell-center">AT %</th>
+                                                                                    <th class="t-cell-center">AT Amount</th>
+
+                                                                                    <th class="t-cell-center">TIT %</th>
+
+
+                                                                                </tr>
+                                                                                <tbody ng-repeat="inv_StockReceiveDetailAdAttribute in inv_StockPBDetailAdAttributeLst | filter: { ItemId : inv_StockReceiveDetail.ItemId }:true">
+                                                                                    <tr class="HoverTable">
+
+
+                                                                                        <td class="t-cell-center" style="width:10%;">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.RdPercentage" value=" {{inv_StockReceiveDetailAdAttribute.RdPercentage}}" maxlength="10" onfocus="this.select();" placeholder="RD % " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.RdAmount" value=" {{inv_StockReceiveDetailAdAttribute.RdAmount}}" maxlength="10" onfocus="this.select();" placeholder="RD Amount" min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.AitPercentage" value=" {{inv_StockReceiveDetailAdAttribute.AitPercentage}}" maxlength="10" onfocus="this.select();" placeholder="AIT % " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.AitAmount" value=" {{inv_StockReceiveDetailAdAttribute.AitAmount}}" maxlength="10" onfocus="this.select();" placeholder="AIT Amount  " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.AtPercentage" value=" {{inv_StockReceiveDetailAdAttribute.AtPercentage}}" maxlength="10" onfocus="this.select();" placeholder="AIT % " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.AtAmount" value=" {{inv_StockReceiveDetailAdAttribute.AtAmount}}" maxlength="10" onfocus="this.select();" placeholder="AT Amount % " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.TtiPercentage" value=" {{inv_StockReceiveDetailAdAttribute.TtiPercentage}}" maxlength="10" onfocus="this.select();" placeholder="TIT % " min="0">
+
+                                                                                        </td>
+
+
+                                                                                    </tr>
+
+                                                                                </tbody>
+
+                                                                            </table>
+                                                                        </div>
+                                                                        <div>
+                                                                            <table class="responstable table-hover">
+                                                                                <tr>
+                                                                                    <th></th>
+                                                                                    <th class="t-cell-center" style="width:15%;">TTI Amount</th>
+
+                                                                                    <th class="t-cell-center">Total Cost</th>
+
+
+                                                                                    <th class="t-cell-center">Currency</th>
+                                                                                    <th class="t-cell-center">Conversion </th>
+                                                                                    <th class="t-cell-center">Conversion Total</th>
+                                                                                    <th class="t-cell-center"> Discount</th>
+
+                                                                                  
+
+
+                                                                                </tr>
+                                                                                <tbody ng-repeat="inv_StockReceiveDetailAdAttribute in inv_StockPBDetailAdAttributeLst | filter: { ItemId : inv_StockReceiveDetail.ItemId }:true">
+                                                                                    <tr class="HoverTable">
+                                                                                        <td ng-click="$event.stopPropagation();" class="t-cell-center">
+                                                                                            <label>
+                                                                                                <i ng-show="!inv_StockReceiveDetailAdAttribute.DisplaySerial && inv_StockReceiveDetailAdAttribute.SerialAndWarrentyList.length" class="fa fa-plus-square"></i><i ng-show="inv_StockReceiveDetailAdAttribute.DisplaySerial  &&  inv_StockReceiveDetailAdAttribute.SerialAndWarrentyList.length" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="inv_StockReceiveDetailAdAttribute.DisplaySerial" />
+                                                                                            </label>
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.TtiAmount" value=" {{inv_StockReceiveDetailAdAttribute.TtiAmount}}" maxlength="10" onfocus="this.select();" placeholder="TIT Amount % " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.TotalCost" value=" {{inv_StockReceiveDetailAdAttribute.TotalCost}}" maxlength="10" onfocus="this.select();" placeholder="Total Cost " min="0">
+
+                                                                                        </td>
+
+
+                                                                                        <td class="t-cell-center" style="width:10%;">
+                                                                                            <!--<input type="text"  class="form-control "  value=" {{inv_StockReceiveDetailAdAttribute.CurrencyType}}"   placeholder="CurrencyType ">-->
+
+
+                                                                                            <div class="input-group width-hundred-percent" title="Currency Type">
+
+                                                                                                <select ng-model="ddlCurrencyType" name="CurrencyType" class="form-control selectMendatory"ng-options="currency.CurrencyType for currency in CurrencyList track by currency.Id" ng-change="CurrencyTypeConvertion(currency.Id=ddlCurrencyType.Id)" required style="color:gray;">
+                                                                                                    <option value="" label="Currency Type"></option>
+                                                                                                </select>
+
+                                                                                              
+
+                                                                                            </div>
+
+
+                                                                                        </td>
+
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.ConversionRate" value=" {{inv_StockReceiveDetailAdAttribute.ConversionRate}}" maxlength="10" onfocus="this.select();" placeholder="Conversion " min="0">
+
+                                                                                        </td>
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.TotalConversion" value=" {{inv_StockReceiveDetailAdAttribute.TotalConversion}}" maxlength="10" onfocus="this.select();" placeholder="Total Conversion" min="0">
+
+                                                                                        </td>
+
+                                                                                        <td class="t-cell-center">
+                                                                                            <input type="number" id="txtPurchasePrice" class="form-control txt-center" ng-model="inv_PurchaseBillDetail.DiscountAmount" value=" {{inv_StockReceiveDetailAdAttribute.DiscountAmount}}" maxlength="10" onfocus="this.select();" placeholder="0" min="0" >
+
+                                                                                        </td>
+
+
+
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td colspan="8" ng-click="$event.stopPropagation();" ng-show="inv_StockReceiveDetailAdAttribute.DisplaySerial && inv_StockReceiveDetailAdAttribute.SerialAndWarrentyList.length">
+                                                                                            <table class="responstable table-hover">
+                                                                                                <tr>
+
+                                                                                                    <th class="t-cell-center" width="50%">Warrenty In Days</th>
+                                                                                                    <th class="t-cell-center" width="50%">Serial No.</th>
+                                                                                                </tr>
+                                                                                                <tbody ng-repeat="SerialDtAttri in inv_StockReceiveDetailAdAttribute.SerialAndWarrentyList">
+                                                                                                    <tr>
+
+                                                                                                        <td class="t-cell-center" width="50%">
+                                                                                                            <input type="number" id="txtWarrentyInDays" style="text-align:center" min="0" ng-model="SerialDtAttri.WarrentyInDays" onclick="return this.select();" ng-change="autoWarrantyInDaysValue(SerialDtAttri)" required />
+                                                                                                        </td>
+                                                                                                        <td class="t-cell-center" width="50%">
+                                                                                                            <input type="text" id="txtSerialNo" style="text-align:center" min="0" ng-model="SerialDtAttri.SerialNo" onclick="return this.select();" ng-blur="setEmptyStringIfNull(SerialDtAttri);checkDuplicateSerialNo(SerialDtAttri);" required />
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+
+                                                                                </tbody>
+
+                                                                            </table>
+                                                                        </div>
+                                                                    </td>
+
+
+                                                                    <td style="width:10%;">
+
+                                                                        <p style="margin-left:2px;" ng-repeat="inv_StockReceiveDetailAdAttribute in inv_StockPBDetailAdAttributeLst | filter: { ItemId : inv_StockReceiveDetail.ItemId }:true">
+                                                                            <button style="font-size:15px; height:50px;width:100px;"
+                                                                                    ng-click="RemoveItemAttr(inv_StockReceiveDetailAdAttribute)">
+                                                                                <i class=" fa fa-minus-square"></i>&nbsp;Remove
+                                                                            </button>
+
+
+                                                                        </p>
+
+
+
+
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+
+
+                                                        </td>
+
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="3" style="text-align:right"></td>
+                                                        <td style="text-align:right">Quantity :{{TotalQty}}</td>
+                                                        <td style="text-align:right">Total Inclusive Price : {{TotalPBPriceCal}}</td>
+                                                        <td style="text-align:right">Total Exclusive Price : {{TotalExclusiveCost}} </td>
+                                                        <td style="text-align:right">Discount Price : {{aditionalVatWithoutDiscount}} </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.Overhead.$dirty && purchaseBillEntry.Overhead.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Overhead">
+                                                <div class="input-group input-group-md ddl">
+                                                    <select ng-model="ddlOverhead" class="form-control selectMendatory" name="Overhead" ng-options="overhead.OverHeadName for overhead in OverheadList track by overhead.OverHeadId" required>
+                                                        <option value="" label="Select Overhead"></option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block" ng-show="purchaseBillEntry.Overhead.$dirty && purchaseBillEntry.Overhead.$invalid"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group" ng-class="{ 'has-error' : purchaseBillEntry.OverHeadAmount.$invalid && purchaseBillEntry.OverHeadAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                                <div class="input-group">
+                                                    <input type="number" id="txtOverHeadAmount" name="OverHeadAmount" class="form-control" ng-model="inv_PurchaseBillOverHead.Amount" placeholder="Overhead Amount" maxlength="9" ng-maxlength="8" ng-disabled="HasPO">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-show="purchaseBillEntry.OverHeadAmount.$dirty && purchaseBillEntry.OverHeadAmount.$invalid">OverHead Amount is required</span>
+                                                <span class="help-block" ng-if="purchaseBillEntry.OverHeadAmount.$error.maxlength">8 Character Max</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="customBtn custmoBtnReset" id="btnAddProduct" ng-click="AddOverHead()" ng-disabled="" title="Add OverHead">
+                                                <i class="fa fa-arrow-down"></i>&nbsp;{{AddOverHeadLbl}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-hide="inv_PurchaseBillOverHeadlst.length < 1">
+                                        <div class="col-md-12">
+                                            <table class="responstable table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan="4" class="t-cell-center">Over Head Details</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="t-cell-center">S/N</th>
+                                                        <th class="t-cell-center">Product Name</th>
+                                                        <th class="t-cell-center">Charge</th>
+                                                        <th class="t-cell-center"></th>
+                                                    </tr>
+                                                    <tr class="HoverTable" ng-repeat="ainv_PurchaseBillOverHead in inv_PurchaseBillOverHeadlst" ng-click="RowClickOninv_PurchaseBillOverHeadlst(ainv_PurchaseBillOverHead)">
+                                                        <td class="t-cell-center">{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{ainv_PurchaseBillOverHead.OverHeadName}}</td>
+                                                        <td class="t-cell-center">{{ainv_PurchaseBillOverHead.Amount | number:2}}</td>
+                                                        <td class="t-cell-center"><input type="button" value="Remove" style="width:100%;" ng-click="RemoveOverHead($index)" /></td>
+                                                    </tr>
+                                                </tbody>
+                                               
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <button class="customBtn custmoBtnSave" ng-disabled="purchaseBillEntry.Pono.$invalid ||purchaseBillEntry.Shipment.$invalid || inv_StockPBDetailAdAttributeLst.length < 1 || !ddlSupplier || !inv_PurchaseBill.PBNo || !ddlEmployee" ng-click="SavePB()" title="Save">
+                                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="customBtn custmoBtnReset" ng-click="Reset()" title="Reset">
+                                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" ng-show="!RevisePermission">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp;Purchase Bill Search</h3>
+                                </div>
+
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="input-group " data-toggle="tooltip" title="From Date">
+
+                                                    <input type="text" name="FromDate" id="txtFromDateForPB" ng-model="FromDate" ng-change="PBSearch();" class="form-control " placeholder="From Date" readonly />
+                                                    <span class="input-group-addon" ng-click="FormDateChangeForPB()" id="FormDateChangeForPB"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class="input-group " data-toggle="tooltip" title="To Date">
+                                                    <input type="text" name="ToDate" id="txtToDateForPB" ng-model="ToDate" ng-change="PBSearch();" class="form-control " placeholder="To Date" readonly />
+                                                    <span class="input-group-addon" ng-click="ToDateChangeForPB()" id="ToDateChangeForPB"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group" data-toggle="tooltip" title="Search Company and Sales Order No">
+                                                <input type="text" class="form-control" id="PBAndCompany" ng-model="SearchPBAndCompanyName" ng-change="PBSearch();" name="name" placeholder="Company Name / IWO NO..." />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                    <hr />
+                                    <table class="responstable table-hover table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="t-cell-center">S/N</th>
+                                                <th class="t-cell-center">PB NO</th>
+                                                <th class="t-cell-center">PB Date</th>
+                                                <th class="t-cell-center">Suppiler Name</th>
+                                                <th class="t-cell-center">Shipment Info </th>
+                                                <th class="t-cell-center">Remarks  </th>
+                                                <th class="t-cell-center">Action  </th>
+
+
+                                            </tr>
+                                            <tr class="HoverTable searchRow" dir-paginate="aPurchaseBill in PurchaseBillList | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" >
+                                                <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                                <td class="t-cell-center">{{aPurchaseBill.PBNo}}</td>
+                                                <td class="t-cell-center">{{aPurchaseBill.PBDate}}</td>
+                                                <td class="t-cell-center">{{aPurchaseBill.SupplierName}}</td>
+                                                <td class="t-cell-center">{{aPurchaseBill.ShipmentInfo}}</td>
+                                                <td class="t-cell-center">{{aPurchaseBill.Remarks}}</td>
+                                                <td>
+                                                    <button class="btn btn-sm" ng-click="OpenReportMusuk1(aPurchaseBill)">
+                                                        <p>Musuk 6.1</p>
+                                                    </button>
+                                                    <!--<button class="btn btn-sm" ng-if="aPurchaseBill.isRawMaterials==false" ng-click="OpenReportMusuk1(aPurchaseBill)">
+        <p>Musuk 6.2</p>
+    </button>-->
+                                                    <button class="btn btn-sm" ng-click="purcheaseBillReport(aPurchaseBill)">
+                                                        Purchease Bill
+                                                    </button>
+
+                                                    <span ng-click="onSelectToSupplierAndPb(aPurchaseBill)">
+                                                        <button class="btn btn-sm" style="color:black;margin-left:5px;" >
+                                                            Pay
+
+                                                        </button>
+                                                        <!--<input type="checkbox" ng-model="PbCheck"  />-->
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                                <th colspan="8">
+                                                    <dir-pagination-controls max-size="8"
+                                                                             direction-links="true"
+                                                                             boundary-links="true"
+                                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                    </dir-pagination-controls>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row pagination-footer">
+                                        <div class="col-md-6">
+                                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtDateOfPB1'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("txtDateOfPB2").addEventListener("click", function () {
+        picker.show();
+    });
+
+
+    //var picker2 = new Pikaday({
+    //    field: document.getElementById('txtPBDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("txtPBDate2").addEventListener("click", function () {
+    //    picker2.show();
+
+    //});
+
+    //var picker3 = new Pikaday({
+    //    field: document.getElementById('txtToDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender3").addEventListener("click", function () {
+    //    picker3.show();
+
+    //});
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>

@@ -1,0 +1,632 @@
+﻿<form name="SaleForm" novalidate>
+    <div ng-show="PosScnFull" style="z-index: 9999; width: 100%; height: 100%; position: fixed; top: 0; left: 0; ">
+        <!--<button id="Fullscreen" ng-click="fullscreenCtrl.toggleFullscreen()">Fullscreen</button>-->
+        <!-- <button id="Fullscreen" ngsf-toggle-fullscreen>Fullscreen</button>-->
+        <iframe ng-if="PosScnFull" style="height: 100vh; width: 100%;" src="/SPA/POS/Sale/SaleFull.cshtml"></iframe>
+    </div>
+    <div ng-show="!PosScnFull">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h3 class="panel-title pull-left">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-group"></i>&nbsp;&nbsp;Product Sale Entry</h3>
+                        <h3 class="panel-title pull-right"><i class="fa fa-tv"></i>&nbsp;&nbsp;{{pos_Sale.PCINfo}}&nbsp;&nbsp;&nbsp;&nbsp;</h3>
+                        <!--<br />
+                             <div class="pull-right navbar-custom-menu">
+                                 <ul class="nav navbar-nav">
+                                     <li class="dropdown messages-menu">
+                                         <a class="dropdown-toggle" data-toggle="dropdown">
+                                             <i class="fa fa-power-off"></i>
+                                         </a>
+                                         <ul class="dropdown-menu">
+                                             <li><a href="">Lock</a></li>
+                                             <li><a href="">Shift End</a></li>
+                                             <li><a href="">Log Out</a></li>
+                                         </ul>
+                                     </li>
+                                 </ul>
+                             </div>-->
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body" id="SaleMasterInfo">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : SaleForm.OutLet.$dirty && SaleForm.OutLet.$invalid }" data-toggle="tooltip" data-placement="bottom" title="OutLet">
+                                                <div class="input-group input-group-md ddl">
+                                                    <select ng-disabled="pos_Sale" ng-model="ddlOutLet" class="form-control selectMendatory" ng-change="pos_Sale.DepartmentId=ddlOutLet.DepartmentId; GetAllInvoiceNumberFromddl();" ng-options="aOutlet.DepartmentName for aOutlet in  userOutletList track by aOutlet.DepartmentId" name="OutLet">
+                                                        <option value="" label="OutLet"></option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block" ng-show="SaleForm.OutLet.$dirty && SaleForm.OutLet.$invalid">Outlet required</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : SaleForm.Salesman.$dirty && SaleForm.Salesman.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Salesman">
+                                                <div class="input-group input-group-md ddl">
+                                                    <!--<select ng-model="ddlSalesman" class="form-control selectMendatory" name="Salesman">
+                                                        <option value="" label="Salesman"></option>
+                                                    </select>-->
+                                                    <input type="text" class="form-control" ng-model="pos_Sale.SalesmanName" placeholder="Salesman" readonly />
+                                                </div>
+                                                <span class="help-block" ng-show="SaleForm.Salesman.$dirty && SaleForm.Salesman.$invalid">Salesman required</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class='input-group'>
+                                                    <input type="text" class="form-control" ng-model="pos_Sale.InvoiceNo" placeholder="Invoice No" readonly />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <div class='input-group'>
+                                                    <input type="text" name="Date" id="txtDate" ng-model="tbDate" ng-disabled="pos_SaleDetailLst.length" class="form-control " placeholder="Date" readonly />
+                                                    <span class="input-group-addon" id="calender1"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" ng-class="{ 'has-error' : SaleForm.PriceType.$dirty && SaleForm.PriceType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Price Type">
+                                                <div class="input-group input-group-md ddl">
+                                                    <select ng-model="ddlPriceType" ng-disabled="pos_SaleDetailLst.length" ng-readonly="pos_SaleDetailLst.length" class="form-control selectMendatory" ng-change="pos_Sale.PriceTypeId=ddlPriceType.PriceTypeId" ng-options="aActivePriceType.PriceTypeName for aActivePriceType in ActivePriceTypeList track by aActivePriceType.PriceTypeId" name="PriceType">
+                                                        <option value="" label="Price Type"></option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block" ng-show="SaleForm.PriceType.$dirty && SaleForm.PriceType.$invalid">Price Type required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : SaleForm.CustCode.$invalid && SaleForm.CustCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Code">
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon">Customer Code</span>
+                                                    <input type="text" ng-model="BarCodeCustomer" ng-model-options='{ debounce: 300 }' ng-change="BarcodeCustomerSearch()" autocomplete="off" onclick="this.setSelectionRange(0, this.value.length)" name="CustCode" class="form-control" placeholder="Customer Code">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-show="SaleForm.CustCode.$dirty && SaleForm.CustCode.$invalid">Code is required</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : SaleForm.CustName.$invalid && SaleForm.CustName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Name">
+                                                <div class="input-group ">
+                                                    <input type="text" name="CustName" ng-model="CustomerName" ng-blur="CustomerDetail()" class="form-control" uib-typeahead="aActiveCustomer as aActiveCustomer.FullName for aActiveCustomer in ActiveCustomerList | filter:{FullName:$viewValue} | limitTo:8" placeholder="Customer Name">
+                                                    <span class="input-group-addon"><i class="fa fa-female"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Customer Mobile">
+                                                <div class="input-group ">
+                                                    <input type="text" ng-model="CustomerMobile" ng-blur="CustomerMobileSearchDetail()" class="form-control" uib-typeahead="aActiveCustomer as aActiveCustomer.Mobile for aActiveCustomer in ActiveCustomerList | filter:{Mobile:$viewValue} | limitTo:8" placeholder="Customer Mobile">
+                                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <!--<div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Total Point">
+                                                <div class="input-group ">
+                                                    <input type="text" ng-model="TotalPoint" readonly="readonly" class="form-control" placeholder="Total Point">
+                                                    <span class="input-group-addon"><i class="fa fa-cogs"></i></span>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group" ng-class="{ 'has-error' : SaleForm.BarCode.$invalid && SaleForm.BarCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="BarCode">
+                                                <div class="input-group ">
+                                                    <input type="text" id="txtBarCode" ng-disabled="!ddlOutLet || !tbDate || !ddlPriceType" name="BarCode" ng-model="BarCode" ng-model-options='{ debounce: 300 }' ng-change="BarcodeSearch()" class="form-control text-center" autocomplete="off" onclick="this.setSelectionRange(0, this.value.length)" placeholder=" Barcode">
+                                                    <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
+                                                </div>
+                                                <span class="help-block" ng-show="SaleForm.BarCode.$dirty && SaleForm.BarCode.$invalid">BarCode is required</span>
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-4">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Product Name">
+                                                <div class="input-group ">
+                                                    <input type="text" id="txtVarietyName" ng-disabled="true" name="ProName" class="form-control" ng-model="VarietyName" ng-blur="GetVarietyDetail()" uib-typeahead="aVariety as aVariety.ItemName for aVariety in VarietyList | filter:{ItemName:$viewValue} | limitTo:8" placeholder="Product Name">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                        <div class="col-md-3">
+                                            <div class="form-group" ng-class="{ 'has-error' : SaleForm.Unit.$dirty && SaleForm.Unit.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                                <div class="input-group input-group-md ddl">
+                                                    <select class="form-control selectMendatory" ng-model="ddlSalesMu" ng-disabled="true" name="Unit" ng-change="pos_SaleDetail.SaleUnitId=ddlSalesMu.ItemUnitId; pos_SaleDetail.SaleUnitName=ddlSalesMu.UnitName; UpdatePriceQuantityInfo()" ng-options="unit.UnitName for unit in ItemUnitlist  | filter: unitFilter(pos_SaleDetail) track by unit.ItemUnitId">
+                                                        <option value="" label="Unit"></option>
+                                                    </select>
+                                                </div>
+                                                <span class="help-block" ng-show="SaleForm.Unit.$dirty && SaleForm.Unit.$invalid">Unit is required</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Price">
+                                                <div class="input-group ">
+                                                    <input type="text" ng-model="pos_SaleDetail.UnitPrice" class="form-control text-center" placeholder="Price" readonly>
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Stock Qty">
+                                                <div class="input-group ">
+                                                    <input type="text" ng-model="pos_SaleDetail.CurrentQuantity" class="form-control  text-center" placeholder="Stock Qty" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Sale Qty">
+                                                <div class="input-group ">
+                                                    <input type="number" id="txtSaleQty" ng-model="pos_SaleDetail.Quantity" name="SaleQty" class="form-control  text-center" placeholder="Sale Qty">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                                <div class="input-group">
+                                                    <span class="form-control text-right">{{(+pos_SaleDetail.Quantity) * (+pos_SaleDetail.UnitPrice)}}</span>
+                                                    <span class="input-group-addon">৳</span>
+                                                    <!--<input type="text" class="form-control" value="{{pos_SaleDetail.Quantity * pos_SaleDetail.UnitPrice}}" ng-model="pos_SaleDetail.Amount" placeholder="Amount" readonly>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="customBtn custmoBtnReset" id="btnAddProduct" ng-click="AddProduct()" ng-disabled="!ddlSalesMu || !pos_SaleDetail.UnitPrice || !pos_SaleDetail.CurrentQuantity || !pos_SaleDetail.Quantity || pos_SaleDetail.Quantity <1 || pos_SaleDetail.Quantity > pos_SaleDetail.CurrentQuantity" title="Add Product">
+                                                <i class="fa fa-arrow-down"></i>&nbsp;{{AddProductLbl}}
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="customBtn custmoBtnDelete" ng-show="ProductRemoveBtnShow" ng-click="RemoveProduct()" title="Reset Offer">
+                                                <i class="fa fa-scissors"></i>&nbsp;Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="pos_SaleDetailLst.length">
+                                        <div class="col-md-12">
+                                            <table class="responstable table-hover">
+                                                <tbody>
+                                                    <tr hidden>
+                                                        <th colspan="7" style="font-family:'Book Antiqua';font-size:15px;" class="t-cell-center">Variety Details</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="t-cell-center">S/N</th>
+                                                        <!--<th class="t-cell-center">Crop</th>-->
+                                                        <!--<th class="t-cell-center">Type</th>-->
+                                                        <th class="t-cell-center">Product</th>
+                                                        <th class="t-cell-center">Product Details</th>
+                                                        <!--<th class="t-cell-center">Current Quantity</th>-->
+                                                        <th class="t-cell-center">Sale Qty</th>
+                                                        <th class="t-cell-center">Unit Price</th>
+                                                        <!--<th class="t-cell-center">Unit Disc.</th>
+                                                        <th class="t-cell-center">Unit Charge</th>-->
+                                                        <th><span class="pull-right">Amount</span></th>
+                                                        <th class="t-cell-center">Dis. 15%</th>
+                                                    </tr>
+                                                    <tr class="HoverTable" ng-repeat="apos_SaleDetail in pos_SaleDetailLst" ng-click="RowClickOnProductList(apos_SaleDetail,$index)">
+                                                        <td class="t-cell-center">{{$index+1}}</td>
+                                                        <!--<td class="t-cell-center">{{apos_SaleDetail.CategoryName}}</td>-->
+                                                        <!--<td class="t-cell-center">{{apos_SaleDetail.SubCategoryName}}</td>-->
+                                                        <td class="t-cell-center">{{apos_SaleDetail.ItemName}}</td>
+                                                        <td class="t-cell-center">{{apos_SaleDetail.Combination}}</td>
+                                                        <!--<td class="t-cell-center">{{apos_SaleDetail.CurrentQuantity | number:2}}&nbsp;{{apos_SaleDetail.SaleUnitName}}</td>-->
+                                                        <td class="t-cell-center">{{apos_SaleDetail.Quantity}}&nbsp;{{apos_SaleDetail.SaleUnitName}}</td>
+                                                        <td class="t-cell-center">৳ &nbsp;{{apos_SaleDetail.UnitPrice | number:2}}</td>
+                                                        <!--<td class="t-cell-center">৳ &nbsp;{{apos_SaleDetail.UnitDiscount | number:2}}</td>
+                                                        <td class="t-cell-center">৳ &nbsp;{{apos_SaleDetail.TotalUnitChargeAmount | number:2}}</td>-->
+                                                        <td><span class="pull-right">৳ &nbsp;{{((apos_SaleDetail.Quantity * apos_SaleDetail.UnitPrice)-(apos_SaleDetail.UnitDiscount*apos_SaleDetail.Quantity))| number:2}}</span></td>
+                                                        <td class="t-cell-center" ng-click="$event.stopPropagation(); ClearProductCtrls()">
+                                                            <label><input ng-disabled="ProductRemoveBtnShow" type="checkbox" ng-model="apos_SaleDetail.FifteenChecked" /></label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="pos_SaleDetailFreeLst.length">
+                                        <div class="col-md-12">
+                                            <hr />
+                                            <table class="responstable table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan="3" style="font-family:'Book Antiqua';font-size:15px;" class="t-cell-center">Free Product Details</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="t-cell-center">S/N</th>
+                                                        <th class="t-cell-center">Product Name</th>
+                                                        <th class="t-cell-center">Quantity</th>
+                                                    </tr>
+                                                    <tr class="HoverTable" ng-repeat="apos_SaleDetailFree in pos_SaleDetailFreeLst">
+                                                        <td class="t-cell-center">{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{apos_SaleDetailFree.ItemName}}</td>
+                                                        <td class="t-cell-center">{{apos_SaleDetailFree.FreeQuantity | number:2}} &nbsp; {{apos_SaleDetailFree.FreeUnitName}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Pay Type">
+                                                <div class="input-group input-group-md ddl">
+                                                    <select ng-model="ddlPaymentType" class="form-control selectMendatory" ng-change="pos_SalePayment.PaymentTypeId=ddlPaymentType.PaymentTypeId; pos_SalePayment.PaymentTypeName=ddlPaymentType.PaymentTypeName" ng-options="PaymentType.PaymentTypeName for PaymentType in PaymentTypeList track by PaymentType.PaymentTypeId" name="PayType">
+                                                        <option value="" label="Pay Type"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                                <div class="input-group ">
+                                                    <input type="number" ng-model="pos_SalePayment.Amount" class="form-control" placeholder="Amount">
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="customBtn custmoBtnReset" ng-disabled="!ddlPaymentType || !pos_SalePayment.Amount|| pos_SalePayment.Amount < 1" ng-click="AddPayment()" title="Add Payment">
+                                                <i class="fa fa-arrow-down"></i>&nbsp;{{PaymentAddBtnLabel}}
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="customBtn custmoBtnDelete" ng-show="PaymentRemoveBtnShow" ng-click="RemovePayment()" title="Remove Payment">
+                                                <i class="fa fa-scissors"></i>&nbsp;Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="ddlPaymentType.IsFixed==false">
+                                        <div class="col-md-4">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Ref Number">
+                                                <div class="input-group ">
+                                                    <input type="text" ng-model="pos_SalePayment.RefNumber" class="form-control" placeholder="Ref Number">
+                                                    <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Card Name">
+                                                <div class="input-group ">
+                                                    <input type="text" ng-model="pos_SalePayment.CardName" class="form-control" placeholder="Card Name">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Card Number">
+                                                <div class="input-group ">
+                                                    <input type="text" ng-model="pos_SalePayment.CardNumber" class="form-control" placeholder="Card Number">
+                                                    <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="pos_SalePaymentList.length">
+                                        <div class="col-md-12">
+                                            <table class="responstable table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="t-cell-center">S/N</th>
+                                                        <th class="t-cell-center">Payment Type</th>
+                                                        <th class="t-cell-center">Amount</th>
+                                                    </tr>
+                                                    <tr class="HoverTable" ng-repeat="apos_SalePayment in pos_SalePaymentList" ng-click="RowClickOnPaymantList(apos_SalePayment,$index)">
+                                                        <td class="t-cell-center">{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{apos_SalePayment.PaymentTypeName}}</td>
+                                                        <td class="t-cell-center">৳ &nbsp;{{apos_SalePayment.Amount | number:2}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body" ng-show="SaleSaveLbl == 'ReIssue Sale'">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Reissue Reseon">
+                                                <div class="input-group">
+                                                    <input type="text" ng-model="pos_Sale.ReIssueReason" class="form-control" placeholder="ReissueReseon">
+                                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 pull-right">
+                            <div class="panel panel-default">
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Grand Total">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Total</span>
+                                                    <input type="text" ng-model="pos_Sale.GrandTotal" class="form-control text-right" placeholder="Grand Total" readonly>
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Discount">
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Discount</span>
+                                                    <input type="text" ng-model="pos_Sale.Discount" class="form-control text-right" placeholder="Discount" readonly>
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Charge">
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Charge</span>
+                                                    <input type="text" ng-model="pos_Sale.TotalChargeAmount" class="form-control text-right" placeholder="Charge" readonly>
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Net Payble">
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Payble</span>
+                                                    <input type="text" ng-model="pos_Sale.NetPayable" class="form-control text-right" placeholder="Net Payble" readonly>
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Paid">
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Paid</span>
+                                                    <input type="text" ng-model="pos_Sale.PaidAmount" class="form-control text-right" placeholder="Paid" readonly>
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Change">
+                                                <div class="input-group ">
+                                                    <span class="input-group-addon" style="width:80px !important; text-align:left !important;">Change</span>
+                                                    <input type="text" ng-model="pos_Sale.ChangeAmount" class="form-control text-right" placeholder="Change" readonly>
+                                                    <span class="input-group-addon">৳</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="customBtn custmoBtnSave" ng-disabled="!ddlOutLet || !tbDate || !pos_SaleDetailLst.length || pos_Sale.ChangeAmount < 0 || ProductRemoveBtnShow || PaymentRemoveBtnShow || PCINfo==''" ng-click="SaveSale()" title="Create Sale">
+                                                <i class="fa fa-save"></i>&nbsp;{{SaleSaveLbl}}
+                                            </button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <button class="customBtn custmoBtnSearch" ng-click="HoldSale()" title="Hold Sale">
+                                                        <i class="fa fa-hand-o-down"></i>&nbsp;Hold
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div class="dropdown">
+                                                        <button class="customBtn custmoBtnSearch dropdown-toggle" type="button" id="UnholdSaleMenu" data-toggle="dropdown"><i class="fa fa-hand-o-up"></i>&nbsp;Unhold<span class="caret"></span></button>
+                                                        <ul class="dropdown-menu" role="menu" aria-labelledby="UnholdSaleMenu">
+                                                            <!--<li id="ItemOfCustDropdownBtn"></li>-->
+                                                            <li role="presentation" ng-repeat="aHoldSale in HoldSaleList" ng-bind-html-unsafe="aHoldSale.name">
+                                                                <button class="customBtn custmoBtnSearch" ng-click="LoadHoldedSale(aHoldSale)">
+                                                                    <i class="fa fa-hand-o-up"></i>&nbsp;{{aHoldSale.name}}
+                                                                </button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="customBtn custmoBtnReset" ng-click="ResetSale()" title="Reset Sale">
+                                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                                            </button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Change">
+                                                <div class="input-group ">
+                                                    <input type="text" class="form-control text-center" ng-model="SaleInvoiceNo" placeholder="Invoice No">
+                                                    <span class="input-group-addon"><i class="fa fa-bar-chart"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="customBtn custmoBtnSearch" ng-disabled="!SaleInvoiceNo" ng-click="SalePrintInvoice()" title="Print">
+                                                <i class="fa fa-print"></i>&nbsp;Open Invoice
+                                            </button>
+                                        </div>
+                                        <!--<div class="col-md-12">
+                                            <button class="customBtn custmoBtnReset" ng-disabled="!SaleInvoiceNo || !ddlOutLet" ng-click="LoadtoReIssue()" title="Reset Sale">
+                                                <i class="fa fa-refresh"></i>&nbsp;Load to ReIssue
+                                            </button>
+                                        </div>-->
+                                        <div class="col-md-12">
+                                            <button class="customBtn custmoBtnSave" data-toggle="modal" data-target="#ShiftCloseModal" ng-click="loadShiftInfo()" title="Shift Close">
+                                                <i class="fa fa-upload"></i>&nbsp;Clock Out
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+
+<div class="modal fade" id="ShiftCloseModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Shift Close</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Payment Type</th>
+                                    <th class="t-cell-center">System Amount</th>
+                                    <th class="t-cell-center">Input Amount</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aShiftAmountDetails in ShiftAmountDetails">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aShiftAmountDetails.PaymentTypeName}}</td>
+                                    <td class="t-cell-center">{{aShiftAmountDetails.Amount | number:2}}</td>
+                                    <td class="t-cell-center"><input type="number" style="text-align:center" ng-change="CalculateShift()" ng-model="aShiftAmountDetails.InputAmount" /></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" style="text-align:right;">Total Amount</th>
+                                    <th class="t-cell-center"><input type="text" ng-model="pos_Shift.SystemCloseBalance" class="form-control text-center" readonly></th>
+                                    <th class="t-cell-center"><input type="text" ng-model="pos_Shift.InputCloseBalance" class="form-control text-center" readonly></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Input Cash">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Input Cash</span>
+                                    <input type="text" ng-model="pos_Shift.InputOpenCash" class="form-control text-right" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="System Closing Cash">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">System Closing Cash</span>
+                                    <input type="text" ng-model="pos_Shift.SystemCloseCash" class="form-control text-right" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Input Closing Cash">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Input Closing Cash</span>
+                                    <input type="text" ng-model="pos_Shift.InputCloseCash" class="form-control text-right" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Own Input">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Own Cash Input</span>
+                                    <input type="text" ng-model="pos_Shift.OwnCashIn" class="form-control text-right" readonly>
+                                    <span class="input-group-addon">৳</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Own Input">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Own Cash Out</span>
+                                    <input type="number" ng-model="pos_Shift.OwnCashOut" class="form-control text-right">
+                                    <span class="input-group-addon">৳</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" ng-disabled="pos_Shift.OwnCashOut !=pos_Shift.OwnCashIn || pos_Shift.SystemCloseBalance !=pos_Shift.InputCloseBalance || pos_Shift.SystemCloseCash !=pos_Shift.InputCloseCash" ng-click="ShiftClose()" class="customBtn custmoBtnSave" data-dismiss="modal"><i class="fa fa-upload"></i>&nbsp;Clock Out</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal"><i class="fa fa-crosshairs"></i>&nbsp;Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker.show();
+    });
+    document.getElementById("txtDate").addEventListener("click", function () {
+        picker.show();
+    });
+</script>
+<style>
+    .typeahead-demo .custom-popup-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        background-color: #f9f9f9;
+    }
+
+        .typeahead-demo .custom-popup-wrapper > .message {
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            color: #868686;
+        }
+
+        .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+            position: static;
+            float: none;
+            display: block;
+            min-width: 160px;
+            background-color: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+    .fullscreen {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<!--<img src="" style="width:100px; height:60px;" alt="" />
+<img src="../../../UploadedImages/logo.jpg" />-->

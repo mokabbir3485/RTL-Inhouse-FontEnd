@@ -1,0 +1,1276 @@
+﻿
+<style type="text/css">
+    .red {
+        background: Yellow;
+    }
+</style>
+<form name="commercialInvoiceReviseEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Revise Commercial Invoice</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.Password.$invalid && commercialInvoiceReviseEntryForm.Password.$touched }" data-toggle="tooltip" data-placement="bottom" title="Password">
+                            <div class="input-group ">
+                                <input type="text" name="Password" id="txtOtP" class="form-control" ng-model="commercialInvoice.Password" placeholder="One Time Password" maxlength="101" ng-maxlength="100" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block; color:red" ng-if="commercialInvoiceReviseEntryForm.Password.$error.required && commercialInvoiceReviseEntryForm.Password.$touched">Password is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.Password.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" id="btnReset" ng-click="LoadCommercialInvoice(commercialInvoice.Password)" ng-disabled="!commercialInvoice.Password" class="customBtn custmoBtnReset" title="Load">
+                            <i class="fa fa-refresh"></i>&nbsp;Load
+                        </button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.PaymentProcessType.$touched && commercialInvoiceReviseEntryForm.PaymentProcessType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlPaymentProcessType" id="ddlPaymentProcessType" class="form-control selectMendatory" name="PaymentProcessType" ng-options="payment.PaymentProcessType for payment in PaymentProcessTypeList track by payment.PaymentProcessType" ng-change="exp_CommercialInvoice.PaymentProcessType = ddlPaymentProcessType.PaymentProcessType; GetCompanyByPaymentProcessType(); PaymentProcessTypeChange();" autofocus required>
+                                    <option value="" label="Select Type"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.PaymentProcessType.$touched && commercialInvoiceReviseEntryForm.PaymentProcessType.$invalid">Payment process type is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.LCSCNo.$invalid && commercialInvoiceReviseEntryForm.LCSCNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="LC/SC No">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcScNo" maxlength="50" id="txtLC/SCNo" name="LCSCNo " class="form-control" placeholder="LC/SC No" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LCSCNo.$error.maxlength">50 Character Max</span>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.LCSCNo.$touched && commercialInvoiceReviseEntryForm.LCSCNo.$invalid">LC/SC No is required</span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.LcScDate.$invalid && commercialInvoiceReviseEntryForm.LcScDate.$touched }">
+                            <div class="input-group " data-toggle="tooltip" title="LC/SC Date">
+                                <input type="text" id="txtLcScDateRevise" ng-model="exp_CommercialInvoice.LcScDate" class="form-control" name="LcScDate" placeholder="LC/SC Date" maxlength="40" readonly />
+                                <span class="input-group-addon" ng-click="CalendarLCSCRevise()"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcScDate.$error.maxlength">40 Character Max</span>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.LcScDate.$error.required && commercialInvoiceReviseEntryForm.LcScDate.$touched">LC/SC date is required</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.Importer.$touched && commercialInvoiceReviseEntryForm.Importer.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlImporter" ng-disabled="DisddlImpoter" name="Importer" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" ng-change="restMergeInvoiceDetailsForDDL(); GetImporterBankByRefId(ddlImporter.CompanyId,'Customer'); GetProformaInvoiceByCompany();GetbranchId(2); GetAddressAndNameByCompany(); exp_CommercialInvoice.ImporterBankId = ddlImporterBank.BankAccountId" required>
+                                    <option value="" label="Importer" hidden></option>
+                                </select>
+                                <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.Importer.$dirty && commercialInvoiceReviseEntryForm.Importer.$invalid">Importer Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.ImporterBank.$invalid && commercialInvoiceReviseEntryForm.ImporterBank.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Importer Bank">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlImporterBank" name="ImporterBank" class="form-control selectMendatory" ng-options="importer.BankName for importer in ImporterBankList track by importer.BankAccountId" ng-change="exp_CommercialInvoice.ImporterBankId = ddlImporterBank.BankAccountId; exp_CommercialInvoice.BankInfoValue1 = ddlImporterBank.BIN;" required>
+                                    <option value="" label="Importer Bank"></option>
+                                </select>
+                                <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.ImporterBank.$error.required && commercialInvoiceReviseEntryForm.ImporterBank.$touched">Importer Bank Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="customBtn custmoBtnReset" ng-click="AddEmpoterBank();" title="Add Importer Bank">
+                            <i class=" fa fa-plus-square"></i> New
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceEntryForm.Label.$invalid && commercialInvoiceEntryForm.Label.$touched }" data-toggle="tooltip" data-placement="bottom" title="Label">
+                            <div class="input-group width-hundred-percent">
+                                <div class="input-group">
+                                    <input type="text" ng-model="exp_CommercialInvoice.BankInfoLabel1 " maxlength="50" id="Label" name="Label " class="form-control" placeholder="Label" ng-maxlength="49" />
+                                    <!--<span class="input-group-addon"><i class="fa fa-text-width"></i></span>-->
+                                </div>
+                                <!--<span class="help-block" style="color:red" ng-show="commercialInvoiceEntryForm.ImporterBankBIN.$touched && commercialInvoiceEntryForm.ImporterBankBIN.$invalid">Importer Bank BIN is required</span>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.ImporterBankBIN.$invalid && commercialInvoiceReviseEntryForm.ImporterBankBIN.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Importer BankBIN">
+                            <div class="input-group width-hundred-percent">
+                                <div class="input-group">
+                                    <input type="text" ng-model="exp_CommercialInvoice.ImporterBankBin " maxlength="50" id="Importer Bank BIN" name="ImporterBankBIN " class="form-control" placeholder="Importer Bank BIN" ng-maxlength="50" />
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.ImporterBankBIN.$error.maxlength">50 Character Max</span>
+                                <!--<span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.ImporterBankBIN.$error.required && commercialInvoiceReviseEntryForm.ImporterBankBIN.$touched">Importer Bank BIN is required</span>-->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.CompanyNameBilling.$invalid && commercialInvoiceReviseEntryForm.CompanyNameBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Name Billing">
+                            <div class="input-group ">
+                                <input type="text" name="CompanyNameBilling" class="form-control " ng-model="exp_CommercialInvoice.CompanyNameBilling" placeholder="Importer Name Billing" ng-maxlength="100" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.CompanyNameBilling.$error.maxlength">100 Character Max</span>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.CompanyNameBilling.$error.required && commercialInvoiceReviseEntryForm.CompanyNameBilling.$touched">Company Name Billing is required</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.AddressBilling.$invalid && commercialInvoiceReviseEntryForm.AddressBilling.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Billing Address">
+                            <div class="input-group ">
+                                <input type="text" name="AddressBilling" class="form-control " ng-model="exp_CommercialInvoice.AddressBilling" placeholder="Importer Billing Address" ng-maxlength="400" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.AddressBilling.$error.required && commercialInvoiceReviseEntryForm.AddressBilling.$touched">Address Billing is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.AddressBilling.$error.maxlength">400 Character Max</span>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.CompanyNameDelivery.$invalid && commercialInvoiceReviseEntryForm.CompanyNameDelivery.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Name Delivery">
+                            <div class="input-group ">
+                                <input type="text" name="CompanyNameDelivery" class="form-control " ng-model="exp_CommercialInvoice.CompanyNameDelivery" placeholder="Importer Name Delivery" maxlength="101" ng-maxlength="100" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.CompanyNameDelivery.$error.required && commercialInvoiceReviseEntryForm.CompanyNameDelivery.$touched">Company Name Delivery is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.CompanyNameDelivery.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.AddressDelivery.$invalid && commercialInvoiceReviseEntryForm.AddressDelivery.$touched }" data-toggle="tooltip" data-placement="bottom" title="Importer Delivery Address">
+                            <div class="input-group ">
+                                <input type="text" name="AddressDelivery" class="form-control " ng-model="exp_CommercialInvoice.AddressDelivery" placeholder="Importer Delivery Address" ng-maxlength="400">
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.AddressDelivery.$error.required && commercialInvoiceReviseEntryForm.AddressDelivery.$touched">Address Delivery is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.AddressDelivery.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.Exporter.$touched && commercialInvoiceReviseEntryForm.Exporter.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlExporter" name="Importer" class="form-control selectMendatory" ng-options="exporter.ExporterAndFactory for exporter in ExporterList track by exporter.ExporterId" ng-change="GetExpoterInfo(ddlExporter.ExporterId)" required disabled>
+                                    <option value="" label="Exporter" hidden></option>
+                                </select>
+                                <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.Exporter.$error.required && commercialInvoiceReviseEntryForm.Exporter.$touched">Exporter Name Name is required</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.ExporterBank.$touched && commercialInvoiceReviseEntryForm.ExporterBank.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlExporterBank" name="ExporterBank" class="form-control selectMendatory" ng-options="exporter.BankName for exporter in ExporterBankList track by exporter.BankAccountId" ng-change="GetbranchId(ddlExporterBank.BankAccountId); exp_CommercialInvoice.ExporterBankId = ddlExporterBank.BankAccountId" required>
+                                    <option value="" label="ExporterBank" hidden></option>
+                                </select>
+                                <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.ExporterBank.$error.required && commercialInvoiceReviseEntryForm.ExporterBank.$touched">Exporter Bank Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.Exporter.$invalid && commercialInvoiceReviseEntryForm.Exporter.$touched }" data-toggle="tooltip" data-placement="bottom" title="Exporter">
+                            <!--<textarea id="Exporter" name="Exporter" class="form-control " ng-model="exp_CommercialInvoice.ExporterInfo" placeholder="Exporter Info" rows="4" cols="50" required>
+
+
+
+                            </textarea>-->
+                            <p type="text" name="summernoteExporterInfoRevise" class="summernoteExporterInfoRevise">
+                                {{exp_CommercialInvoice.ExporterInfo}}
+                            </p>
+                            <span class="help-block" style="display: block; color:red" ng-if="commercialInvoiceReviseEntryForm.Exporter.$error.required && commercialInvoiceReviseEntryForm.Exporter.$touched">Exporter Delivery is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.Exporter.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.Exporterbank.$invalid && commercialInvoiceReviseEntryForm.Exporterbank.$touched }" data-toggle="tooltip" data-placement="bottom" title="Exporterbank">
+                            <!--<textarea id="Exporterbank" name="Exporterbank" class="form-control " ng-model="exp_CommercialInvoice.ExporterBankInfo " placeholder="Exporter Bank Info" rows="4" cols="50" required>
+
+
+
+                            </textarea>-->
+                            <p type="text" name="summernoteExporterBankInfoRevise" class="summernoteExporterBankInfoRevise">
+                                {{exp_CommercialInvoice.ExporterBankInfo}}
+                            </p>
+                            <span class="help-block" style="display: block; color:red" ng-if="commercialInvoiceReviseEntryForm.Exporterbank.$error.required && commercialInvoiceReviseEntryForm.Exporterbank.$touched">Exporter bank  is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.Exporterbank.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.CommercialInvoiceNo.$invalid && commercialInvoiceReviseEntryForm.CommercialInvoiceNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Invoice No">
+                            <div class="input-group" ng-show=" isInvoiceNo">
+                                <input type="text" ng-model="exp_CommercialInvoice.CommercialInvoiceNo" maxlength="50" id="txtCommercialInvoiceNo" name="CommercialInvoiceNo" class="form-control" placeholder="Invoice No(Auto Gen)" ng-blur="CheckDuplicateExpTo()" ng-change="foundChange()" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <div class="input-group" ng-show="!isInvoiceNo">
+                                <input type="text" ng-model="exp_CommercialInvoice.CommercialInvoiceNo" maxlength="50" id="txtCommercialInvoiceNo" name="req-icon-color" class="form-control" placeholder="Invoice No(Auto Gen)" ng-blur="CheckDuplicateExpTo()" ng-change="foundChange()" ng-maxlength="49" readonly />
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.CommercialInvoiceNo.$error.required && commercialInvoiceReviseEntryForm.CommercialInvoiceNo.$touched">Invoice No is required</span>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.CommercialInvoiceNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="row">
+                            <div class="form-group col-md-6" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.CheckBox.$invalid && commercialInvoiceReviseEntryForm.CheckBox.$touched }" data-toggle="tooltip" data-placement="bottom" title="CheckBox">
+                                <!--<label class="switch">
+                                    <input type="checkbox" ng-click="hideButton()">
+                                    <span class="slider round"></span>
+                                </label>-->
+
+                                <input type="checkbox" ng-click="hideButton()" /> Override
+
+
+                                <span class="help-block" style="display: block; color:red" ng-if="commercialInvoiceReviseEntryForm.CheckBox.$error.required && commercialInvoiceReviseEntryForm.CheckBox.$touched">Invoice No is required</span>
+                                <span class="help-block" style="display: block;color:red" ng-if="commercialInvoiceReviseEntryForm.CheckBox.$error.maxlength">50 Character Max</span>
+                            </div>
+                            <!--<div class="col-md-6"> Override</div>-->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.PIRefNo.$invalid && commercialInvoiceReviseEntryForm.PIRefNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="PIRef No">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.PiRefNo" maxlength="100" id="PIRefNo" name="PIRefNo " class="form-control" placeholder="PIRef No" ng-maxlength="49" readonly />
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.PIRefNo.$error.required && commercialInvoiceReviseEntryForm.PIRefNo.$touched">PI Ref No is required</span>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.PIRefNo.$error.maxlength">100 Character Max</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.Exp.$invalid && commercialInvoiceReviseEntryForm.Exp.$touched }" data-toggle="tooltip" data-placement="bottom" title="Exp No">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.ExpNo" maxlength="50" id="ExpNo" name="Exp " class="form-control" placeholder="Exp No" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.Exp.$error.required && commercialInvoiceReviseEntryForm.Exp.$touched">Exp No is required</span>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.Exp.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.CIDate.$invalid && commercialInvoiceReviseEntryForm.CIDate.$touched }">
+                            <div class='input-group' data-toggle="tooltip" title="CI Date">
+                                <input type="text" ng-model="exp_CommercialInvoice.CommercialInvoiceDate" onkeydown="return false" name="CIDate" id="txtCIDateRevise" class="form-control " placeholder="CI Date" required readonly />
+                                <span class="input-group-addon" ng-click="CalendarCI()" id="calenderCi"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.CIDate.$error.required && commercialInvoiceReviseEntryForm.CIDate.$touched">CI date is required</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.PIRefDate.$invalid && commercialInvoiceReviseEntryForm.PIRefDate.$touched }">
+
+                            <div class='input-group' data-toggle="tooltip" title="CI Date">
+                                <input type="text" ng-model="exp_CommercialInvoice.PiRefDate" onkeydown="return false" name="PIRefDate" id="txtPIRefDateRevise" class="form-control " placeholder="PIRef Date" readonly />
+                                <span class="input-group-addon" id="calenderPIRef"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.PIRefDate.$error.required && commercialInvoiceReviseEntryForm.PIRefDate.$touched">PIRef Date is required</span>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.ExpDate.$invalid && commercialInvoiceReviseEntryForm.ExpDate.$touched }">
+                            <div class='input-group' data-toggle="tooltip" title="Exp Date">
+                                <input type="text" ng-model="exp_CommercialInvoice.ExpDate" onkeydown="return false" name="ExpDate" id="txtExpDateRevise" class="form-control " placeholder="Exp Date" required readonly />
+                                <span class="input-group-addon" ng-click="CalendarExp()" id="calenderExp"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.ExpDate.$error.required && commercialInvoiceReviseEntryForm.ExpDate.$touched">Exp date is required</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.TermsOfPayment.$invalid && commercialInvoiceReviseEntryForm.TermsOfPayment.$touched }" data-toggle="tooltip" data-placement="bottom" title="Terms of Payment">
+                            <div class="input-group ">
+                                <input type="text" id="txtTermsOfPayment" name="TermsOfPayment" class="form-control" ng-model="exp_CommercialInvoice.TermsOfPayment" placeholder="Terms Of Payment" maxlength="51" ng-maxlength="50" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="color:red" ng-show="commercialInvoiceReviseEntryForm.TermsOfPayment.$error.required && commercialInvoiceReviseEntryForm.TermsOfPayment.$touched">Terms Of Payment is required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="exp_CommercialInvoice.TermsOfPayment.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.ShipmentMode.$invalid && commercialInvoiceReviseEntryForm.ShipmentMode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Shipment Mode">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.ShipmentMode" id="txtShipmentMode" name="ShipmentMode" class="form-control" placeholder="Shipment Mode" ng-blur="CheckDuplicateShipmentMode()" ng-change="foundChange()" ng-maxlength="150" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.ShipmentMode.$error.required && commercialInvoiceReviseEntryForm.ShipmentMode.$touched">Shipment mode is required</span>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.ShipmentMode.$error.maxlength">150 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.CountryOfOrigin.$invalid && commercialInvoiceReviseEntryForm.CountryOfOrigin.$touched }" data-toggle="tooltip" data-placement="bottom" title="Country Of Origin">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.CountryOfOrigin" maxlength="50" id="txtCountryOfOrigin" name="CountryOfOrigin" class="form-control" placeholder="Country Of Origin" ng-blur="CheckDuplicateExpTo()" ng-change="foundChange()" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.CountryOfOrigin.$error.required && commercialInvoiceReviseEntryForm.CountryOfOrigin.$touched">Country of origin is required</span>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.CountryOfOrigin.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.Covering.$invalid && commercialInvoiceReviseEntryForm.Covering.$touched }" data-toggle="tooltip" data-placement="bottom" title="Covering">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.Covering" maxlength="50" id="txtCovering" name="Covering" class="form-control" placeholder="Covering" ng-blur="CheckDuplicateExpTo()" ng-change="foundChange()" ng-maxlength="100" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.Covering.$error.required && commercialInvoiceReviseEntryForm.Covering.$touched">Covering is required</span>
+                            <!--<span class="help-block" ng-if="commercialInvoiceReviseEntryForm.Covering.$error.maxlength">50 Character Max</span>-->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceEntryForm.PONo.$invalid && commercialInvoiceEntryForm.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO No">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.PONo" maxlength="100" id="txtPONo" name="PONo" class="form-control" placeholder="PO No" ng-maxlength="49" readonly />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceEntryForm.PONo.$error.required && commercialInvoiceEntryForm.PONo.$touched">PO No is required</span>
+                            <!--<span class="help-block" ng-if="commercialInvoiceEntryForm.PONo.$error.maxlength">100 Character Max</span>-->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceEntryForm.PODate.$invalid && commercialInvoiceEntryForm.PODate.$touched }" data-toggle="tooltip" data-placement="bottom" title="PO Date">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.PODate" maxlength="100" id="txtPODate" name="PODate" class="form-control" placeholder="PO Date" ng-maxlength="49" readonly />
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="commercialInvoiceEntryForm.PODate.$error.required && commercialInvoiceEntryForm.PODate.$touched">PO Date is required</span>
+                            <!--<span class="help-block" ng-if="commercialInvoiceEntryForm.PODate.$error.maxlength">100 Character Max</span>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <div class="col-md-2">
+                                <div class="pull-left">
+                                    <input type="checkbox" ng-model="exp_CommercialInvoice.isPO" /><label>Show P.O Panel</label>
+                                </div>
+                            </div>
+                            <div ng-show="exp_CommercialInvoice.isPO">
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' :commercialInvoiceReviseEntryForm.PONo.$invalid && commercialInvoiceReviseEntryForm.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Purchase Order No.">
+                                        <div class="input-group ">
+                                            <input type="text" ng-model="POReference.PONo" id="PONo" class="form-control" name="PONo" placeholder="P.O No." ng-maxlength="100" />
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.PONo.$error.maxlength">100 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' :commercialInvoiceReviseEntryForm.PO_Date.$invalid && commercialInvoiceReviseEntryForm.PO_Date.$touched }" data-toggle="tooltip" data-placement="bottom" title="P.O Date">
+                                        <div class="input-group ">
+                                            <input type="text" id="txtPO_Date" name="PO_Date" ng-model="POReference.PODate" class="form-control" placeholder="P.O. Date" readonly />
+                                            <span class="input-group-addon" ng-click="CalendartxtPO_Date()" id="CalendartxtPODate"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <!--<span class="help-block" style="display: block;" ng-if="commercialInvoiceReviseEntryForm.PO_Date.$error.required && commercialInvoiceReviseEntryForm.PO_Date.$touched">P.O. Date is required</span>-->
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddPOReference();" ng-disabled="!POReference.PONo || !POReference.PODate">
+                                        <i class=" fa fa-plus-square"></i>&nbsp;Add
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="center">
+                                            <table class="responstable table-hover" style="width: 50%;  margin-left: auto; margin-right: auto;">
+                                                <tbody>
+                                                    <tr class="t-head">
+                                                        <th class="t-cell-center">S/N</th>
+                                                        <th class="t-cell-center">PO No</th>
+                                                        <th class="t-cell-center" data-th="PO Date"><span>PO Date</span></th>
+                                                        <th class="t-cell-center">Remove</th>
+                                                    </tr>
+                                                    <tr class="HoverTable" ng-repeat="aPOReference in POReferencelist track by $index">
+                                                        <td class="t-cell-center">{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{aPOReference.PONo}}</td>
+                                                        <td class="t-cell-center">{{aPOReference.PODate}}</td>
+                                                        <td class="t-cell-center">
+                                                            <button title="Remove" ng-click="removePOReference(aPOReference)">
+                                                                <i class="fa fa-minus-square"></i>&nbsp;
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Applicants(IRC No ,LCA No,VAT Reg)  </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 1">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel1"  id="txtCiFooterOne" name="AppLabel1" class="form-control" placeholder="IRC No Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel1.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 1">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue1" id="txtCiFooterTwo" name="AppValue1" class="form-control" placeholder="IRC No Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue1.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 2">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel2" id="txtCiFooterThree" name="AppLabel2" class="form-control" placeholder="LCA No Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel2.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 2">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue2"  id="txtCiFooterFour" name="AppValue2" class="form-control" placeholder=" LCA No Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue2.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 3">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel3"  id="txtCiFooterFour" name="AppLabel3" class="form-control" placeholder=" VAT Reg No Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel3.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 3">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue3" id="txtAppValue3" name="AppValue3" class="form-control" placeholder="VAT Reg No Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue3.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 4">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel4" id="txtAppLabel4" name="AppLabel4" class="form-control" placeholder="BIN Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel4.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 4">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue4" id="txtEx1value" name="AppValue4" class="form-control" placeholder="BIN Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue4.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 5">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel5" id="txtAppLabel5" name="AppLabel5" class="form-control" placeholder="TIN Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel5.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 5">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue5" id="txtEAppValue5" name="Ex2Value" class="form-control" placeholder="TIN Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue5.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <!-- Extra E-IRC -->
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 6">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel6" id="txtAppLabel6" name="AppLabel6" class="form-control" placeholder="E-IRC Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel6.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 6">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue6" id="txtEAppValue6" name="AppValue6" class="form-control" placeholder="E-IRC Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue6.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 7">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel7" id="txtAppLabel7" name="AppLabel7" class="form-control" placeholder="App Extra2 Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel7.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 7">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue7" id="txtEAppValue7" name="Ex2Value" class="form-control" placeholder="App Extra2 Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue7.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <!-- Extra E-IRC -->
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 8">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel8" id="txtAppLabel8" name="AppLabel8" class="form-control" placeholder="App Extra3 Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel8.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 8">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue8" id="txtEAppValue8" name="AppValue8" class="form-control" placeholder="App Extra3 Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue8.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Applicants For Bill Of Exchange And Beneficiary Certificate</h3>
+            </div>
+            <div class="panel-body">
+                <!-- Add Exrta For Bill Of Exchange -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 9">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel9" id="txtAppLabel9" name="AppLabel9" class="form-control" placeholder="Extra1 for Bill. Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel9.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 9">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue9" id="txtEAppValue9" name="Ex4Value" class="form-control" placeholder="Extra1 for Bill. Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue9.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Label 10">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppLabel10" id="txtAppLabel10" name="AppLabel10" class="form-control" placeholder="Extra2 for Bill. Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppLabel10.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="App Value 10">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.AppValue10" id="txtEAppValue10" name="AppValue10" class="form-control" placeholder="Extra1 for Bill. Value" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.AppValue10.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;LC Info (BD Bank Dc No,Exp Contact No)</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Label 1">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoLabel1" id="txtLcInfoLabel1" name="LcInfoLabel1" class="form-control" placeholder="BD Bank Dc Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoLabel1.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Value 1">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoValue1" id="txtLcInfoValue1" name="LcInfoValue1" class="form-control" placeholder=" BD Bank Dc Value " ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoValue1.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Label 2">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoLabel2" id="txtLcInfoLabel2" name="ExpContact" class="form-control" placeholder="Exp Contact No Label" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoLabel2.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Value 2">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoValue2" id="txtLcInfoValue2" name="LCAValue" class="form-control" placeholder="Exp Contact No Value" ng-maxlength="500" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoValue2.$error.maxlength">500 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Label 3">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoLabel3" id="txtCiFooterFour" name="LcInfoLabel3" class="form-control" placeholder="Extra Label 1" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoLabel3.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Value 3">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoValue3" id="txtExpNo" name="ExpNo" class="form-control" placeholder=" Extra Value 1" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoValue3.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Label 4">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoLabel4" id="txtLcInfoLabel4" name="Ex1" class="form-control" placeholder="Extra Label 2" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoLabel4.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Value 4">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoValue4" id="txtEx1value" name="LcInfoValue4" class="form-control" placeholder="Extra Value 2" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoValue4.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Label 5">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoLabel5" id="txtLcInfoLabel5" name="LcInfoLabel5" class="form-control" placeholder="Extra Label 3" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoLabel5.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Lc Info Value 5">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoValue5" id="txtLcInfoValue5" name="LcInfoValue5" class="form-control" placeholder="Extra Value 3" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoValue5.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Extra Label 4">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoLabel6" id="txtLcInfoLabel6" name="LcInfoLabel6" class="form-control" placeholder="Extra Label 4" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoLabel5.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Extra Value 4">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_CommercialInvoice.LcInfoValue6" id="txtLcInfoValue6" name="LcInfoValue6" class="form-control" placeholder="Extra Value 4" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.LcInfoValue6.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Footer </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Ci Footer Value 1">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.CiFooterValue1" id="txtCiFooterValue1" name="CiFooterValue1" class="form-control" placeholder="CI Footer 1" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <!--<span class="help-block" ng-if="commercialInvoiceReviseEntryForm.CiFooterValue1.$error.maxlength">100 Character Max</span>-->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Ci Footer Two">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.CiFooterValue2" id="txtCiFooterValue2" name="CiFooterValue2" class="form-control" placeholder="CI Footer 2" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.CiFooterValue2.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Ci Footer Value 3">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.CiFooterValue3" id="txtCiFooterValue3" name="CiFooterValue3" class="form-control" placeholder="CI Footer 3" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.CiFooterValue3.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Ci Footer Value 4">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.CiFooterValue4" id="txtCiFooterValue4" name="CiFooterValue4" class="form-control" placeholder="CI Footer 4" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.CiFooterValue4.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Dc Footer 1">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.DcFooter1" id="txtExpNo" name="ExpNo" class="form-control" placeholder="DC Footer 1" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <!--<span class="help-block" ng-if="commercialInvoiceReviseEntryForm.DcFooter1.$error.maxlength">100 Character Max</span>-->
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Dc Footer 2">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.DcFooter2"  id="txtDcFooter2" name="DcFooter2" class="form-control" placeholder="DC Footer 2" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.DcFooter2.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Dc Footer 3">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.DcFooter3" id="txtDcFooter3" name="DcFooter3" class="form-control" placeholder="DC Footer 3" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.DcFooter3.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Dc Footer 4">
+                            <div class="input-group">
+                                <textarea type="text" ng-model="exp_CommercialInvoice.DcFooter4" id="txtDcFooter4" name="DcFooter4" class="form-control" placeholder="DC Footer 4" ng-maxlength="400" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="commercialInvoiceReviseEntryForm.DcFooter4.$error.maxlength">400 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel-footer">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h4><i class="fa fa-list"></i>&nbsp;Proforma Invoice List</h4>
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th class="txt-center">Chk</th>
+                                <th class="txt-center">Invoice No</th>
+                                <th class="txt-center">Invoice Date</th>
+                                <th class="txt-center">View</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aInvoice in InvoiceSearchList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count">
+                                <td style="text-align:center;">
+                                    <input type="checkbox" class="t-cell-center" ng-disabled="aInvoice.disabled || chkDisable" ng-model="aInvoice.IsChecked" ng-click="SelectCheck(aInvoice,aInvoice.IsChecked)" ng-checked="aInvoice.IsChecked"><br>
+                                </td>
+                                <td class="t-cell-center">{{aInvoice.InvoiceNo}}</td>
+                                <td class="t-cell-center">{{aInvoice.InvoiceDate}}</td>
+                                <td class="t-cell-center"><button class="btn btn-sm" ng-click="OpenPopupWindowForPI(aInvoice.InvoiceId)">Invoice View</button></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-table"></i>&nbsp;Commercial Invoice Table</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+
+                    <div class="col-md-12 toolbar">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="btn-toolbar ">
+                                    <div class="btn-group ">
+                                        <span>
+                                            <button ng-click="tableRemoveRow()" ng-disabled="btnRemoveEditDisable" ng-hide="btnRemoveHide"><i class="fa fa-trash" style="color: #E62F17;"></i>Remove Item</button>
+                                            <button ng-click="tableInputDisable()" ng-disabled="btnRemoveEditDisable"><i class="fa fa-pencil-square" style="color: #E62F17;"></i>Enable Edit</button>
+                                        </span>
+                                        <button id="btnItemReset" ng-click="restMergeInvoiceDetails()" title="Item Reset">
+                                            <i class="fa fa-refresh"></i>&nbsp;Item Reset
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="result"> </div>
+
+
+                <table id="ciTable" style="width: 100%" border="1">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="h in ItemTableHeadersN[0] track by $index" ng-if="$index > 1" class="t-cell-center">{{h}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in ItemTableDataRow track by $index">
+                            <td class="t-cell-center " ng-repeat="item in row track by $index" ng-if="$index > 1">
+                                <input class="t-cell-center " ng-init="GetItemValueForAmountCalculation(item, row, $index);" ng-change="GetChengedFieldValue(item, row, $index);" oninput="edValueKeyPress();" ng-model="item" ng-if="($index>=(row.length-3))" disabled />
+                                <span ng-if="$index<(row.length-3)">{{item}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="t-cell-center" ng-repeat="f in ItemTableFooter track by $index" ng-if="$index > 1" contenteditable="false">{{f}}</th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+                <h4><i class="fa fa-th-list"></i>&nbsp;Headers List</h4>
+                <span>
+                    <button ng-click="leftSwap()" ng-disabled="btnSwapDisable"><i class="fa fa-arrow-circle-left" style="color: #E62F17;"></i> Left Swap</button> <i class="fa fa-retweet" style="color: #E62F17;"></i>
+                    <button ng-click="rightSwap()" ng-disabled="btnSwapDisable"> Right Swap <i class="fa fa-arrow-circle-right" style="color: #E62F17;"></i></button>
+                    <!--<button ng-click="Shuvo()"><i class="fa fa-angle-left" style="color: #E62F17;"></i> Test New Fun</button>-->
+                </span>
+                <!--<div id="resultH1"> </div>-->
+                <table id="PIHeader1" style="width: 100%" border="1">
+                    <thead>
+                        <tr>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in ItemTableHeadersN track by $index">
+                            <td class="t-cell-center " ng-repeat="item in row track by $index" ng-if="$index > 1">
+
+                                <span>{{item}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Packing Info</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <button type="button" id="btnPackingInfo" ng-click="getPackingInfo()" class="customBtn custmoBtnSearch" title="Get Packing Info" style="margin-top: 23px">
+                                <i class="fa fa-calculator"></i>&nbsp;Get Packing Info
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Total Carton">
+                                <label>Total Carton:</label>
+                                <div class="input-group ">
+                                    <input type="text" name="TotalCarton" class="form-control " ng-model="packingInfo.TotalCarton" placeholder="Total Carton" maxlength="10" ng-maxlength="9">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-text-width"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Label Net Weight">
+                                <label>Label Net Weight:</label>
+                                <div class="input-group ">
+                                    <input type="text" name="LabelNetWeight" class="form-control " ng-model="packingInfo.LabelNetWeight" placeholder="Label Net Weight" maxlength="10" ng-maxlength="9">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-text-width"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Label Gross Weight">
+                                <label>Label Gross Weight:</label>
+                                <div class="input-group ">
+                                    <input type="text" name="LabelGrossWeight" class="form-control " ng-model="packingInfo.LabelGrossWeight" placeholder="Label Gross Weight" maxlength="10" ng-maxlength="9">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-text-width"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Ribbon Net Weight">
+                                <label>Ribbon Net Weight:</label>
+                                <div class="input-group ">
+                                    <input type="text" name="RibonNetWeight" class="form-control " ng-model="packingInfo.RibonNetWeight" placeholder="Ribbon Net Weight" maxlength="10" ng-maxlength="9">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-text-width"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Ribbon Gross Weight">
+                                <label>Ribbon Gross Weight:</label>
+                                <div class="input-group ">
+                                    <input type="text" name="RibonGrossWeight" class="form-control " ng-model="packingInfo.RibonGrossWeight" placeholder="Ribbon Gross Weight" maxlength="10" ng-maxlength="9">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-text-width"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : commercialInvoiceReviseEntryForm.CartonMeasurement.$invalid && commercialInvoiceReviseEntryForm.CartonMeasurement.$touched }" data-toggle="tooltip" data-placement="bottom" title="Carton Measurement">
+                                <label>Carton Measurement:</label>
+                                <div class="input-group ">
+                                    <input type="text" name="CartonMeasurement" class="form-control " ng-model="packingInfo.CartonMeasurement" placeholder="Carton Measurement" maxlength="201" ng-maxlength="200">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-text-width"></i>
+                                    </span>
+                                </div>
+                                <span class="help-block" style="color: red; display: block;" ng-if="commercialInvoiceReviseEntryForm.CartonMeasurement.$error.maxlength">200 Character Max</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4" style="padding-left: 2%; padding-right: 2%; margin-top:20px">
+                            <div class="row">
+                                <button type="button" id="btnItemReset" ng-click="restMergeInvoiceDetails()" class="customBtn custmoBtnSearch" title="Item Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Item Reset
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveCommercialInvoice()" title="Save" ng-disabled="!ddlPaymentProcessType || !ddlImporter || !ddlImporterBank || !exp_CommercialInvoice.CommercialInvoiceNo || !exp_CommercialInvoice.CommercialInvoiceDate || !exp_CommercialInvoice.PiRefNo || !exp_CommercialInvoice.PiRefDate || !exp_CommercialInvoice.AddressDelivery || !exp_CommercialInvoice.CompanyNameDelivery || !exp_CommercialInvoice.AddressBilling || !exp_CommercialInvoice.CompanyNameBilling">
+                            <i class="fa fa-save"></i>&nbsp;Save
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                    <div class="row">
+                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm1()">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="importerBankEntryNewForm" novalidate>
+    <!-- Modal -->
+    <div id="importerBankModal" class="modal fade" ng-model="importerBankModal" role="dialog">
+        <div class="modal-dialog modal-md">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header text-center" style=" background-color: #3c8dbc;color:white;">
+                    <button type="button" class="close" style="color:red;" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Bank</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.BankName.$invalid && importerBankEntryNewForm.BankName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bank Name">
+                                <div class="input-group">
+                                    <input type="text" id="txtBankName" name="BankName" maxlength="100" class="form-control" ng-model="ad_BankAccount.BankName" placeholder="Bank Name" ng-blur="CheckDuplicateBankName()" ng-change="foundChange()" ng-maxlength="99" required autofocus>
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="importerBankEntryNewForm.BankName.$error.required && importerBankEntryNewForm.BankName.$touched">Bank name is required</span>
+                                <span class="help-block" ng-if="importerBankEntryNewForm.BankName.$error.maxlength">100 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.AccountNo.$invalid && importerBankEntryNewForm.AccountNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Account No">
+                                <div class="input-group">
+                                    <input type="text" id="txtAccountNo" maxlength="100" name="AccountNo" class="form-control" ng-model="ad_BankAccount.AccountNo" placeholder="Account No" ng-blur="CheckDuplicateAccountNo()" ng-change="foundChangeAccountNo()" ng-maxlength="99">
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="importerBankEntryNewForm.AccountNo.$error.required && importerBankEntryNewForm.AccountNo.$touched">Account no is required</span>
+                                <span class="help-block" ng-if="importerBankEntryNewForm.AccountNo.$error.maxlength">100 Character Max</span>
+                            </div>
+
+                            <div class="form-group " ng-class="{ 'has-error' : importerBankEntryNewForm.AccountName.$invalid && importerBankEntryNewForm.AccountName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Account Name">
+                                <div class="input-group">
+                                    <input type="text" id="txtBankAccountName" name="AccountName" maxlength="100" class="form-control" ng-model="ad_BankAccount.AccountName" placeholder="Account Name" ng-blur="CheckDuplicateAccountName()" ng-change="foundChangeAccountName()" ng-maxlength="99" autofocus>
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+
+                                <span class="help-block" ng-if="importerBankEntryNewForm.AccountName.$error.maxlength">100 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.BranchName.$invalid && importerBankEntryNewForm.BranchName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Name">
+                                <div class="input-group">
+                                    <input type="text" id="txtBranchName" maxlength="100" name="BranchName" class="form-control" ng-model="ad_BankAccount.BranchName" placeholder="Branch Name" ng-blur="CheckDuplicateBranchName()" ng-change="foundChangeBranchName()" ng-maxlength="99">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="importerBankEntryNewForm.BranchName.$error.maxlength">100 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.BranchAddress.$invalid && importerBankEntryNewForm.BranchAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Branch Address">
+                                <div class="input-group" style="margin-bottom: 24px">
+                                    <textarea rows="3" id="tbxBranchAddress"  class="form-control" placeholder="Branch Address" name="BranchAddress" ng-model="ad_BankAccount.BranchAddress" ng-maxlength="700" required></textarea>
+                                    <span class="input-group-addon"><i class="fa fa-paper-plane" style="color:red;"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="importerBankEntryNewForm.BranchAddress.$error.required && importerBankEntryNewForm.BranchAddress.$touched">Branch address is required</span>
+                                <span class="help-block" ng-if="importerBankEntryNewForm.BranchAddress.$error.maxlength">700 Character Max</span>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.SwiftCode.$invalid && importerBankEntryNewForm.SwiftCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="SwiftCode">
+                                <div class="input-group">
+                                    <input type="text" id="txtSwiftCode" maxlength="100" name="SwiftCode" class="form-control" ng-model="ad_BankAccount.SwiftCode" placeholder="Swift Code" ng-blur="CheckDuplicateSwiftCode()" ng-change="foundChangeSwiftCode()" ng-maxlength="99">
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="importerBankEntryNewForm.SwiftCode.$error.required && importerBankEntryNewForm.SwiftCode.$touched">Swift code is required</span>
+                                <span class="help-block" ng-if="importerBankEntryNewForm.SwiftCode.$error.maxlength">100 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.BIN.$invalid && importerBankEntryNewForm.BIN.$touched }" data-toggle="tooltip" data-placement="bottom" title="BIN">
+                                <div class="input-group">
+                                    <input type="text" id="txtBIN" name="BIN" maxlength="100" class="form-control" ng-model="ad_BankAccount.BIN" placeholder="BIN" ng-blur="CheckDuplicateBIN()" ng-change="foundChangeBIN()" ng-maxlength="99" required autofocus>
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="importerBankEntryNewForm.BIN.$error.required && importerBankEntryNewForm.BIN.$touched">BIN no is required</span>
+                                <span class="help-block" ng-if="importerBankEntryNewForm.BIN.$error.maxlength">100 Character Max</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.AccountFor.$touched && importerBankEntryNewForm.AccountFor.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Account For">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlAccountFor" ng-model="ddlAccountFor" name="AccountFor" class="form-control selectMendatory" ng-options="account.AccountFor for account in AccountForList track by account.AccountFor" ng-disabled="AccountForSelectionDisabled" ng-change="ad_BankAccount.AccountFor = ddlAccountFor.AccountFor ;GetAccountFor(ad_BankAccount.AccountFor)" required>
+                                        <option value="" label="Select Account For"></option>
+
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="importerBankEntryNewForm.AccountFor.$touched && importerBankEntryNewForm.AccountFor.$invalid">Account for is required</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : importerBankEntryNewForm.AccountRefId.$touched && importerBankEntryNewForm.AccountRefId.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Account Ref Id">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlAccountRefId" ng-model="ddlAccountRef" name="AccountRefId" class="form-control selectMendatory" ng-options="company.CompanyName for company in CompanyDropdownList track by company.CompanyId" ng-change="ad_BankAccount.AccountRefId = ddlAccountRef.CompanyId">
+                                        <option value="" label="Account Referance"></option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Status: </label>
+                                &nbsp;&nbsp;
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_BankAccount.IsActive">Active
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_BankAccount.IsActive">Inactive
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="margin-top:10px" class="btn btn-success" data-dismiss="modal" ng-click="SaveBankAccount();" title="save" ng-disabled="!ddlAccountRef || !ddlAccountFor || !ad_BankAccount.BIN || !ad_BankAccount.SwiftCode || !ad_BankAccount.BranchAddress || !ad_BankAccount.AccountNo || !ad_BankAccount.BankName">Save</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="CloseItemModal();">Close</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>
+<script>
+    function edValueKeyPress() {
+        var original = '';
+        $('#ciTable tbody tr td input.red').on('input', function () {
+            if ($(this).val().replace(/[^.]/g, "").length > 1) {
+                $(this).val(original);
+            } else {
+                original = $(this).val();
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('.summernoteExporterInfoRevise').summernote({
+            height: 170,
+            tabsize: 2,
+            width: 500,
+            spellCheck: false,
+            disableGrammar: true,
+
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']]
+            ]
+
+        });
+        $('.summernoteExporterBankInfoRevise').summernote({
+            height: 170,
+            tabsize: 2,
+            width: 500,
+            spellCheck: false,
+            disableGrammar: true,
+
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']]
+            ]
+
+        });
+
+    });
+</script>

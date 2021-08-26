@@ -1,0 +1,305 @@
+﻿<style>
+    .responstable th:nth-child(2) {
+        width: 10% !important;
+    }
+</style>
+<form name="inventoryReportMushakForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+
+                    <div class="row">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="Mushak6_1Report" ng-model="Mushak6_1Report" ng-change="Mushak6_1();Mushak4_3ReportFalse();Mushak6_2ReportFalse();">Mushak 6.1
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="Mushak6_2Report" ng-model="Mushak6_2Report" ng-change="Mushak6_2();Mushak6_1ReportFalse();Mushak4_3ReportFalse();">Mushak 6.2
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="optionsRadios5" value="Mushak4_3Report" ng-model="Mushak4_3Report" ng-change="Mushak4_3();Mushak6_1ReportFalse();Mushak6_2ReportFalse();">Mushak 4.3
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mushak4_3 -->
+    <div ng-hide="Mushak4_3Report == 'Mushak4_3ReportFalse'" ng-show="Mushak4_3Report == 'Mushak4_3Report'">
+        <table>
+            <!--<tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.FromDateCIF.$invalid && inventoryReportForm.FromDateCIF.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                        <div class='input-group'>
+                            <input type="text" name="FromDate" id="txtFromDateCIF" onkeydown="return false" ng-model="CIFFromDate" class="form-control " placeholder="From Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender1CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ToDateCIF.$invalid && inventoryReportForm.ToDateCIF.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                        <div class='input-group'>
+                            <input type="text" name="ToDate" id="txtToDateCIF" onkeydown="return false" ng-model="CIFToDate" class="form-control " placeholder="To Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender2CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>-->
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.BillOfMaterial.$invalid && inventoryReportMushakForm.BillOfMaterial.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select BillOfMaterial No">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlBillOfMaterial" name="BillOfMaterial" class="form-control selectMendatory" ng-options="aBillOfMaterial.BillOfMaterialNo for aBillOfMaterial in BillOfMaterialList track by aBillOfMaterial.BillOfMaterialId" required>
+                                <option value="" label="--Select Bill Of Material No--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Bill Of Material Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify;">
+                    <p style="font-weight:bold;font-size:16px;">
+                        Mushak 4.3
+                    </p>
+                </td>
+
+                <td>
+                    <button class="btn btn-success" style="font-size:13px; padding:12.5px"
+                            ng-click="MushakBtn_4_3()">
+                        Report
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- Mushak6_1 -->
+    <div ng-hide="Mushak6_1Report == 'Mushak6_1ReportFalse'" ng-show="Mushak6_1Report == 'Mushak6_1Report'">
+        <table>
+            <!--<tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.FromDateCIF.$invalid && inventoryReportForm.FromDateCIF.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                        <div class='input-group'>
+                            <input type="text" name="FromDate" id="txtFromDateCIF" onkeydown="return false" ng-model="CIFFromDate" class="form-control " placeholder="From Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender1CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ToDateCIF.$invalid && inventoryReportForm.ToDateCIF.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                        <div class='input-group'>
+                            <input type="text" name="ToDate" id="txtToDateCIF" onkeydown="return false" ng-model="CIFToDate" class="form-control " placeholder="To Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender2CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>-->
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.LocalOrImporter.$invalid && inventoryReportMushakForm.LocalOrImporter.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Local Or Importer">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlLocalOrImp" name="LocalOrImporter" class="form-control selectMendatory" ng-options="PBList.Name for PBList in IPBAndLPBList track by PBList.Id" ng-change="GetByPurchaseBillId(PBList.Id=ddlLocalOrImp.Id)" required>
+                                <option value="" label="--Select Purchase Bill Type--"></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.LocalOrImporter.$touched && inventoryReportMushakForm.LocalOrImporter.$invalid">LocalOrImporter Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Importer.$invalid && inventoryReportMushakForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlImporter" name="Importer" class="form-control selectMendatory" ng-options="suppiler.SupplierName for suppiler in suppilerList track by suppiler.SupplierId" ng-change="GetBySuppilerId(suppiler.SupplierId=ddlImporter.SupplierId)" required>
+                                <option value="" label="--Select Importer--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.ImportPbImporter.$invalid && inventoryReportMushakForm.ImportPbImporter.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select PB Number">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlImportPbImporter" name="ImportPbImporter" class="form-control selectMendatory" ng-options="suppiler.PBNo for suppiler in suppilerImportPBList " ng-change="GetByPBId(suppiler=ddlImportPbImporter)" required>
+                                <option value="" label="--Select Importer--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.ImportPbImporter.$touched && inventoryReportMushakForm.ImportPbImporter.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify;">
+                    <p style="font-weight:bold;font-size:16px;">
+                        Mushak 6.1
+                    </p>
+                </td>
+
+                <td>
+                    <button class="btn btn-success" style="font-size:13px; padding:12.5px"
+                            ng-click="MushakBtn_6_1()">
+                        Report
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- Mushak6_2 -->
+    <div ng-hide="Mushak6_2Report == 'Mushak6_2ReportFalse'" ng-show="Mushak6_2Report == 'Mushak6_2Report'">
+        <table>
+            <!--<tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.FromDateCIF.$invalid && inventoryReportForm.FromDateCIF.$touched }" data-toggle="tooltip" data-placement="bottom" title="From Date">
+                        <div class='input-group'>
+                            <input type="text" name="FromDate" id="txtFromDateCIF" onkeydown="return false" ng-model="CIFFromDate" class="form-control " placeholder="From Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender1CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportForm.ToDateCIF.$invalid && inventoryReportForm.ToDateCIF.$touched }" data-toggle="tooltip" data-placement="bottom" title="To Date">
+                        <div class='input-group'>
+                            <input type="text" name="ToDate" id="txtToDateCIF" onkeydown="return false" ng-model="CIFToDate" class="form-control " placeholder="To Date" autocomplete="off" />
+                            <span class="input-group-addon" id="calender2CIF"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>-->
+            <tr>
+                <td style=" width: 250px;">
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Importer.$invalid && inventoryReportMushakForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Purchase Bill Type">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlLocalOrImp" name="Importer" class="form-control selectMendatory" ng-options="PBList.Name for PBList in IPBAndLPBList track by PBList.Id" ng-change="GetByPurchaseBillId(PBList.Id=ddlLocalOrImp.Id)" required>
+                                <option value="" label="--Select Purchase Bill Type--"></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Importer.$invalid && inventoryReportMushakForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlImporter" name="Importer" class="form-control selectMendatory" ng-options="suppiler.SupplierName for suppiler in suppilerList track by suppiler.SupplierId" ng-change="GetBySuppilerId(suppiler.SupplierId=ddlImporter.SupplierId)" required>
+                                <option value="" label="--Select Importer--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="form-group" ng-class="{ 'has-error' : inventoryReportMushakForm.Importer.$invalid && inventoryReportMushakForm.Importer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select PB Number">
+                        <div class="input-group width-hundred-percent">
+                            <select ng-model="ddlImportPbImporter" name="Importer" class="form-control selectMendatory" ng-options="suppiler.PBNo for suppiler in suppilerImportPBList " ng-change="GetByPBId(suppiler=ddlImportPbImporter)" required>
+                                <option value="" label="--Select Importer--" hidden></option>
+                            </select>
+                            <span class="help-block" style="color:red" ng-if="inventoryReportMushakForm.Importer.$touched && inventoryReportMushakForm.Importer.$invalid">Importer Name is required</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:justify;">
+                    <p style="font-weight:bold;font-size:16px;">
+                        Mushak 6.2
+                    </p>
+                </td>
+
+                <td>
+                    <button class="btn btn-success" style="font-size:13px; padding:12.5px"
+                            ng-click="MusukBtn()">
+                        Report
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    var today = new Date();
+    var yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+
+
+
+    //////////////////////////////////////////////////////////
+    //var picker3 = new Pikaday({
+    //    field: document.getElementById('txtFromDateCIF'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('2018-07-01'),
+    //    maxDate: yesterday,
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1CIF").addEventListener("click", function () {
+    //    picker1.show();
+
+    //});
+
+    //var picker4 = new Pikaday({
+    //    field: document.getElementById('txtToDateCIF'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('2018-07-01'),
+    //    maxDate: yesterday,
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender2CIF").addEventListener("click", function () {
+    //    picker2.show();
+
+    //});
+    //$("#calender2CIF").click(function () {
+    //    $("#txtToDateCIF").val('');
+    //});
+    //$("#calender1CIF").click(function () {
+    //    $("#txtFromDateCIF").val('');
+    //});
+</script>

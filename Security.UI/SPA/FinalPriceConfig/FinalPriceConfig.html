@@ -1,0 +1,197 @@
+﻿<form name="finalPriceConfigForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp;  &#9755;&nbsp; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Final Price Configuration</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="form-group" ng-class="{ 'has-error' : finalPriceConfigForm.TransactionType.$touched && finalPriceConfigForm.TransactionType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Transection Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlTransactionType" id="ddlTransactionType" name="TransactionType" class="form-control selectMendatory" ng-options="transType.TransactionTypeName for transType in TransactionTypelist track by transType.TransactionTypeId" ng-change="ShowPriceType(ddlTransactionType)" autofocus required>
+                                    <option value="" label="Select Transaction Type"></option>
+                                </select>
+                                <!-- <span class="input-group-addon"><i class="fa fa-th-large"></i></span>-->
+                            </div>
+                            <span class="help-block" ng-show="finalPriceConfigForm.TransactionType.$touched && finalPriceConfigForm.TransactionType.$invalid">Transaction Type is required</span>
+                        </div>
+
+                        <div class="form-group" ng-class="{ 'has-error' : finalPriceConfigForm.ConfigName.$invalid && finalPriceConfigForm.ConfigName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Configuration Name">
+                            <div class="input-group">
+                                <input type="text" id="txtConfigName" name="ConfigName" class="form-control" ng-model="ad_FinalPriceConfig.ConfigName" placeholder="Configuration Name" maxlength="51" ng-maxlength="50" ng-blur="CheckDuplicateConfigName()" ng-change="foundChange()" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="finalPriceConfigForm.ConfigName.$error.required && finalPriceConfigForm.ConfigName.$touched">Configuration Name is required</span>
+                            <span class="help-block" ng-if="finalPriceConfigForm.ConfigName.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="input-group" ng-show="PriceTypeShow">
+                    <label>Price Type: </label>
+                    <span class="chk-box-alinment"></span> <label class="checkbox-inline" ng-repeat="priceType in PriceTypelist">
+                        <input type="checkbox" ng-model="priceType.selected" ng-change="AddCheckPriceTypeList(priceType.selected,priceType.PriceTypeId)">{{priceType.PriceTypeName}}
+                    </label>
+                </div>
+                <br />
+                <div class="tbl-outer" ng-show="CreateTable">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th width="1%">Up/Down</th>
+                                <th data-th="Price Type Name"><span>Charge Type</span></th>
+                                <th width="8%" style="text-align:center;">%</th>
+                                <th width="50%">Dependency</th>
+
+                            </tr>
+                            <tr ng-repeat="chargeType in ChargeTypelist" ng-if="$index > 0">
+                                <td>
+                                    <div style="text-align:center;">
+                                        <span ng-show="$index > 1" style="border: 1px solid gray; padding: 1px;" ng-click="moveUp($index)">&#x25B2;</span>
+                                    </div>
+                                    <div style="text-align:center;">
+                                        <span ng-show="!$last" style="border: 1px solid gray; padding: 1px;" ng-click="moveDown($index)">&#x25BC;</span>
+                                    </div>
+                                </td>
+                                <td> {{chargeType.ChargeTypeName}}</td>
+                                <td style="text-align:center;"><input type="number" class="form-control" ng-model="chargeType.ChargePercentage" /> </td>
+                                <td>
+                                    <span class="chk-box-alinment"></span> <label class="checkbox-inline" ng-repeat="type in ChargeTypeForApplyList | limitTo:$index">
+                                        <input type="checkbox" ng-model="ChargeSelected" ng-change="AddCheckList(ChargeSelected,$index,chargeType.ChargeTypeId)" />{{type.ChargeTypeName}}
+                                    </label>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tbl-outer" ng-show="UpdateTable">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th width="1%">Up/Down</th>
+                                <th data-th="Price Type Name"><span>Charge Type</span></th>
+                                <th width="8%" style="text-align:center;">%</th>
+                                <th width="50%">Dependency</th>
+                            </tr>
+                            <tr class="HoverTable" ng-repeat="CTD in ChargeTypeDatalist">
+                                <td>
+                                    <div style="text-align:center;">
+                                        <span ng-show="!$first" style="border: 1px solid gray; padding: 1px;" ng-click="moveUpForUpdate()">&#x25B2;</span>
+                                    </div>
+                                    <div style="text-align:center;">
+                                        <span ng-show="!$last" style="border: 1px solid gray; padding: 1px;" ng-click="moveDownForUpdate()">&#x25BC;</span>
+                                    </div>
+                                </td>
+                                <td>{{CTD.ChargeTypeName}}</td>
+                                <td><input style="text-align:center;" type="number" class="form-control" ng-model="CTD.ChargePercentage" /> </td>
+                                <td>
+                                    <span class="chk-box-alinment"></span> <label class="checkbox-inline" ng-repeat="aApplyOn in CTD.ApplyOn | orderBy:'ApplyOnChargeTypeId' | limitTo:$index+1">
+                                        <input type="checkbox" ng-model="aApplyOn.Check" />{{aApplyOn.ChargeTypeName}}
+                                    </label>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-4">
+                <div class="row">
+                    <br />
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                        <div class="row">
+                            <button id="Button1" class="customBtn custmoBtnSave" ng-click="AddConfig()" title="{{button}}" ng-disabled="finalPriceConfigForm.$invalid">
+                                <i class="fa fa-floppy-o"></i>&nbsp;{{btnSave}}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                        <div class="row">                           
+                                <button id="btnDelete" ng-show="btnDeleteShow" ng-click="Delete()" class="customBtn custmoBtnDelete" title="detete">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>                           
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                        <div class="row">
+                                <button id="Button3" class="customBtn custmoBtnReset" title="Search" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Final Price Configuration List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="tbl-outer">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr class="t-head">
+                                        <th>S/N</th>
+                                        <th data-th="Branch Details"><span>Configuration Name</span></th>
+                                        <th>Code</th>
+                                        <th>Transection Type</th>
+
+                                    </tr>
+                                    <tr ng-show="FinalPriceConfigurationList.length <= 0">
+                                        <td colspan="4" style="text-align:center;">Loading new data!! <img src="/UploadedFiles/spinner.gif"></td>
+                                    </tr>
+                                    <tr class="HoverTable" dir-paginate="config in FinalPriceConfigurationList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelConfig(config)">
+                                        <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                        <td>{{config.ConfigName}}</td>
+                                        <td>{{config.ConfigCode}}</td>
+                                        <td>{{config.TransactionTypeName}}</td>
+                                    </tr>
+                                    <tr class="t-foot" ng-show="total_count>PerPage">
+                                        <th colspan="4">
+                                            <dir-pagination-controls max-size="8"
+                                                                     direction-links="true"
+                                                                     boundary-links="true"
+                                                                     on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                            </dir-pagination-controls>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row pagination-footer">
+                                <div class="col-md-6">
+                                    <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+FinalPriceConfigurationList.length}} of {{total_count}} Records</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="rr in ChargeTypelist">
+        {{rr.ChargePercentage}}
+    </div>
+</form>

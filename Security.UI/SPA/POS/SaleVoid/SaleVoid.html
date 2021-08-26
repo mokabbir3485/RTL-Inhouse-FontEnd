@@ -1,0 +1,196 @@
+﻿<form name="SaleVoid" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Sale Cancel</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group" ng-class="{ 'has-error' : SaleVoid.OutLet.$dirty && SaleVoid.OutLet.$invalid }" data-toggle="tooltip" data-placement="bottom" title="OutLet">
+                                            <div class="input-group input-group-md ddl">
+                                                <select ng-model="ddlOutLet" class="form-control selectMendatory" ng-options="aOutlet.DepartmentName for aOutlet in  userOutletList track by aOutlet.DepartmentId" name="OutLet" required autofocus>
+                                                    <option value="" label="OutLet"></option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block" ng-show="SaleVoid.OutLet.$dirty && SaleVoid.OutLet.$invalid">Outlet is required</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <button class="customBtn custmoBtnReset" ng-disabled="!ddlOutLet || !FromDate|| !ToDate" ng-click="SearchSale()" title="Search">
+                                            <i class="fa fa-search"></i>&nbsp;Search
+                                        </button>
+                                    </div>
+                                    <div class="col-md-2" hidden="hidden">
+                                        <div class="form-group">
+                                            <div class='input-group'>
+                                                <input type="text" name="Date" id="txtFromDate" ng-model="FromDate" class="form-control " placeholder="From Date" readonly />
+                                                <span class="input-group-addon" id="fromDate"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" hidden="hidden">
+                                        <div class="form-group">
+                                            <div class='input-group'>
+                                                <input type="text" name="Date" id="txtToDate" ng-model="ToDate" class="form-control " placeholder="To Date" readonly />
+                                                <span class="input-group-addon" id="toDate"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="responstable table-hover">
+                                            <tbody>
+                                                <tr class="t-head">
+                                                    <th class="t-cell-center" width="5%">S/N</th>
+                                                    <th class="t-cell-center" data-th="Stock Declaration Details"><span>Invoice No</span></th>
+                                                    <th width="10%" class="t-cell-center">Invoice Date</th>
+                                                    <th width="30%" class="txt-center">Customer Name [Code]</th>
+                                                    <th width="10%" class="t-cell-center">Discount Type</th>
+                                                    <th width="10%" class="t-cell-center">Discount %</th>
+                                                    <th width="15%" class="t-cell-center">Inv. Amount</th>
+                                                </tr>
+                                                <tr class="HoverTable searchRow" ng-repeat="aSaleList in SaleList" ng-click="RowClick(aSaleList,$index)" onclick="RowSelect(this)">
+                                                    <td class="t-cell-center">{{$index+1}}</td>
+                                                    <td class="t-cell-center">{{aSaleList.InvoiceNo}}</td>
+                                                    <td class="t-cell-center">{{aSaleList.SaleDate}}</td>
+                                                    <td class="t-cell-center">{{aSaleList.CustomerNaemAndCode}}</td>
+                                                    <td class="t-cell-center">{{aSaleList.OfferName}}</td>
+                                                    <td class="t-cell-center">{{aSaleList.OffPercentage}}</td>
+                                                    <td style="text-align:right">৳ &nbsp;{{(aSaleList.PaidAmount-aSaleList.ChangeAmount) | number:2}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="responstable table-hover">
+                                            <tbody>
+                                                <tr class="t-head">
+                                                    <th class="t-cell-center" width="5%">S/N</th>
+                                                    <th data-th="Stock Declaration Details"><span>Variety</span></th>
+                                                    <th width="15%" class="t-cell-center">Code</th>
+                                                    <th width="10%" class="txt-center">Unit</th>
+                                                    <th width="10%" class="t-cell-center">Quantity</th>
+                                                    <th width="10%" class="t-cell-center">Unit Price</th>
+                                                    <th width="15%" class="t-cell-center">Amount</th>
+                                                </tr>
+                                                <tr class="HoverTable" ng-repeat="aSaleDetailList in SaleDetailList" >
+                                                    <td class="t-cell-center">{{$index+1}}</td>
+                                                    <td>{{aSaleDetailList.ItemName}}</td>
+                                                    <td class="t-cell-center">{{aSaleDetailList.ItemCode}}</td>
+                                                    <td class="t-cell-center">{{aSaleDetailList.UnitName}}</td>
+                                                    <td class="t-cell-center">{{aSaleDetailList.Quantity}}</td>
+                                                    <td class="t-cell-center">{{aSaleDetailList.UnitPrice}}</td>
+                                                    <td style="text-align:right">৳ &nbsp;{{(aSaleDetailList.Quantity * aSaleDetailList.UnitPrice) | number:2}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                          
+                                                <div class="form-group" ng-class="{ 'has-error' : SaleVoid.VoidReason.$invalid && SaleVoid.VoidReason.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cancel Reason">
+                                                    <div class="input-group">
+                                                        <input type="text" name="VoidReason" ng-model="Pos_Sale.VoidReason" class="form-control" placeholder="Cancel Reason" maxlength="151" ng-maxlength="150" required>
+                                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                                    </div>
+                                                    <span class="help-block" ng-if="SaleVoid.VoidReason.$error.required && SaleVoid.VoidReason.$touched">Cancel Reason is required</span>
+                                                    <span class="help-block" ng-if="SaleVoid.VoidReason.$error.maxlength">150 Character Max</span>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class='input-group'>
+                                                <input type="text" name="Date" id="txtVoidDate" ng-model="VoidDate" class="form-control " placeholder="Cancel Date" readonly required />
+                                                <span class="input-group-addon" id="voidDate"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group" ng-class="{ 'has-error' : receiveEntryForm.ddlVoidBy.$dirty && receiveEntryForm.ddlVoidBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Sale Cancel By">
+                                            <div class="input-group input-group-md ddl">
+                                                <select id="ddlVoidBy" ng-model="ddlVoidBy" class="form-control selectMendatory" name="ddlVoidBy" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId" required>
+                                                    <option value="" label="Sale Cancel By"></option>
+                                                </select>
+                                            </div>
+                                            <span class="help-block" ng-show="receiveEntryForm.ddlVoidBy.$dirty && receiveEntryForm.ddlVoidBy.$invalid">Receive By is Required</span>
+                                        </div>
+                                    </div>
+                                 
+                                    <div class="col-md-2">
+                                        <button class="customBtn custmoBtnDelete" ng-disabled="!ddlVoidBy || !VoidDate|| !Pos_Sale.VoidReason" ng-click="SaveSaleVoid()" title="Cancel">
+                                            <i class="fa fa-times"></i>&nbsp;Cancel
+                                        </button>
+                                    </div>
+                                </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtFromDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("fromDate").addEventListener("click", function () {
+        picker.show();
+    });
+</script>
+<script>
+    var picker1 = new Pikaday({
+        field: document.getElementById('txtToDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("toDate").addEventListener("click", function () {
+        picker1.show();
+    });
+</script>
+<script>
+    var picker2 = new Pikaday({
+        field: document.getElementById('txtVoidDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("voidDate").addEventListener("click", function () {
+        picker2.show();
+    });
+</script>
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>

@@ -1,0 +1,136 @@
+﻿<form name="permissionEntryForm" novalidate>
+    <div class="col-md-12" id="overlay">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Role Wise Permission</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : permissionEntryForm.Role.$touched && permissionEntryForm.Role.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select User Group">
+                            <div class="input-group input-group-md ddl">
+                                <select id="roleDdl" ng-model="ddlRole.role" ng-change="SelectRole(ddlRole.role)" class="form-control selectNotMandetory" name="Role" ng-options="role.RoleName for role in Rolelist track by role.RoleId" autofocus required>
+                                    <option value="" label="Select User Group"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="permissionEntryForm.Role.$touched && permissionEntryForm.Role.$invalid">Role is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Permission Details" width="20%"><span>Screen Name</span></th>
+                                    <th class="t-cell-center" width="15%">Module Name</th>
+                                    <th style="text-align:center;" width="10%">Menu&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="selectAllCheckBox" ng-change="SelectAllCheckBox(selectAllCheckBox)" ng-disabled="!ddlRole.role" /></th>
+                                    <th>Detail</th>
+                                </tr>
+                                <tr ng-repeat="aScreen in Screenlist ">
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{aScreen.Description}}</td>
+                                    <!--<td>{{aScreen.ScreenName}}</td>-->
+                                    <td class="t-cell-center">{{aScreen.ModuleName}}</td>
+                                    <td style="text-align:center;">
+                                        <input type="checkbox" ng-model="aScreen.selected" ng-click="SelectScreen(aScreen)" ng-disabled="!ddlRole.role"><br>
+                                    </td>
+                                    <td>
+                                        <span class="chk-box-alinment"></span>
+                                        <label class="checkbox-inline" ng-repeat="detail in aScreen.DetailList">
+                                            <input type="checkbox" ng-model="detail.CanExecute" ng-click="ChkDetail(aScreen, detail.ScreenDetailId, detail.CanExecute)" ng-disabled="!ddlRole.role" />{{detail.FunctionName}}
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button ng-click="AddPermission(ddlRole.role.RoleId)" ng-disabled="!ddlRole.role" id="Button1" class="customBtn custmoBtnSave" title="Save">
+                            <i class="fa fa-floppy-o"></i>&nbsp;Save
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 5%;">
+                    <div class="row">
+                        <button type="button" id="btnReset" ng-click="ResetForm()" class="customBtn custmoBtnReset" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id ="loader">
+        <div class="loader"></div>
+        <h3 class="danger panel-title">Request is Processing</h3>
+    </div>
+</form>
+<script>
+    $(document).ready(function () {
+        $("#loader").hide();
+        $(document).ajaxStart(function () {
+            $("#overlay").addClass("overlay");
+            $("#overlay :input").attr("disabled", "disabled");
+        $("#loader").show();
+        }).ajaxStop(function () {
+            $('#overlay').removeClass("overlay");
+            $("#overlay :input").removeAttr("disabled");
+        $("#loader").hide();
+    });
+});
+</script>
+<style>
+    .overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        background-color: #000;
+        opacity: .75;
+    }
+    #loader {
+        position: fixed;
+        bottom: 0;
+        right: 20px;
+    }
+
+    .loader {
+        border: 16px solid #0AEEE7;
+        border-radius: 50%;
+        border-top: 16px solid #f3f3f3;
+        border-bottom: 16px solid #f3f3f3;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>

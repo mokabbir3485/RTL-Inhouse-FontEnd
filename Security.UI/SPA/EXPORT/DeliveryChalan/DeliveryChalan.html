@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            height: auto;
+            font-size: 16px;
+        }
+
+        @media print {
+            #footer {
+                position: fixed;
+                bottom: 0;
+                padding-right: 30px;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+            /*margin-top: 2.2cm;
+            margin-bottom: 2cm;
+            margin-left: 0;
+            margin-right: 0;*/
+        }
+        .flex-container102 {
+            display: flex;
+          
+           
+        }
+
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="hidden-print">
+                <div class="col-sm-7 col-md-9">
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-1">
+                        <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                            <i class="fa fa-print"></i>&nbsp;Print
+                        </button>
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                            <i class="fa fa-save"></i>&nbsp;Export to .doc
+                        </button>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container" id="source-html">
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <p style="font-size: 30px; text-align: center;"><b>RETAIL TECHNOLOGIES LIMITED</b></p>
+                </div>
+                <div>
+                    <p style="font-size: 16px; text-align: center;">FSSFB # 7(Ground Floor East Wing) Dhaka EPZ Extension Area -Bangladesh</p>
+                    <p style="font-size: 16px; text-align: center;">Tel: +88 02 9861297, Email: info@rtbd.com</p>
+                </div>
+                <br />
+                <div>
+                    <table style="text-align: center;margin-left:auto;margin-right:auto;" border="1">
+                        <tr>
+                            <td style="width: 290px;">
+                                <p style="font-size: 25px; text-align: center;margin-top:6px; "><b>DELIVERY CHALLAN</b></p>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <br />
+                <div class="flex-container">
+                    <div>
+                        <p style="font-size:16px;font-weight:bold;" ng-if="deliveryChalanList[0].DcGateNo">Chalan NO: {{deliveryChalanList[0].DcGateNo}}</p>
+                    </div>
+                    <div>
+                        <p style="font-size:16px;font-weight:bold;" ng-if="deliveryChalanList[0].DcGateNoDate">Date: {{deliveryChalanList[0].DcGateNoDate}}</p>
+                    </div>
+                </div>
+                <!--<p style="font-size:14px;word-spacing:2px;font-weight:bold;" ng-if="deliveryChalanList[0].ImporterName">{{CommercialInvoiceMasterList[0].ImporterName}}</p>-->
+
+                <!--<table style="width:100%;">
+                    <tr>
+                        <td>
+                            <b>Buyer Address: </b>
+                        </td>
+                        <td>
+                            <span style="font-size:14px;font-weight:bold;" ng-if="CommercialInvoiceMasterList[0].ImporterName">{{deliveryChalanList[0].ImporterName}}</span><br />
+                            <span style="font-size:14px; ">{{CommercialInvoiceMasterList[0].ImporterDeliveryAddress}}</span>
+
+                        </td>
+                        <td>
+                            <div>
+                                <table border="1" style="width:100%;">
+
+                                    <tr style="width:50%;">
+
+                                        <td>
+                                            Transport No.
+                                        </td>
+
+                                    </tr>
+                                    <tr style="width:50%;">
+
+                                        <td contenteditable="true">
+                                            <p ng-if="deliveryChalanList[0].VehicleRegNo">{{deliveryChalanList[0].VehicleRegNo}}</p>
+
+                                        </td>
+
+                                    </tr>
+
+                                </table>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>-->
+            </div>
+
+
+        </div>
+        <div class="flex-container102">
+            <div style="width: 300px; ">Billing Address: </div>
+            <div style=" width: 350px; padding-left:5px; padding-right:5px;">
+                <div class="row"><b>{{CommercialInvoiceMasterList[0].CompanyNameBilling}}</b></div>
+                <div class="row" style="width: 270px;">{{CommercialInvoiceMasterList[0].ImporterBillAddress}}   </div>
+            </div><br />
+            <div style=" width: 350px; padding-left:5px; padding-right:5px;" ng-if="CommercialInvoiceMasterList[0].PaymentProcessTypeId == 2 || CommercialInvoiceMasterList[0].PaymentProcessTypeId == 3">
+                <div class="row" style="padding-left: 5px; padding-right: 5px; "><b>{{CommercialInvoiceMasterList[0].CompanyNameDelivery}}</b></div>
+                <div class="row" style="width: 270px; padding-left:5px; padding-right:5px;">{{CommercialInvoiceMasterList[0].ImporterDeliveryAddress}}   </div>
+            </div>
+            <div style=" width: 250px;">
+                <table border="1" style="width:100%;">
+
+                    <tr style="width:50%;">
+
+                        <td>
+                            Transport No.
+                        </td>
+
+                    </tr>
+                    <tr style="width:50%;">
+
+                        <td contenteditable="true">
+                            <p ng-if="deliveryChalanList[0].VehicleRegNo">{{deliveryChalanList[0].VehicleRegNo}}</p>
+
+                        </td>
+
+                    </tr>
+
+                </table>
+            </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <table border="1" style="height:100%;width:100%">
+                        <thead>
+                            <tr style="text-align:justify;">
+                                <th scope="col" style="text-align:center;">
+                                    Sl. No.
+                                </th>
+                                <th scope="col" style="text-align:center;">
+                                    Description of Goods
+                                </th>
+                                <th scope="col" style="text-align:center;">
+                                    Total Rolls
+                                </th>
+                                <th scope="col" style="text-align:center;">
+                                    Total Pcs
+                                </th>
+                                <th scope="col" style="text-align:center;">
+                                    Remark's
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:none;" ng-repeat="chalanDetails in deliveryChalanDetailsList">
+                                <td style="padding-top:0;">
+                                    <p style="text-align: center;"><b>{{$index +1}}</b></p>
+
+                                </td>
+
+                                <td style="padding:8px;text-align: justify;">
+                                    <p style="font-size:16px;font-weight:bold;">{{chalanDetails.ItemName}}</p>
+                                </td>
+                                <td style="font-size:16px;font-weight:bold;text-align: center;">
+                                    <p ng-if="chalanDetails.Quantity">{{chalanDetails.Quantity}}</p>
+                                </td>
+                                <td style="font-size:16px;font-weight:bold;text-align: center;">
+                                    <!--<p style="margin-left:8px;" ng-if="chalanDetails.QtyDescription ">{{chalanDetails.QtyDescription}}</p>-->
+                                    <p style="margin-left:8px;" ng-if="chalanDetails.ItemName !=='Barcode Ribbon'">{{chalanDetails.QtyDescription}}</p>
+                                </td>
+                                <td style="width: 65px"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="padding-top:10px;">
+                                    <p style="font-size:16px;margin-left:8px;"><strong style="font-size:16px;font-weight:bold;">B/E No: {{deliveryChalanList[0].BillOfEntryNo}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px;"><strong style="font-size:16px;font-weight:bold;">DATE: {{deliveryChalanList[0].BillOfEntryDate}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px;"><strong style="font-size:16px;font-weight:bold;">E/P NO: {{deliveryChalanList[0].EPNo}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px;"><strong style="font-size:16px;font-weight:bold;">DATE: {{deliveryChalanList[0].EPDate}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px; text-align:justify;" ng-if="CommercialInvoiceMasterList[0].PaymentProcessTypeId == 2 || CommercialInvoiceMasterList[0].PaymentProcessTypeId == 3"><strong style="font-size:16px;font-weight:bold;">SC NO: {{PiRefInfo}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px;" ng-if="CommercialInvoiceMasterList[0].PaymentProcessTypeId == 4"><strong style="font-size:16px;font-weight:bold;">LC NO: {{deliveryChalanList[0].LcNo}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px;" ng-if="deliveryChalanList[0].LcDate"><strong style="font-size:16px;font-weight:bold;">DATE: {{deliveryChalanList[0].LcDate}}</strong></p>
+
+                                    <p style="font-size:16px;margin-left:8px;" ng-if="deliveryChalanList[0].InvoiceNo"><strong style="font-size:16px;font-weight:bold;">INVOICE NO: {{deliveryChalanList[0].InvoiceNo}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px;" ng-if="deliveryChalanList[0].InvoiceDate"><strong style="font-size:16px;font-weight:bold;">DATE: {{deliveryChalanList[0].InvoiceDate}}</strong></p>
+
+                                    <p style="font-size:16px;margin-left:8px;" ng-if="deliveryChalanList[0].ExpNo"><strong style="font-size:16px;font-weight:bold;">EXP NO: {{deliveryChalanList[0].ExpNo}}</strong></p>
+                                    <p style="font-size:16px;margin-left:8px;" ng-if="deliveryChalanList[0].ExpDate"><strong style="font-size:16px;font-weight:bold;">DATE: {{deliveryChalanList[0].ExpDate}}</strong></p>
+
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+
+                                </th>
+                                <td style="text-align:center;">
+                                    <p style="margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].TotalCarton"><b>({{CommercialInvoiceMasterList[0].TotalCarton}} CTN)</b></p>
+
+                                </td>
+                                <td style="text-align:center;font-size:16px;word-spacing:2px;margin-left:5px;font-weight:bold;margin-top:8px;">
+                                    <p style="margin-left:8px;" ng-if="totalItem">{{totalItem}}</p>
+
+                                </td>
+                                <td style="text-align:center;font-size:16px;word-spacing:2px;margin-left:5px;font-weight:bold;margin-top:8px;">
+                                    <p style="margin-left:8px;" ng-if="itemDescription">{{itemDescription}}</p>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <table border="1" style="height:100%;width:100%">
+                        <tr>
+                            <td style="width: 32%">
+                                <p style="text-align:center;margin-left:8px;font-size:16px;font-weight:bold;"></p>
+                                <div style="height:40px;">
+                                </div>
+                                <p style="text-align:center;font-size:16px;font-weight:bold;"></p>
+                                <br />
+                                <br />
+                            </td>
+                            <td style="width: 32%"></td>
+                            <td style="width: 40%"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 32%">
+                                <p style="font-weight:bold;font-size:16px;text-align:center;margin-bottom:5px;">APPROVED BY</p>
+                            </td>
+                            <td style="text-align:justify; width: 32%">
+                                <p style="margin-left:8px;font-size:16px;text-align:center;font-weight:bold;margin-bottom:5px;">
+                                    COUNTED &  DELIVERY BY
+                                </p>
+                            </td>
+                            <td style=" width: 36%;margin-left:8px;font-size:16px;text-align:center;font-weight:bold;margin-bottom:5px;">
+                                <p style="margin-left:8px;">
+                                    COUNTED &  RECEVED BY
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <br />
+                    <!--margin-top:160px;position:fixed;-->
+                    <!--<table id="footer" style="width: 100%;">
+                        <tbody style="left:30px; right: 50px;">
+                            <tr>
+                                <td style="text-align:left;font-size: x-small;">
+                                    <div class="footer">
+                                        <span><b>{{currentDatetimeFormated}}</b></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>-->
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function ExportToDoc() {
+                $('.hideButton').hide();
+                $('#result').hide();
+
+                var sourceHTML = document.getElementById("source-html").innerHTML;
+
+                // console.log(sourceHTML);
+                function escapeRegExp(string) {
+                    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                }
+                function replaceAll(str, term, replacement) {
+                    return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+                }
+                var removeTableBorderStr;
+                $('#ciTable tbody tr td').each(function (tdIndex, td) {
+                    var preStyle = $(this).attr("style");
+
+                    if (preStyle != undefined) {
+                        var pos = preStyle.indexOf("display: none;");
+                        if (pos != -1) {
+                            $('#ciTable').find("tbody tr td:nth-child(" + tdIndex + ")").each(function () {
+
+                                $(this).remove();
+
+                                alert();
+                            });
+                        }
+                    }
+
+                });
+
+
+                var thCount = 8;
+
+                if (thCount <= 10 && thCount > 0) {
+                    removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+                }
+                else if (thCount <= 15 && thCount > 10) {
+                    removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .7em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+                }
+                else {
+                    alert('Please insert less then 15 column.');
+                    return;
+                }
+
+                var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(removeTableBorderStr);
+                var fileDownload = document.createElement("a");
+                document.body.appendChild(fileDownload);
+                fileDownload.href = source;
+                fileDownload.download = 'Commercil Invoice.doc';
+                fileDownload.click();
+                document.body.removeChild(fileDownload);
+                $('.hideButton').show();
+                $('#result').show();
+
+            }
+
+
+            function PrintPdf() {
+
+                window.print();
+
+            }
+            jQuery(document).ready(function ($) {
+
+                $(".main-sidebar").attr("hidden", true);
+                $(".main-header").attr("hidden", true);
+                $(".main-footer").attr("hidden", true);
+                $("#Hidebr").attr("hidden", true);
+
+                $("div").removeClass("wrapper");
+                $("div").removeClass("content-wrapper");
+            });
+
+
+        </script>
+
+</body>
+</html>

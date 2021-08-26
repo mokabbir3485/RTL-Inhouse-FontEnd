@@ -1,0 +1,143 @@
+﻿<form name="Dashboard">
+    <h1>Dashboard</h1>
+    <div ng-show="LoginUser.IsCheckoutOperator" class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-info" hidden="hidden">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-clock-ofa fa-clock-o"></i>&nbsp;Clock In-Out</h3>
+                </div>
+                <div class="panel-body">
+                    <div ng-hide="lblSaveBtnlbl=='Resume'" class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error' : Dashboard.OutLet.$dirty && Dashboard.OutLet.$invalid }" data-toggle="tooltip" data-placement="bottom" title="OutLet">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlOutLet" ng-disabled="pos_SaleDetailLst.length" ng-readonly="pos_SaleDetailLst.length" class="form-control selectMendatory" ng-change="pos_Sale.DepartmentId=ddlOutLet.DepartmentId;" ng-options="aOutlet.DepartmentName for aOutlet in  userOutletList track by aOutlet.DepartmentId" name="OutLet">
+                                    <option value="" label="OutLet"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="Dashboard.OutLet.$dirty && Dashboard.OutLet.$invalid">Outlet required</span>
+                        </div>
+                    </div>
+                    <div ng-hide="lblSaveBtnlbl=='Resume'" class="col-md-12">
+                        <div class="form-group">
+                            <input type="number" class="form-control" ng-model="_pos_Shift.InputOpenCash" placeholder="Till Balance" />
+                        </div>
+                    </div>
+                    <div ng-hide="lblSaveBtnlbl=='Resume'" class="col-md-12">
+                        <div class="form-group">
+                            <input type="number" class="form-control" ng-model="_pos_Shift.OwnCashIn" placeholder="Own Cash" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <button id="btnStart" class="customBtn custmoBtnSave" ng-click="SaveShift()" title="Start button">
+                            {{lblSaveBtnlbl}}
+                        </button>
+                    </div>
+                    <div class="col-sm-12">
+                        <button id="btnEnd" class="customBtn custmoBtnSave" ng-show="lblSaveBtnlbl=='Resume'" data-toggle="modal" data-target="#ShiftCloseModal" ng-click="loadShiftInfo()" title="Shift Close">
+                            <i class="fa fa-upload"></i>&nbsp;Clock Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</form>
+
+<div class="modal fade" id="ShiftCloseModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Shift Close</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Payment Type</th>
+                                    <th class="t-cell-center">System Amount</th>
+                                    <th class="t-cell-center">Input Amount</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aShiftAmountDetails in ShiftAmountDetails">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aShiftAmountDetails.PaymentTypeName}}</td>
+                                    <td class="t-cell-center">{{aShiftAmountDetails.Amount | number:2}}</td>
+                                    <td class="t-cell-center"><input type="number" style="text-align:center" ng-change="CalculateShift()" ng-model="aShiftAmountDetails.InputAmount" /></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" style="text-align:right;">Total Amount</th>
+                                    <th class="t-cell-center"><input type="text" ng-model="pos_Shift.SystemCloseBalance" class="form-control text-center" readonly></th>
+                                    <th class="t-cell-center"><input type="text" ng-model="pos_Shift.InputCloseBalance" class="form-control text-center" readonly></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Input Cash">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Input Cash</span>
+                                    <input type="text" ng-model="pos_Shift.InputOpenCash" class="form-control text-right" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="System Closing Cash">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">System Closing Cash</span>
+                                    <input type="text" ng-model="pos_Shift.SystemCloseCash" class="form-control text-right" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Input Closing Cash">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Input Closing Cash</span>
+                                    <input type="text" ng-model="pos_Shift.InputCloseCash" class="form-control text-right" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Own Input">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Own Cash Input</span>
+                                    <input type="text" ng-model="pos_Shift.OwnCashIn" class="form-control text-right" readonly>
+                                    <span class="input-group-addon">৳</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Own Input">
+                                <div class="input-group ">
+                                    <span class="input-group-addon text-left" style="width: 80px !important; text-align: left !important;">Own Cash Out</span>
+                                    <input type="number" ng-model="pos_Shift.OwnCashOut" class="form-control text-right">
+                                    <span class="input-group-addon">৳</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="button" ng-disabled="pos_Shift.OwnCashOut !=pos_Shift.OwnCashIn || pos_Shift.SystemCloseBalance !=pos_Shift.InputCloseBalance || pos_Shift.SystemCloseCash !=pos_Shift.InputCloseCash" ng-click="ShiftClose()" class="customBtn custmoBtnSave" data-dismiss="modal"><i class="fa fa-upload"></i>&nbsp;Clock Out</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal"><i class="fa fa-crosshairs"></i>&nbsp;Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

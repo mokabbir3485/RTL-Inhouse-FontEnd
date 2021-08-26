@@ -1,0 +1,21 @@
+﻿<form name="punchUploadForm" novalidate>
+    <div class="panel-heading">
+        <h3 class="panel-title" style="padding-left: 5%; padding-right: 7%; text-align: center">Attendance Punch Upload | Branch: {{LoginUser.BranchName}}</h3>
+    </div>
+    <div class="panel-body" ng-show="LoginUser.BranchName != 'Head Office'">
+        <div class="col-md-6 col-sm-12 col-lg-6 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+            <div class="row">
+                <button id="Button1" class="customBtn custmoBtnReset">
+                    <i class="fa fa-database"></i>&nbsp;{{MessageButtonLabel}}
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-lg-6 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+            <div class="row">
+                <button type="reset" id="btnReset" ng-click="Upload()" class="customBtn custmoBtnSave" title="Upload" ng-disabled="NewPunchCount==0">
+                    <i class="fa fa-pencil-square-o"></i>&nbsp;{{UploadButtonLabel}}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

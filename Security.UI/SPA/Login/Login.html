@@ -1,0 +1,95 @@
+﻿<div class="row">
+
+    <form ng-submit="Login()" class="form-signin login" name="loginForm" novalidate>
+        <h3 class="form-signin-heading">Login</h3>
+        <div class="form-group" ng-class="{ 'has-error' : loginForm.inputUsername.$invalid && loginForm.inputUsername.$touched }" data-toggle="tooltip" data-placement="bottom" title="Username">
+            <input type="text" id="inputUsername" size="40" name="inputUsername" class="form-control" ng-model="s_User.Username" maxlength="51" ng-maxlength="50" placeholder="Username" required autofocus>
+            <span class="help-block" ng-if="loginForm.inputUsername.$error.required && loginForm.inputUsername.$touched">Username is required</span>
+            <span class="help-block" ng-if="loginForm.inputUsername.$error.maxlength">50 Character Max</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : loginForm.inputPassword.$invalid && loginForm.inputPassword.$touched }" data-toggle="tooltip" data-placement="bottom" title="Password">
+            <input type="password" id="inputPassword" size="40" name="inputPassword" class="form-control" ng-model="s_User.Password" maxlength="51" ng-maxlength="50" placeholder="Password" required>
+            <span class="help-block" ng-if="loginForm.inputPassword.$error.required && loginForm.inputPassword.$touched">Password is required</span>
+            <span class="help-block" ng-if="loginForm.inputPassword.$error.maxlength">50 Character Max</span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="loginBtn btn-primary btn-block">Login</button>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error' : loginForm.inputLoginCode.$invalid && loginForm.inputLoginCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Code">
+            <input type="text" id="txtLoginCode" size="40" name="inputLoginCode" class="form-control" ng-model="s_User.SmsCodeIn" maxlength="21" ng-maxlength="20" placeholder="Code" ng-show="IsReqSmsCode" >
+            <span class="help-block" ng-if="loginForm.inputLoginCode.$error.maxlength">50 Character Max</span>
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn-info" ng-click="MatchCode()" ng-show="IsReqSmsCode">Procceed</button>
+        </div>
+        <input type="text" id="myText" hidden="hidden">
+        <input type="text" id="myText2" hidden="hidden">
+    </form>
+</div>
+<script>
+    function findIP(onNewIP) { //  onNewIp - your listener function for new IPs
+        var promise = new Promise(function (resolve, reject) {
+            try {
+                var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection; //compatibility for firefox and chrome
+                var pc = new myPeerConnection({ iceServers: [] }),
+                    noop = function () { },
+                    localIPs = {},
+                    ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+                    key;
+                function ipIterate(ip) {
+                    if (!localIPs[ip]) onNewIP(ip);
+                    localIPs[ip] = true;
+                }
+                pc.createDataChannel(""); //create a bogus data channel
+                pc.createOffer(function (sdp) {
+                    sdp.sdp.split('\n').forEach(function (line) {
+                        if (line.indexOf('candidate') < 0) return;
+                        line.match(ipRegex).forEach(ipIterate);
+                    });
+                    pc.setLocalDescription(sdp, noop, noop);
+                }, noop); // create offer and set local description
+
+                pc.onicecandidate = function (ice) { //listen for candidate events
+                    if (ice && ice.candidate && ice.candidate.candidate && ice.candidate.candidate.match(ipRegex)) {
+                        ice.candidate.candidate.match(ipRegex).forEach(ipIterate);
+                    }
+                    resolve("FindIPsDone");
+                    return;
+                };
+            }
+            catch (ex) {
+                reject(Error(ex));
+            }
+        });// New Promise(...{ ... });
+        return promise;
+    };
+
+    //This is the callback that gets run for each IP address found
+    function foundNewIP(ip) {
+        if (typeof window.ipAddress === 'undefined') {
+            window.ipAddress = ip;
+        }
+        else {
+            window.ipAddress += " - " + ip;
+        }
+    }
+
+    //This is How to use the Waitable findIP function, and react to the
+    //results arriving
+    var ipWaitObject = findIP(foundNewIP);        // Puts found IP(s) in window.ipAddress
+    ipWaitObject.then(
+        function (result) {
+            document.getElementById("myText").value = window.ipAddress;
+            //document.getElementById("myText2").value = Math.floor(1000 + Math.random() * 9000);
+        },
+        function (err) {
+            alert("IP(s) NOT Found.  FAILED!  " + err)
+        }
+    );
+
+</script>
+
+
+
+

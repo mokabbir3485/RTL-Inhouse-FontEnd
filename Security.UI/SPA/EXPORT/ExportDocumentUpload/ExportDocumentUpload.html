@@ -1,0 +1,160 @@
+﻿<form novalidate name="f1" ng-submit="SaveFile()">
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Product Entry</h3>
+            </div>
+            <div class="panel-body">
+                <strong><u>Pick a invoice</u></strong>
+                <div class="row">
+                    <div class="col-md-2"><strong>SalesOrder No.</strong></div>
+                    <div class="col-md-1">
+                        <label class="switch">
+                            <input type="checkbox" ng-model="showSO" value="SO">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="col-md-2"><strong>| &nbsp &nbsp Proforma Invoice</strong></div>
+                    <div class="col-md-1">
+                        <label class="switch">
+                            <input type="checkbox" ng-model="showPI" value="PI">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-2"><strong>| &nbsp &nbsp Commercial Invoice</strong></div>
+                    <div class="col-md-1">
+                        <label class="switch">
+                            <input type="checkbox" ng-model="showCI" value="CI">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <!--<input type="checkbox" ng-model="showSO" value="SO">SO No
+                <input type="checkbox" ng-model="showPI" value="PI">PI No
+                <input type="checkbox" ng-model="showCI" value="CI">CI No-->
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-if="showSO" data-toggle="tooltip" data-placement="bottom" title="Select SO No">
+                            <div class="input-group input-group-md ddl">
+                                <input id="SalesOrderDisable" type="text" list="SalesOrder" class="form-control selectNotMandetory" name="SalesOrder" ng-model="SalesOrder" placeholder="Type SO No or Any Other Related Info" />
+                            </div>
+                            <datalist id="SalesOrder">
+                                <option ng-repeat="SalesOrder in SalesOrderList" id="{{SalesOrder.SalesOrderId}}" value="{{SalesOrder.SalesOrderNo}}">
+                            </datalist>
+                        </div>
+
+                        <div class="form-group" ng-if="showPI" data-toggle="tooltip" data-placement="bottom" title="Select PI No">
+                            <div class="input-group input-group-md ddl">
+                                <input id="InvoiceDisable" type="text" list="Invoice" class="form-control selectNotMandetory" name="Invoice" ng-model="Invoice" placeholder="Type PI No or Any Other Related Info" />
+                            </div>
+                            <datalist id="Invoice">
+                                <option ng-repeat="Invoice in invoiceList" id="{{Invoice.InvoiceId}}" value="{{Invoice.InvoiceNo}}">
+                            </datalist>
+                        </div>
+                        <div class="form-group" ng-if="showCI" data-toggle="tooltip" data-placement="bottom" title="Select CI No">
+                            <div class="input-group input-group-md ddl">
+                                <input id="CommercialInvoiceDisable" type="text" list="CommercialInvoice" class="form-control selectNotMandetory" name="CommercialInvoice" ng-model="CommercialInvoiceNo" placeholder="Type CI No or Any Other Related Info" />
+                            </div>
+                            <datalist id="CommercialInvoice">
+                                <option ng-repeat="CommercialInvoice in CommercialInvoiceList" id="{{CommercialInvoice.CommercialInvoiceId}}" value="{{CommercialInvoice.CommercialInvoiceNo}}">
+                            </datalist>
+                        </div>
+                        <br />
+                        <!-- //////////////////////////////////////////////////////////////////////// -->
+                        <div style="color: red">{{Message}}</div>
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span style="background-color: #f69c55; border-color: #F69C6E;">
+                                    Browse …
+                                    <!--<input type="file" name="file" id="imageUpload" accept="image/*" class="form-control" onchange="readURL(this, 'imgFram'); angular.element(this).scope().selectFileforUpload(this.files);" />-->
+                                    <input type="file" name="file" id="imageUpload" accept=".doc,.docx,application/msword,application/pdf,image/*" class="form-control" onchange="readURL(this, 'imgFram'); angular.element(this).scope().selectFileforUpload(this.files);" />
+                                    <span class="error" ng-show="(f1.file.$dirty || IsFormSubmitted) && f1.file.$error.required">Image required!</span>
+                                    <span class="error">{{FileInvalidMessage}}</span>
+                                </span>
+                            </label>
+                        </div>
+                        <br />
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary" style="background-color: #f69c55; border-color: #F69C6E;">
+                                    Description :
+                                </span>
+                            </label>
+                            <textarea type="text" name="uFileDescription" ng-model="FileDescription" class="form-control ng-pristine ng-untouched ng-valid ng-empty {{(IsFormSubmitted?'ng-dirty' + (f1.uFileDescription.$invalid?' ng-invalid':''):'')}}" autofocus placeholder="Description " />
+                        </div>
+                    </div>
+                    <div class="marginTop">
+                        <div class="col-md-4">
+                            <img id="imgFram" ng-model="productImg" style="margin-left: 80px; margin-bottom: 10px; border-radius: 5px 5px 5px 5px" width="300" height="140" class="ng-pristine ng-untouched ng-valid ng-empty" src="#">
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <!--<button id="Button1" class="customBtn custmoBtnSave ng-binding" ng-click="SaveItem();" title="save" ng-disabled="itemEntryForm.$invalid">
+                            <i class="fa fa-floppy-o"></i>&nbsp;Save
+                        </button>-->
+                        <input class="customBtn custmoBtnSave ng-binding" type="submit" value="Upload File" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--<div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Img Show</h3>
+            </div>
+            <div class="panel-body">
+                <div class="column" ng-repeat="step in stepsModel">
+
+                    <div class="col-md-4 ">
+                        <img class="thumb" ng-src="{{step}}" />
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>-->
+
+</form>
+    <!--<script>
+        function uploadFile(file) {
+            var files = event.target.file; //FileList object
+
+            for (var i = 0; i < files.length; i++) {
+                var fileShow = files[i];
+                var reader = new FileReader();
+                reader.onload = $scope.imageIsLoaded;
+                reader.readAsDataURL(fileShow);
+            }
+        }
+
+
+        $(document).ready(function () {
+            $('.nav-tabs li:eq(0) a').tab('show');
+        });
+        var tabOrder = 0;
+        $('.nav-tabs li').click(function (e) {
+            var nextId = $(this).index();
+            tabOrder = nextId;
+        });
+        $(document).keydown(function (eventObject) {
+            if (eventObject.keyCode == 9) {
+                if (eventObject.shiftKey) {
+                    tabOrder++;
+                    if (tabOrder == 7)
+                        tabOrder = 0;
+                    $('.nav-tabs li:eq(' + tabOrder + ') a').tab('show');
+                }
+            }
+        });
+    </script>-->
+
+

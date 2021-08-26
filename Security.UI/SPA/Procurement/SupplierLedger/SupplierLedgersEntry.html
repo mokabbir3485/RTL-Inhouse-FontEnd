@@ -1,0 +1,622 @@
+﻿<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />-->
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.min.css" rel="stylesheet" />
+
+<form name="SupplierLedgersEntry" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <p style="font-weight:bold;font-size:18px;">
+                <span><i class="fa fa-list"></i></span>
+                {{name}}
+
+            </p>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="tab-content">
+                    <div id="Local" class="tab-pane fade in active">
+                        <div id="Local" class="tab-pane">
+                            <div class="col-md-12">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Supplier Ledger</h3>
+                                    </div>
+                                    <div class="panel-footer">
+
+                                        <div class="row">
+
+                                            <div class="col-md-3">
+                                                <div class="form-group" ng-class="{ 'has-error' : SupplierLedgersEntry.ddlSupplier.$dirty && SupplierLedgersEntry.ddlSupplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                                                    <div class="input-group width-hundred-percent">
+                                                        <select id="supplierId" ng-model="ddlSupplier" name="supplier" class="form-control selectMendatory" ng-options="supplier.SupplierName for supplier in supplierlist track by supplier.SupplierId" ng-change="onSuppilerInfoLoad(inv_PurchaseBill.SupplierId=ddlSupplier.SupplierId)" required ng-disabled="SinglePBlist.length || HasPO">
+                                                            <option value="">All Supplier</option>
+                                                        </select>
+                                                        <!--<div ng-dropdown-multiselect=""
+                     options="supplierlistAll"
+                     selected-model="supplierIdList"
+                     extra-settings="example8settings">
+                </div>-->
+                                                        <span class="help-block" ng-show="SupplierPayment.ddlSupplier.$dirty && SupplierPayment.ddlSupplier.$invalid">Supplier is required</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-3">
+
+                                                <div class="input-group">
+                                                    <input type="text" id="textFormDate" ng-model="FormDate" class="form-control datepicker" placeholder="Form Date" readonly />
+                                                    <span class="input-group-addon" id="formDate"><i class="fa fa-calendar " style="color:gray;"></i></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <input type="text" id="textToDate" ng-model="ToDate" class="form-control datepicker" placeholder="TO Date" readonly />
+                                                    <span class="input-group-addon" id="toDate"><i class="fa fa-calendar " style="color:gray;"></i></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <button class=" btn btn-primary" ng-click="onLoadBtn()">Load </button>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <button class=" btn btn-primary" ng-click="supplierLedgerReportBtn()">Exp Report </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+
+                                      
+                                        <hr />
+                                        <div class="row">
+                                            <!--<div class="col-md-12">
+        <table class="responstable table-hover table-responsive" style="width:100%">
+            <tr>
+                <th></th>
+                <th>SL No.</th>
+                <th class="t-cell-center" style="width:15%;">Supplier</th>
+
+                <th class="t-cell-center">Opening</th>
+                <th class="t-cell-center">Dues</th>
+                <th class="t-cell-center">Total Dues</th>
+                <th class="t-cell-center">Adjustment</th>
+                <th class="t-cell-center">Cash</th>
+                <th class="t-cell-center">Bank</th>
+
+            </tr>
+
+                <tr class="HoverTable" ng-show="showTableItem" ng-repeat="supplierLedger in supplierLedgerList">
+                    <td class="t-cell-center">
+                        <label>
+                            <i ng-show="!invPBDetailsFiledHide" style="font-size: 1.00em;" class="fa fa-plus-square" ng-click="hideBtnColapse()"></i><i style="font-size: 1.00em;" ng-show="invPBDetailsFiledHide  " ng-click="hideBtnColapse()" class="fa fa-minus-square"></i>
+                        </label>
+                    </td>
+                    <td class="t-cell-center">{{$index + 1}}</td>
+                    <td class="t-cell-center">
+                        {{supplierLedger.SupplierName}}
+                    </td>
+
+                    <td class="t-cell-center">{{supplierLedger.OpeningBalance}}</td>
+                    <td class="t-cell-center">{{supplierLedger.Dues}}</td>
+                    <td class="t-cell-center">{{supplierLedger.TotalDues}}</td>
+                    <td class="t-cell-center">{{supplierLedger.Adjustment}}</td>
+                    <td class="t-cell-center">{{supplierLedger.cash}}</td>
+                    <td class="t-cell-center">{{supplierLedger.bank}}</td>
+
+                </tr>
+        </table>
+        <table class="responstable table-hover table-responsive" style="width:100%">
+            <tr ng-show="invPBDetailsFiledHide">
+                <th class="t-cell-center">Others Payment </th>
+                <th class="t-cell-center" >VAT </th>
+                <th class="t-cell-center" >AIT </th>
+                <th class="t-cell-center">Realized Amount </th>
+                <th class="t-cell-center">Advance Amount</th>
+                <th class="t-cell-center">Refund PaidAmount </th>
+                <th class="t-cell-center">Closing </th>
+            </tr>
+            <tr ng-repeat="supplierLedger in supplierLedgerList">
+
+                <td class="t-cell-center">{{supplierLedger.others}}</td>
+                <td class="t-cell-center">{{supplierLedger.vat}}</td>
+                <td class="t-cell-center">{{supplierLedger.ait}}</td>
+                <td class="t-cell-center">{{supplierLedger.RealizedAmount}}</td>
+                <td class="t-cell-center">{{supplierLedger.AdvanceAmount}}</td>
+                <td class="t-cell-center">{{supplierLedger.RefundPaidAmount}}</td>
+                <td class="t-cell-center">{{supplierLedger.Closing}}</td>
+            </tr>
+        </table>
+
+    </div>-->
+
+                                  
+                                           
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover" ng-show="showTableItem">
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>SL No.</th>
+                                                        <th class="t-cell-center" style="width:15%;">Supplier Name</th>
+
+                                                        <th class="t-cell-center">Opening</th>
+                                                        <th class="t-cell-center">Dues</th>
+                                                        <th class="t-cell-center">Total Dues</th>
+                                                        <th class="t-cell-center">Adjustment</th>
+                                                        <th class="t-cell-center">Net Payable</th>
+
+
+                                                    </tr>
+                                                    <tbody>
+                                                        <tr ng-show="showTableItem" ng-repeat="supplierLedger in supplierLedgerList">
+                                                            <td class="t-cell-center">
+                                                                <label>
+                                                                    <i ng-show="!invPBDetailsFiledHide" style="font-size: 16px;" class="fa fa-plus-square" ng-click="hideBtnColapse()"></i><i style="font-size: 16px;" ng-show="invPBDetailsFiledHide  " ng-click="hideBtnColapse()" class="fa fa-minus-square"></i>
+                                                                </label>
+                                                            </td>
+                                                            <td class="t-cell-center">{{$index + 1}}</td>
+                                                            <td class="t-cell-center">
+                                                                {{supplierLedger.SupplierName}}
+                                                            </td>
+
+                                                            <td class="t-cell-center">{{supplierLedger.OpeningBalance}}</td>
+                                                            <td class="t-cell-center">{{supplierLedger.Dues}}</td>
+                                                            <td class="t-cell-center">{{supplierLedger.TotalDues}}</td>
+                                                            <td class="t-cell-center">{{supplierLedger.Adjustment}}</td>
+                                                            <td class="t-cell-center">{{supplierLedger.NetPayable}}</td>
+
+
+                                                        </tr>
+
+                                                        <tr ng-show="invPBDetailsFiledHide">
+
+                                                            <td colspan="8">
+                                                                <table style="width:100%;">
+                                                                    <tr>
+                                                                        <td style="width:90%">
+                                                                            <div>
+                                                                                <table class="responstable table-hover">
+                                                                                    <tr>
+                                                                                        <th></th>
+                                                                                        <th class="t-cell-center">Cash</th>
+                                                                                        <th class="t-cell-center">Bank</th>
+                                                                                        <th class="t-cell-center">Others Payment </th>
+                                                                                        <th class="t-cell-center">VAT </th>
+                                                                                        <th class="t-cell-center">AIT </th>
+                                                                                        <th class="t-cell-center">Realized Amount </th>
+                                                                                        <th class="t-cell-center">Advance Amount</th>
+                                                                                        <th class="t-cell-center">Refund PaidAmount </th>
+                                                                                        <th class="t-cell-center" colspan="2">Closing </th>
+
+                                                                                    </tr>
+                                                                                    <tr ng-repeat="supplierLedger in supplierLedgerList">
+                                                                                        <td></td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.cash}}</td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.bank}}</td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.others}}</td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.vat}}</td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.ait}}</td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.RealizedAmount}}</td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.AdvanceAmount}}</td>
+                                                                                        <td class="t-cell-center">{{supplierLedger.RefundPaidAmount}}</td>
+                                                                                        <td class="t-cell-center" colspan="2">{{supplierLedger.Closing}}</td>
+                                                                                    </tr>
+
+
+                                                                                </table>
+                                                                            </div>
+
+                                                                            <div>
+
+                                                                            </div>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                </table>
+
+
+
+                                                            </td>
+
+                                                        </tr>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                         
+                                        </div>
+
+                                       
+                                        <div class="row">
+                                            <div class="col-md-12" ng-show="SupAllListShow">
+                                                <table class="responstable table-hover">
+                                                    <tr>
+                                                        <th>SL No.</th>
+                                                        <th > 
+                                                          <input type="checkbox"   style="height:18px;width:18px;background-color:white;" name="isCheck" value="true" ng-model="selectedIsCheck" ng-click="CheckAllValue()" /> All Check
+                                                        </th>
+                                                        <th class="t-cell-center" style="width:15%;">Supplier Name</th>
+                                                        <th class="t-cell-center" style="width:15%;">Opening Balance</th>
+                                                        <th class="t-cell-center">Dues</th>
+                                                        <th class="t-cell-center">Total Dues</th>
+                                                        <th class="t-cell-center">Closing</th>
+
+                                                    </tr>
+                                                    <tbody>
+                                                        <tr class="HoverTable" ng-repeat="supLedList in supplierAllLedgerList">
+                                                            <td class="t-cell-center">{{$index+1}}</td>
+                                                            <td>
+                                                                <p style="margin-left:8px;">
+                                                                    <input type="checkbox" style="height:15px;width:15px;" name="isCheck" value="true" ng-model="selectedIsCheck"
+                                                                           ng-click="onCheckVal(supLedList,selectedIsCheck,$index)" />
+                                                                </p>
+                                                            </td>
+                                                            <td class="t-cell-center">{{supLedList.SupplierName}}</td>
+                                                            <td class="t-cell-center">{{supLedList.OpeningBalance}}</td>
+                                                            <td class="t-cell-center">{{supLedList.Dues}}</td>
+
+                                                            <td class="t-cell-center">{{supLedList.TotalDues}}</td>
+                                                            <td class="t-cell-center">{{supLedList.Closing}}</td>
+
+                                                        </tr>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                   
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="supplierledgerShow" class="modal fade" role="dialog">
+                        <div class="modal-dialog modal-md">
+                            <!-- Modal content-->
+                            <div class="modal-content" style="width: 906px" ;>
+                                <div class="modal-header text-center" style=" background-color: #3c8dbc;color:white;">
+                                    <button type="button" class="close" style="color:red;" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Ledger Show</h4>
+                                </div>
+                                <div class="modal-body">
+                                
+                                    <div class="panel-body" style="margin-right: -25px; margin-left: -15px; ">
+                                        <div class="row">
+                                          
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <!--<button type="button" style="margin-top:10px" class="btn btn-success"  title="save">Save</button>-->
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+</form>
+
+<script>
+
+    $("#supplierId").select2();
+    $("#bankddl").select2();
+    $("#localAndImportPBId").select2();
+
+    var picker = new Pikaday({
+        field: document.getElementById('textFormDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("formDate").addEventListener("click", function () {
+        picker.show();
+    });
+
+
+    var picker = new Pikaday({
+        field: document.getElementById('textToDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("toDate").addEventListener("click", function () {
+        picker.show();
+    });
+
+    
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>
+

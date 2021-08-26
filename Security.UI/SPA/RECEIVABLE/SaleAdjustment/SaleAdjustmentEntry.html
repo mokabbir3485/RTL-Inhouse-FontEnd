@@ -1,0 +1,153 @@
+﻿<form name="saleAdjustmentEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Sale Adjustment</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="From Date">
+                                <input type="text" class="form-control" id="dtFromDate" ng-model="FromDate" placeholder="From Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenFromDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="To Date">
+                                <input type="text" class="form-control" id="dtToDate" ng-model="ToDate" placeholder="To Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenToDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="input-group width-hundred-percent" data-toggle="tooltip" data-placement="bottom" title="Company">
+                                <select ng-model="ddlCompany" name="company" class="form-control selectNotMandetory" ng-options="company.CompanyName for company in companyList track by company.CompanyId">
+                                    <option value="" label="-- Select Company --"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="SearchSalesOrder()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="clearfix">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Invoice No.</th>
+                                    <th class="t-cell-center">Invoice Date</th>
+                                    <th class="t-cell-center">Company</th>
+                                    <th class="t-cell-center">Amount</th>
+                                    <th class="t-cell-center">Total Adjsted</th>
+                                    <th class="t-cell-center" width="10%">Adjust Amt</th>
+                                </tr>
+                                <tr ng-show="SalesOrderList.length" class="HoverTable searchRow" ng-repeat="aSalesOrder in SalesOrderList" onclick="RowSelect(this)" ng-click="GetSalesOrderDetails(aSalesOrder);">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.SalesOrderNo}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.SalesOrderDate}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.CompanyName}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.Amount}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.TotalAdjustment}}</td>
+                                    <td class="pull-right">
+                                        <input type="number" min="0" style="text-align:right" ng-change="SumTotalAdjust()" ng-model="aSalesOrder.AdjAmount" onclick="return this.select();" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <br />
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Adjustment Date">
+                                <input type="text" class="form-control" id="dtApprovedDate" ng-model="rcv_SaleAdjustment.AdjustmentDate" placeholder="Adjustment Date" readonly="readonly" required />
+                                <div class="input-group-addon" ng-click="CalendarOpenApprovedDate()">
+                                    <span class="fa fa-calendar req-icon-color"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : saleAdjustmentEntryForm.AdjustmentType.$dirty && saleAdjustmentEntryForm.AdjustmentType.$invalid }">
+                            <div class="input-group width-hundred-percent" data-toggle="tooltip" data-placement="bottom" title="Adjustment Type">
+                                <select class="form-control selectMendatory" ng-model="ddlAdjustmentType" name="AdjustmentType" ng-options="adjustment.AdjustmentTypeName for adjustment in AdjustmentTypeList track by adjustment.AdjustmentTypeId" ng-change="rcv_SaleAdjustment.AdjustmentTypeId=ddlAdjustmentType.AdjustmentTypeId" required>
+                                    <option value="" label="-- Adjustment Type --"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="saleAdjustmentEntryForm.AdjustmentType.$dirty && saleAdjustmentEntryForm.AdjustmentType.$invalid">Adjustment Type is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : saleAdjustmentEntryForm.VoucherNo.$touched && saleAdjustmentEntryForm.VoucherNo.$invalid }">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Voucher No">
+                                <input type="text" class="form-control" ng-model="rcv_SaleAdjustment.VoucherNo" name="VoucherNo" placeholder="Voucher No" maxlength="50" ng-maxlength="49" ng-blur="CheckVoucherNoExists()" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" ng-show="saleAdjustmentEntryForm.VoucherNo.$dirty && saleAdjustmentEntryForm.VoucherNo.$invalid">Voucher No. is required</span>
+                            <span class="help-block" ng-if="saleAdjustmentEntryForm.VoucherNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="pull-right" style="line-height:35px">Total Adjust: </label>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group pull-right">
+                                <div class='input-group' data-toggle="tooltip" data-placement="bottom" title="Total Adjusted Amt">
+                                    <input type="text" class="form-control" ng-model="TotalAdjustedAmount" readonly="readonly" style="text-align:right;padding-right:20px">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveAdjustment()" title="Save" ng-disabled="saleAdjustmentEntryForm.$invalid || TotalAdjustedAmount<=0">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <pre>{{rcv_SaleAdjustment | json}}</pre>
+</form>

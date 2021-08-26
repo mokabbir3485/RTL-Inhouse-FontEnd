@@ -1,0 +1,243 @@
+﻿<style>
+    .smallIcom {
+        font-size: 0.8em !important;
+    }
+
+    .addonSmall {
+        padding: 2% 1% !important;
+        font-size: 15px;
+        font-weight: normal;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    input[type='number'] {
+        text-align: center !important;
+    }
+</style>
+<form name="productionEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Internal Work Order List for Production</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row" ng-show="iwolist.length">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">IWO No</th>
+                                    <th class="t-cell-center">IWO Date</th>
+                                    <th class="t-cell-center">Company Name</th>
+                                    <th class="t-cell-center">Remanrks</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" ng-repeat="iwo in iwolist" onclick="RowSelect(this)" ng-click="getInternalWorkOrderDetails(iwo);">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{iwo.InternalWorkOrderNo}}</td>
+                                    <td class="t-cell-center">{{iwo.InternalWorkOrderDate}}</td>
+                                    <td class="t-cell-center">{{iwo.CompanyName}}</td>
+                                    <td class="t-cell-center">{{iwo.Remarks}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ProductionDate.$invalid && productionEntryForm.ProductionDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Production Date">
+                            <div class="input-group">
+                                <input type="text" name="ProductionDate" id="ProductionDate" ng-blur="getMaxProductionNo();" ng-model="Production.ProductionDate" class="form-control datepicker" placeholder="Production Date" required readonly="readonly" />
+                                <span class="input-group-addon" id="iwoCalender"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="productionEntryForm.ProductionDate.$error.required && productionEntryForm.ProductionDate.$touched">Production Date is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ProductionNo.$invalid && productionEntryForm.ProductionNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Production No.">
+                            <div class="input-group ">
+                                <input type="number" min="0" id="ProductionNo" name="ProductionNo" class="form-control" ng-model="Production.ProductionNo" ng-change="CheckDuplicateProductionNo()" placeholder="Production No" maxlength="21" ng-maxlength="20" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block; color:red" ng-if="productionEntryForm.ProductionNo.$error.required && productionEntryForm.ProductionNo.$touched">Production No is Required</span>
+                            <span class="help-block" style="display: block;color:red" ng-if="productionEntryForm.ProductionNo.$error.maxlength">20 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ddlStore.$dirty && productionEntryForm.ddlStore.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Stock In Store">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlStore" ng-model="ddlStore" class="form-control selectMendatory" name="ddlStore" ng-change="Production.DepartmentName=ddlStore.DepartmentName;Production.DepartmentId=ddlStore.DepartmentId" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" required>
+                                    <option value="" label="-- Stock In Store --"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="productionEntryForm.ddlStore.$dirty && productionEntryForm.ddlStore.$invalid">Stock In Store is Required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.ddlPreparedBy.$dirty && productionEntryForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlPreparedBy" ng-model="ddlPreparedBy" class="form-control selectMendatory" name="ddlPreparedBy" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId" required>
+                                    <option value="" label="-- Receive By --"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="productionEntryForm.ddlPreparedBy.$dirty && productionEntryForm.ddlPreparedBy.$invalid">Prepared By is Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error' : productionEntryForm.Remarks.$invalid &amp;&amp; productionEntryForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <input type="text" id="txtRemarks" name="txtRemarks" class="form-control ng-pristine ng-valid ng-empty ng-valid-maxlength ng-touched" ng-model="Production.Remarks" placeholder="Remarks" maxlength="501" ng-maxlength="500" style="">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center"></th>
+                                <th class="t-cell-center">SL</th>
+                                <th class="t-cell-center">Finished Item</th>
+                                <th class="t-cell-center">Qty Per Roll</th>
+                                <th class="t-cell-center">Raw Material</th>
+                                <th class="t-cell-center">Mat. Barcode</th>
+                                <th class="t-cell-center">Core</th>
+                            </tr>
+                            <tbody ng-repeat="productionDetail in ProductionDetailList">
+                                <tr>
+                                    <td ng-click="$event.stopPropagation();" class="t-cell-center"><label><i ng-show="!productionDetail.DisplaySta" class="fa fa-plus-square"></i><i ng-show="productionDetail.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="productionDetail.DisplaySta" /></label></td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="">{{productionDetail.FinishedItemName}}</td>
+                                    <td class="t-cell-center">{{productionDetail.QtyPerRoll}}</td>
+                                    <td class="">{{productionDetail.RawMaterialItemName}}</td>
+                                    <td class="t-cell-center">{{productionDetail.RawMaterialItemBarcode}}</td>
+                                    <td class="t-cell-center">{{productionDetail.Core}}</td>
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="productionDetail.DisplaySta">
+                                    <td></td>
+                                    <td colspan="7">
+                                        <div>
+                                            <table id="IWODetailsTable" class="responstable table-hover">
+                                                <tr>
+                                                    <th class="t-cell-center" width="15%">Production Qty</th>
+                                                    <th class="t-cell-center" width="20%">Used Roll (Roll)</th>
+                                                    <th class="t-cell-center" width="20%">Used Roll (Meter)</th>
+                                                    <th class="t-cell-center" width="15%">Unit Cost</th>
+                                                    <th class="t-cell-center" width="15%">Wastage (%)</th>
+                                                    <th class="t-cell-center" width="15%">Wastage Remarks</th>
+                                                </tr>
+                                                <tr>
+                                                    <td class="t-cell-center" width="15%">
+                                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Production Qty">
+                                                            <input type="number" id="ProductionQty" name="ProductionQty" min="0" class="form-control datepicker" ng-model="productionDetail.ProductionQuantity" ng-blur="CheckValidProductionQty(productionDetail)" placeholder="Enter Production Qty" />
+                                                            <span class="input-group-addon addonSmall"><i class="fa fa-text-width req-icon-color smallIcom"></i></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="t-cell-center" width="20%">
+                                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Used Roll Qty">
+                                                            <input type="number" step="0.000" name="Roll" min="0" class="form-control" ng-model="productionDetail.UsedRoll" ng-change="ConvertRollToMeter(productionDetail)" placeholder="Enter Used Roll Qty" />
+                                                            <span class="input-group-addon addonSmall"><i class="fa fa-text-width req-icon-color smallIcom"></i></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="t-cell-center" width="20%">
+                                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Used Roll Qty in Meter">
+                                                            <input type="number" step="0.000" name="UsedRollMeter" min="0" class="form-control" ng-model="productionDetail.UsedRollMeter" ng-change="ConvertMeterToRoll(productionDetail)" placeholder="Enter Used Roll Qty in Meter" />
+                                                            <span class="input-group-addon addonSmall"><i class="fa fa-text-width req-icon-color smallIcom"></i></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="t-cell-center" width="15%">
+                                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Showing Cost">
+                                                            <input type="number" step="0.000" style="background-color: transparent; border-color: transparent" name="Costing" min="0" class="form-control" ng-model="productionDetail.UnitCost" readonly="readonly" disabled="disabled" />
+                                                        </div>
+                                                    </td>
+                                                    <td class="t-cell-center" width="15%">
+                                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Wastage Qty">
+                                                            <input type="number" step="0.000" name="Wastage" min="0" class="form-control datepicker" ng-model="productionDetail.Wastage" placeholder="Enter Wastage Qty" />
+                                                            <span class="input-group-addon addonSmall"><i class="fa fa-text-width smallIcom"></i></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="t-cell-center" width="15%">
+                                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Enter Wastage Remarks">
+                                                            <textarea name="WastageRemarks" class="form-control" ng-model="productionDetail.WastageRemarks" placeholder="Enter Wastage Remarks" />
+                                                            <span class="input-group-addon addonSmall"><i class="fa fa-text-width smallIcom"></i></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button id="btnSave" class="customBtn custmoBtnSave" ng-click="saveProduction()" title="Save" ng-disabled="!Production.ProductionDate || !Production.ProductionNo || !ddlStore || !ddlPreparedBy || !ProductionDetailList.length">
+                                    <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<pre>{{iwolist | json}}</pre>
+<pre>{{ProductionDetailList | json}}</pre>
+<script>
+
+
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    var picker = new Pikaday({
+        field: document.getElementById('ProductionDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("iwoCalender").addEventListener("click", function () {
+        picker.show();
+    });
+</script>

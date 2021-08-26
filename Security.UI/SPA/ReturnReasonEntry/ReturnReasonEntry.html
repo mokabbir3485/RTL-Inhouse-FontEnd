@@ -1,0 +1,106 @@
+﻿<form name="returnReasonEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" ng-show="CreatePermission||RevisePermission||RemovePermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Return Reason Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' :returnReasonEntryForm.ReturnReasonName.$invalid && returnReasonEntryForm.ReturnReasonName.$touched }">
+                    <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Role Name">
+                        <input type="text" id="txtReturnReasonName" name="ReturnReasonName" maxlength="201" class="form-control" ng-model="ad_ReturnReason.ReturnReasonName" ng-blur="CheckDuplicateReturnReasonName()" ng-change="foundChange()" placeholder="Return Reason Name" ng-maxlength="200" autofocus required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="returnReasonEntryForm.ReturnReasonName.$error.required && returnReasonEntryForm.ReturnReasonName.$touched">Return Reason Name is required</span>
+                    <span class="help-block" ng-if="returnReasonEntryForm.ReturnReasonName.$error.maxlength">200 Character Max</span>
+                </div>
+                <div class="input-group">
+                    <label>Status: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_ReturnReason.IsActive">Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_ReturnReason.IsActive">Inactive
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="AddReturnReason()" class="customBtn custmoBtnSave" ng-disabled="returnReasonEntryForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="btnDelete" class="customBtn custmoBtnDelete" ng-click="Delete()" ng-show="Show" title="Search">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" ng-show="ListViewPermission">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Return Reason List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center" data-th="Return Reason Details"><span>Return Reason Name</span></th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aReturnReason in ReturnReasonlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" current-page="currentPage" ng-click="SelReturnReason(aReturnReason)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aReturnReason.ReturnReasonName}}</td>
+                                <td class="txt-center">{{aReturnReason.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="3">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+ReturnReasonlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,724 @@
+﻿<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />-->
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/brands.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/fontawesome.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/regular.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/solid.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/svg-with-js.min.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.css" rel="stylesheet" />
+<link href="../../../Content/uniq/fontawesome-free-5.15.3-web/css/v4-shims.min.css" rel="stylesheet" />
+
+<form name="SupplierPayment" novalidate>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <p style="font-weight:bold;font-size:18px;">
+                <span><i class="fa fa-list"></i></span>
+               Supplier Payment
+
+            </p>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="tab-content">
+                    <div id="Local" class="tab-pane fade in active">
+                        <div id="Local" class="tab-pane">
+                            <div class="col-md-12">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Supplier Payment Entry</h3>
+                                    </div>
+                                    <div class="panel-footer">
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.ddlSupplier.$dirty && SupplierPayment.ddlSupplier.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Supplier">
+                                                    <div class="input-group width-hundred-percent">
+                                                        <select id="supplierId" ng-model="ddlSupplier" name="supplier" class="form-control selectMendatory" ng-options="supplier.SupplierName for supplier in supplierlist track by supplier.SupplierId" ng-change="onSuppilerInfoLoad(inv_PurchaseBill.SupplierId=ddlSupplier.SupplierId); onLoadImportAndLoacalBtn();" required ng-disabled="SinglePBlist.length || HasPO">
+                                                            <option value="">--- Select Supplier---</option>
+                                                        </select>
+                                                        <span class="help-block" ng-show="SupplierPayment.ddlSupplier.$dirty && SupplierPayment.ddlSupplier.$invalid">Supplier is required</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--<div class="col-md-5">
+                <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.ddlLocal.$dirty && SupplierPayment.ddlLocal.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Purchase Bill">
+                    <div class="input-group width-hundred-percent">
+                        <select id="localAndImportPBId" ng-model="ddlLocal" name="supplier" class="form-control selectMendatory" ng-options="PB.Name for PB in LocalPBAndImportPB track by PB.Id" ng-change="onLocalPBAndImportPB(inv_PurchaseBill.Id=ddlLocal.Id)" required ng-disabled="SinglePBlist.length || HasPO">
+                            <option value="">---Purchase Bill Type---</option>
+                        </select>
+                        <span class="help-block" ng-show="SupplierPayment.ddlLocal.$dirty && SupplierPayment.ddlLocal.$invalid">Supplier is required</span>
+                    </div>
+                </div>
+
+            </div>-->
+                                            <!--<div class="col-md-2 text-center">
+                <button class=" btn btn-primary" ng-click="onLoadImportAndLoacalBtn()">Load </button>
+            </div>-->
+                                            <div class="col-md-3">
+                                                <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.PaymentDate.$invalid && SupplierPayment.PaymentDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Payment Date">
+                                                    <div class="input-group">
+                                                        <input type="text" id="supplierPaymentDate" ng-disabled="!ddlSupplier" ng-model="inv_supplierPayment.PaymentDate" ng-blur="getMaxPBIdByDate()" class="form-control datepicker" placeholder="Payment Date" readonly />
+                                                        <span class="input-group-addon" id="supplierPaymentDateCalender"><i class="fa fa-calendar " style="color:red;"></i></span>
+                                                    </div>
+
+                                                    <span class="help-block" style="display: block;" ng-if="SupplierPayment.PaymentDate.$error.required && SupplierPayment.PaymentDate.$touched">Supplier Date is required</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.Remarks.$invalid && SupplierPayment.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="">
+                                                    <div class="input-group">
+                                                        <textarea class="form-control" cols="1" rows="1" ng-model="inv_supplierPayment.Remarks" placeholder="Remarks..."></textarea>
+                                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                    </div>
+                                                    <span class="help-block" ng-show="SupplierPayment.Remarks.$dirty && SupplierPayment.Remarks.$invalid">required</span>
+                                                    <span class="help-block" ng-if="SupplierPayment.Remarks.$error.maxlength">50 Character Max</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--<div class="row">
+
+
+            <div class="col-md-7">
+                <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.Remarks.$invalid && SupplierPayment.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="">
+                    <div class="input-group">
+                        <textarea class="form-control" cols="1" rows="1" ng-model="inv_supplierPayment.Remarks" placeholder="Remarks..."></textarea>
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-show="SupplierPayment.Remarks.$dirty && SupplierPayment.Remarks.$invalid">required</span>
+                    <span class="help-block" ng-if="SupplierPayment.Remarks.$error.maxlength">50 Character Max</span>
+                </div>
+            </div>
+
+        </div>-->
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tr>
+                                                        <th>SL No.</th>
+                                                        <th style="width:8%;">Check In</th>
+                                                        <th class="t-cell-center" style="width:15%;">PB Bill No</th>
+                                                        <th class="t-cell-center">PB Bill Date</th>
+                                                        <th class="t-cell-center">Payable Amount</th>
+                                                        <th class="t-cell-center">Actual Bill</th>
+                                                        <!--<th class="t-cell-center">Paid</th>-->
+                                                        <!--<th class="t-cell-center"> Vat</th>
+                        <th class="t-cell-center">AIT</th>-->
+                                                        <!--<th class="t-cell-center">Total</th>-->
+
+                                                    </tr>
+                                                    <tbody>
+                                                        <tr class="HoverTable" ng-repeat="supList in supplierPaymentList">
+                                                            <td class="t-cell-center">{{$index+1}}</td>
+                                                            <td>
+                                                                <p style="margin-left:8px;">
+                                                                    <input type="checkbox" style="height:15px;width:15px;" name="isCheck" value="true" ng-model="selectedIsCheck"
+                                                                           ng-click="onCheckVal(supList,selectedIsCheck,$index)" />
+                                                                </p>
+                                                            </td>
+                                                            <td class="t-cell-center">{{supList.PBNo}}</td>
+                                                            <td class="t-cell-center">{{supList.PBDate}}</td>
+
+                                                            <td class="t-cell-center">{{supList.PayableAmount}}</td>
+                                                            <td class="t-cell-center">{{supList.ActualAmount}}</td>
+                                                            <!--<td class="t-cell-center">{{supList.PaidAmount}}</td>-->
+                                                            <!--<td class="t-cell-center">{{supList.TotalVAT}}</td>
+                            <td class="t-cell-center">{{supList.TotalAIT}}</td>-->
+                                                            <!--<td class="t-cell-center">{{supList.TotalCost}}</td>-->
+                                                        </tr>
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+                                        </div>
+
+                                        <br />
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-md-4">
+
+                                                <div class="input-group width-hundred-percent">
+                                                    <select ng-model="ddlCheque" name="chequeId" class="form-control selectMendatory" ng-options="payment.PaymentTypeName for payment in  paymentTypelist track by payment.PaymentTypeId" ng-change="onChequeGetById(ddlCheque.PaymentTypeId)">
+                                                        <option value="">-- Payment Taype --</option>
+
+                                                    </select>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <br />
+                                        <div ng-show="checqueShowDiv">
+                                            <div class="row">
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.ChequeType.$invalid && SupplierPayment.ChequeType.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Type">
+                                                        <div class="input-group width-hundred-percent">
+                                                            <select ng-model="inv_supplierPayment.ChequeType" name="chequeId" class="form-control selectMendatory">
+                                                                <option value="">-- Cheque Type --</option>
+                                                                <option value="Cash Cheque">Cash Cheque</option>
+                                                                <option value="Account Pay Cheque">AccountPayable Cheque</option>
+                                                            </select>
+                                                            <span class="help-block" ng-show="SupplierPayment.ChequeType.$dirty && SupplierPayment.ChequeType.$invalid">Supplier is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.PONo.$invalid && SupplierPayment.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Mode">
+                                                        <div class="input-group width-hundred-percent">
+                                                            <select id="bankddl" ng-model="ddlBankAccount" ng-disabled="!inv_supplierPayment.ChequeType" name="ddlBankAccount" class="form-control selectMendatory" ng-options="bank.BankName for bank in BankAccountList track by bank.BankAccountId">
+                                                                <option value=""> --- Bank Name ~  Branch ~ AccountNo --- </option>
+                                                            </select>
+                                                            <span class="help-block" ng-show="SupplierPayment.ddlSupplier.$dirty && SupplierPayment.ddlSupplier.$invalid">Supplier is required</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.ChequeDate.$invalid && SupplierPayment.ChequeDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque Date">
+                                                        <div class="input-group">
+                                                            <input type="text" id="txtChequeDate" ng-model="inv_supplierPayment.ChequeDate" ng-blur="getMaxPBIdByDate()" class="form-control datepicker" placeholder="Cheque Date" readonly />
+                                                            <span class="input-group-addon" ng-click="PBImportDateChange()" id="txtChequecalender"><i class="fa fa-calendar " style="color:red;"></i></span>
+                                                        </div>
+
+                                                        <span class="help-block" style="display: block;" ng-if="SupplierPayment.ChequeDate.$error.required && SupplierPayment.ChequeDate.$touched">PB Date is required</span>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.ChequeNo.$invalid && SupplierPayment.ChequeNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Cheque No">
+                                                        <div class="input-group">
+                                                            <input type="text" id="txtPONo" name="Pono" class="form-control" ng-model="inv_supplierPayment.ChequeNo" placeholder="Cheque No" maxlength="50" ng-maxlength="49">
+                                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                        </div>
+                                                        <span class="help-block" ng-show="SupplierPayment.ChequeNo.$dirty && SupplierPayment.ChequeNo.$invalid">PO No. is required</span>
+                                                        <span class="help-block" ng-if="SupplierPayment.ChequeNo.$error.maxlength">50 Character Max</span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <br />
+
+                                        <div class="panel panel-default">
+                                            <br />
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.PaidAmount.$invalid && SupplierPayment.PaidAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Pay Amount">
+                                                            <div class="input-group">
+                                                                <input type="number" name="PaidAmount" class="form-control" ng-model="inv_supplierPayment.PaidAmount" placeholder="Pay Amount" maxlength="50" ng-maxlength="49">
+                                                                <span class="input-group-addon"><i style="color:red;" class="fa fa-bell"></i></span>
+                                                            </div>
+                                                            <span class="help-block" ng-show="SupplierPayment.PaidAmount.$dirty && SupplierPayment.PaidAmount.$invalid">Pay Amount is required</span>
+                                                            <span class="help-block" ng-if="SupplierPayment.PaidAmount.$error.maxlength">50 Character Max</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.TotalVAT.$invalid && SupplierPayment.TotalVAT.$touched }" data-toggle="tooltip" data-placement="bottom" title="Total Vat">
+                                                            <div class="input-group">
+                                                                <input type="number" id="txtPONo" name="Pono" class="form-control" ng-model="inv_supplierPayment.TotalVAT" placeholder="Total Vat " maxlength="50" ng-maxlength="49">
+                                                                <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                                                            </div>
+                                                            <span class="help-block" ng-show="SupplierPayment.TotalVAT.$dirty && SupplierPayment.TotalVAT.$invalid">Vat is required</span>
+                                                            <span class="help-block" ng-if="SupplierPayment.TotalVAT.$error.maxlength">50 Character Max</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group" ng-class="{ 'has-error' : SupplierPayment.TotalAIT.$invalid && SupplierPayment.TotalAIT.$touched }" data-toggle="tooltip" data-placement="bottom" title="Total AIT">
+                                                            <div class="input-group">
+                                                                <input type="number" id="isTotalAitTextBoxId" name="Pono" class="form-control" ng-model="inv_supplierPayment.TotalAIT" placeholder="Total AIT" maxlength="50">
+                                                                <span class="input-group-addon"><i style="color:red;" class="fa fa-money"></i></span>
+                                                            </div>
+                                                            <span class="help-block" ng-show="SupplierPayment.TotalAIT.$dirty && SupplierPayment.TotalAIT.$invalid">AIT is required</span>
+                                                            <span class="help-block" ng-if="SupplierPayment.TotalAIT.$error.maxlength">50 Character Max</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 text-right">
+                                                        <span>
+                                                            <button type="button" class="btn btn-primary" ng-disabled="!inv_supplierPayment.PaidAmount " ng-click="UpdateAmount()">  <i class="fa fa-refresh"> </i> Pay</button>
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row" ng-show="isPaidPaymentAmount">
+                                                    <div class="col-md-12">
+                                                        <table class="responstable table-hover">
+                                                            <tr>
+                                                                <th>SL No.</th>
+                                                                <th class="t-cell-center" style="width:15%;">PB Bill No</th>
+                                                                <th class="t-cell-center">PB Bill Date</th>
+                                                                <th class="t-cell-center">Actual Amount</th>
+                                                                <th class="t-cell-center">Paid Amount</th>
+                                                                <th class="t-cell-center"> Vat Amount</th>
+                                                                <th class="t-cell-center">Paid Vat</th>
+                                                                <th class="t-cell-center" ng-show="AitWithtableHeadHide">AIT Amount</th>
+                                                                <th class="t-cell-center" ng-show="AitWithtableHeadHide">Paid AIT</th>
+                                                                <!--<th class="t-cell-center">Remove</th>-->
+                                                            </tr>
+                                                            <tbody>
+                                                                <tr class="HoverTable" ng-repeat="supList in supplierIsCheckPaymentCalculationList">
+                                                                    <td class="t-cell-center">
+                                                                        {{$index + 1}}
+                                                                    </td>
+
+                                                                    <td class="t-cell-center">{{supList.PBNo}}</td>
+                                                                    <td class="t-cell-center">{{supList.PBDate}}</td>
+
+                                                                    <!--<td class="t-cell-center">{{supList.PayableAmount}}</td>-->
+                                                                    <td class="t-cell-center">{{supList.ActualAmount}}</td>
+                                                                    <td class="t-cell-center">{{supList.PaidAmount}}</td>
+
+                                                                    <td class="t-cell-center">{{supList.VatAmount}}</td>
+                                                                    <td class="t-cell-center">{{supList.TotalVAT}}</td>
+
+
+                                                                    <td class="t-cell-center" ng-show="AitWithtableHeadHide">{{supList.AitAmount}}</td>
+                                                                    <td class="t-cell-center" ng-show="AitWithtableHeadHide">{{supList.TotalAIT}}</td>
+
+                                                                </tr>
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <button class="customBtn custmoBtnSave" ng-disabled=" !ddlSupplier ||!inv_supplierPayment.PaymentDate || !inv_supplierPayment.PaidAmount || !inv_supplierPayment.TotalVAT" ng-click="SupplierpaymentSave()" title="Save">
+                                                    <i class="fa fa-floppy-o"></i>&nbsp;Save
+                                                </button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="customBtn custmoBtnReset" ng-click="Reset()" title="Reset">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group " data-toggle="tooltip" title="From Date">
+
+                                                        <input type="text" name="FromDate" id="txtFromDateForPB" ng-model="FromDate" ng-change="SPSearch();" class="form-control " placeholder="From Date" readonly />
+                                                        <span class="input-group-addon" ng-click="FormDateChangeForPB()" id="FormDateChangeForPB"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <div class="input-group " data-toggle="tooltip" title="To Date">
+                                                        <input type="text" name="ToDate" id="txtToDateForPB" ng-model="ToDate" ng-change="SPSearch();" class="form-control " placeholder="To Date" readonly />
+                                                        <span class="input-group-addon" ng-click="ToDateChangeForPB()" id="ToDateChangeForPB"><i class="fa fa-calendar req-icon-color"></i></span>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group" data-toggle="tooltip" title="Search Company and Sales Order No">
+                                                    <input type="text" class="form-control" id="PBAndCompany" ng-model="SearchPBAndCompanyName" ng-change="SPSearch();" name="name" placeholder="Company Name / IWO NO..." />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <table class="responstable table-hover">
+                                                    <tr>
+                                                        <th>SL No.</th>
+                                                        <th class="t-cell-center" style="width:15%;">Cheque No</th>
+                                                        <th class="t-cell-center">Payment Date</th>
+                                                        <th class="t-cell-center">Cheque Type</th>
+                                                        <th class="t-cell-center">Cheque Date</th>
+                                                        <th class="t-cell-center"> Paid Amount</th>
+                                                        <th class="t-cell-center">Bank Name</th>
+                                                       
+                                                    </tr>
+                                                    <tbody>
+                                                        <tr class="HoverTable" dir-paginate="supList in supplierPaymentGetPagedList | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ">
+                                                            <td class="t-cell-center">
+                                                                {{$index + 1}}
+                                                            </td>
+
+                                                            <td class="t-cell-center">{{supList.ChequeNo}}</td>
+                                                            <td class="t-cell-center">{{supList.PaymentDate}}</td>
+
+                                                            <td class="t-cell-center">{{supList.ChequeType}}</td>
+                                                            <td class="t-cell-center">{{supList.ChequeDate}}</td>
+                                                            <td class="t-cell-center">{{supList.PaidAmount}}</td>
+                                                            <td class="t-cell-center">{{supList.BankAccountId}}</td>
+
+                                                        </tr>
+                                                        <tr class="t-foot" ng-show="total_count>PerPage">
+                                                            <th colspan="8">
+                                                                <dir-pagination-controls max-size="8"
+                                                                                         direction-links="true"
+                                                                                         boundary-links="true"
+                                                                                         on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                                                </dir-pagination-controls>
+                                                            </th>
+                                                        </tr>
+                                                    </tbody>
+
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                  
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</form>
+
+<script>
+
+    $("#supplierId").select2();
+    $("#bankddl").select2();
+    $("#localAndImportPBId").select2();
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtDateOfLocalPB'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("localPBDatecal").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+    var picker2 = new Pikaday({
+        field: document.getElementById('supplierPaymentDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("supplierPaymentDateCalender").addEventListener("click", function () {
+        picker2.show();
+
+    });
+
+    var picker3 = new Pikaday({
+        field: document.getElementById('txtChequeDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("txtChequecalender").addEventListener("click", function () {
+        picker3.show();
+
+    });
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>
+

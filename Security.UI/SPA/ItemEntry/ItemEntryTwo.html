@@ -1,0 +1,768 @@
+﻿<form name="itemEntryTwoForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo">&nbsp; &#9755;&nbsp; <span style="color: red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Product Entry</h3>
+            </div>
+            <div class="panel-body" style="margin-right: -25px; margin-left: -15px; ">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="col-md-4">
+                            <label>Category</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.Category.$dirty && itemEntryTwoForm.Category.$invalid }">
+
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                    <select ng-model="ddlCategory" class="form-control selectMendatory" name="Category" id="cmbCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId" ng-change="CategoryChange()" required autofocus>
+                                        <option value="" label="Select Category"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryTwoForm.Category.$dirty && itemEntryTwoForm.Category.$invalid">Category is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Subcategory</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.SubCategory.$dirty && itemEntryTwoForm.SubCategory.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Subcategory">
+                                    <select ng-model="ddlSubCategory" class="form-control selectMendatory" name="SubCategory" ng-options="subCategory.SubCategoryName for subCategory in SubcategoryList | filter:{CategoryId: ddlCategory.CategoryId}:true track by subCategory.SubCategoryId" ng-change="CategoryChange()" ng-disabled="!ddlCategory" required>
+                                        <option value="" label="Select Subcategory"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryTwoForm.SubCategory.$dirty && itemEntryTwoForm.SubCategory.$invalid">Subcategory is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Item Name</label>
+                        </div>
+                        <div class="col-md-8">
+                      
+
+                                <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.ItmName.$touched && itemEntryTwoForm.ItmName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Item">
+                                    <div class="input-group input-group-md ddl">
+                                        <input type="text" list="ItmList" class="form-control selectMendatory" name="ItmName" ng-model="ad_Item.ItemName" ng-change="itemNameId()" placeholder="Item Name" required />
+                                    </div>
+                                    <datalist id="ItmList">
+                                        <option ng-repeat="Item in ItemNameList" value="{{Item.ItemName}}">
+                                    </datalist>
+                                    <span class="help-block" ng-show="itemEntryTwoForm.ItmName.$touched && itemEntryTwoForm.ItmName.$invalid">Item is required</span>
+
+                                </div>
+
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label>Description 1</label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.DescriptionOne.$invalid && itemEntryTwoForm.DescriptionOne.$touched }" data-toggle="tooltip" data-placement="bottom" title="Size: ...mm X ...mm">
+                                    <div class="input-group">
+                                        <input type="text" id="txtDescriptionOne" maxlength="100" name="DescriptionOne" class="form-control" ng-model="ad_Item.ItemDescription" ng-maxlength="99" placeholder="Size: ...mm X ...mm" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionOne.$error.required && itemEntryTwoForm.DescriptionOne.$touched">Description 1 is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionOne.$error.maxlength">100 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Description 2 </label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.DescriptionTwo.$invalid && itemEntryTwoForm.DescriptionTwo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Description 2">
+                                    <div class="input-group">
+                                        <input type="text" id="txtDescriptionTwo" maxlength="100" name="DescriptionTwo" class="form-control" ng-model="ad_Item.ItemDescriptionTwo" ng-maxlength="99" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionTwo.$error.required && itemEntryTwoForm.DescriptionTwo.$touched">Description 2  is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.DescriptionTwo.$error.maxlength">100 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Item Code</label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.ItemCode.$invalid && itemEntryTwoForm.ItemCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Code">
+                                    <div class="input-group">
+                                        <input type="text" id="txtItemCode" maxlength="50" name="ItemCode" class="form-control" ng-model="ad_Item.ItemCode" ng-maxlength="49" ng-blur="CheckDuplicateBarcode()" ng-change="ItemCodeChange()" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ItemCode.$error.required && itemEntryTwoForm.ItemCode.$touched">Item Code is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ItemCode.$error.maxlength">50 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-md-4">
+                        <div class="col-md-4">
+                            <label>Unit</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                                    <select ng-model="ddlItemUnit" class="form-control selectMendatory" name="ItemUnit" ng-change="Unit(ddlItemUnit);ad_Item.UnitName=ddlItemUnit.UnitName" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" required>
+                                        <option value="" label="Select Unit" hidden></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid">Unit is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Package</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemPackage.$dirty && itemEntryForm.ItemPackage.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Package">
+                                    <select id="ddlItemPackage" ng-model="ddlItemPackage" class="form-control selectNotMandetory" ng-disabled="!ddlItemUnit" ng-change="ad_Item.UnitName=ddlItemPackage.UnitName;" name="ItemPackage" ng-options="package.UnitName for package in ItemUnitlist |  filter: {ItemUnitId: '!' +ddlItemUnit.ItemUnitId} track by package.ItemUnitId" required>
+                                        <option value="" label="Select Unit" hidden></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryForm.ItemPackage.$dirty && itemEntryForm.ItemPackage.$invalid">Unit is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Container</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Container">
+                                    <select id="containerLbl" ng-model="ddlItemContainer" class="form-control selectNotMandetory" ng-change="ad_Item.UnitName=ddlItemContainer.UnitName" name="ItemContainer" ng-disabled="!ddlItemPackage" ng-options="container.UnitName for container in ItemUnitlist | filter : {ItemUnitId : '!' +ddlItemUnit.ItemUnitId } | filter:{ ItemUnitId : '!' +ddlItemPackage.ItemUnitId} track by container.ItemUnitId">
+                                        <option value="" label="Select Unit" hidden></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid">Unit is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>RO Level</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.RoLevel.$invalid && itemEntryTwoForm.RoLevel.$touched }" data-toggle="tooltip" data-placement="bottom" title="RO Level">
+                                <div class="input-group">
+                                    <input type="number" id="txtRoLevel" maxlength="50" name="RoLevel" class="form-control" ng-model="ad_Item.ROLevel" ng-maxlength="49" ng-blur="CheckDuplicateBarcode()" ng-change="RoLevelChange()">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.RoLevel.$error.required && itemEntryTwoForm.RoLevel.$touched">RO Level is required</span>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.RoLevel.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label>HS Code</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.HsCode.$dirty && itemEntryTwoForm.HsCode.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                    <select ng-model="ddlHsCode" class="form-control selectMendatory" name="HSCode" id="cmbHSCode" ng-options="code.HsCode for code in HsCodeList track by code.HsCodeId" ng-change="ad_Item.HsCodeId=ddlHsCode.HsCodeId" required autofocus>
+                                        <option value="" label="Select HSCode"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryTwoForm.HsCode.$dirty && itemEntryTwoForm.HsCode.$invalid">HSCode is required</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Active Status: </label>
+                            &nbsp;&nbsp;
+                        </div>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                              
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_Item.IsActive">Active
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_Item.IsActive">Inactive
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-4">
+                           
+                           
+                        </div>
+                        <div class="col-md-8">
+                            <br />
+                            
+                            <div class="input-group">
+                                <div class="checkbox-inline">
+                                    <span>
+                                        <!--<i ng-show="!IsChecked" style="font-size: 2.00em;" class="fa fa-plus-square" ng-click="hideBtnColapse()"></i><i style="font-size: 2.00em;" ng-show="IsChecked  " ng-click="hideBtnColapse()" class="fa fa-minus-square"></i>-->
+                                        <input ng-click="hideBtnColapse()" type="checkbox" name="optionsRadios" ng-value="true" ng-model="IsChecked"><span style="font-weight:bold;">VAT & SD</span>
+                                    </span>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-6" ng-show="ddlItemPackage">
+                            <label>{{ddlItemUnit.UnitName}} per {{ddlItemPackage.UnitName}}</label>
+                        </div>
+                        <div class="col-md-6" ng-show="ddlItemPackage">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.UnitPackage.$invalid && itemEntryTwoForm.UnitPackage.$touched }" data-toggle="tooltip" data-placement="bottom" title="Unit Per Package">
+                                <div class="input-group">
+                                    <input type="text" id="txtUnitPackage" maxlength="50" name="UnitPackage" class="form-control" ng-model="ad_Item.UnitPerPackage" ng-maxlength="49">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.UnitPackage.$error.required && itemEntryTwoForm.UnitPackage.$touched">Unit Per Package is required</span>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.UnitPackage.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 2||ddlItemPackage.ItemUnitId==2||ddlItemContainer.ItemUnitId==2">
+                            <label>{{btnPackageWeight}}(kg) </label>
+                        </div>
+                        <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 2||ddlItemPackage.ItemUnitId==2||ddlItemContainer.ItemUnitId==2">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.PackageWeight.$invalid && itemEntryTwoForm.PackageWeight.$touched }" data-toggle="tooltip" data-placement="bottom" title="Package Weight">
+                                <div class="input-group">
+                                    <input type="number" id="txtPackageWeight" name="PackageWeight" class="form-control" ng-model="ad_Item.PackageWeight">
+                                    <!--<span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>-->
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackageWeight.$error.required && itemEntryTwoForm.PackageWeight.$touched">Package Weight is required</span>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackageWeight.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-right:5px" ng-if="ddlItemUnit.ItemUnitId== 1" ng-show="ddlItemContainer">
+                            <label>{{ddlItemPackage.UnitName}} Per {{ddlItemContainer.UnitName}}</label>
+                        </div>
+                        <div class="col-md-6" ng-if="ddlItemUnit.ItemUnitId== 1" ng-show="ddlItemContainer">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.PackagePerContainer.$invalid && itemEntryTwoForm.PackagePerContainer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Package Per Container">
+                                <div class="input-group">
+                                    <input type="text" id="txtPackagePerContainer" maxlength="50" name="PackagePerContainer" class="form-control" ng-model="ad_Item.PackagePerContainer" ng-maxlength="49">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackagePerContainer.$error.required && itemEntryTwoForm.PackagePerContainer.$touched">Package Per Container is required</span>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.PackagePerContainer.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-if="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                            <label>{{btnContainerWeight}}(kg)</label>
+                        </div>
+                        <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.ContainerWeight.$invalid && itemEntryTwoForm.ContainerWeight.$touched }" data-toggle="tooltip" data-placement="bottom" title="Container Weight">
+                                <div class="input-group">
+                                    <input type="number" id="txtContainerWeight" name="ContainerWeight" class="form-control" ng-model="ad_Item.ContainerWeight" ng-change="CartonSizeChange();">
+                                    <!--<span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>-->
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerWeight.$error.required && itemEntryTwoForm.ContainerWeight.$touched">Container Weight is required</span>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerWeight.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                            <label>{{btnContainerSize}}</label>
+                        </div>
+
+                        <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.ContainerSize.$invalid && itemEntryTwoForm.ContainerSize.$touched }" data-toggle="tooltip" data-placement="bottom" title="Container Size">
+                                <div class="input-group">
+                                    <input type="text" id="txtContainerSize" maxlength="50" name="ContainerSize" class="form-control" ng-model="ad_Item.ContainerSize" ng-maxlength="49" readonly>
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerSize.$error.required && itemEntryTwoForm.ContainerSize.$touched">Container Size is required</span>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.ContainerSize.$error.maxlength">50 Character Max</span>
+                            </div>
+                        </div>
+                       
+                        <div style="margin-top:20px;" ng-show="IsChecked">
+                            <div class="col-md-6">
+                                <label>SD</label>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.Sd.$invalid && itemEntryTwoForm.Sd.$touched }" data-toggle="tooltip" data-placement="bottom" title="SD ">
+                                    <div class="input-group">
+                                        <input type="number" id="txtContainerSize" maxlength="50" name="ContainerSize" class="form-control" ng-model="ad_ItemVat.Sd" ng-maxlength="49" >
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Sd.$error.required && itemEntryTwoForm.Sd.$touched">SD is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Sd.$error.maxlength">50 Character Max</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>VAT</label>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.Vat.$invalid && itemEntryTwoForm.Vat.$touched }" data-toggle="tooltip" data-placement="bottom" title="Vat">
+                                    <div class="input-group">
+                                        <input type="number" id="txtContainerSize" maxlength="50" name="ContainerSize" class="form-control" ng-model="ad_ItemVat.Vat" ng-maxlength="49" >
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Vat.$error.required && itemEntryTwoForm.Vat.$touched">Vat is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="itemEntryTwoForm.Vat.$error.maxlength">50 Character Max</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-sm-4 marginTop">
+                        <div class="row ">
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                <div class="row">
+                                    <button id="Button1" class="customBtn custmoBtnSave" ng-click="SaveItem();" title="save" ng-disabled="!ddlCategory || !ddlSubCategory ||!ad_Item.ItemName||!ddlItemUnit ||!ddlHsCode || !ad_Item.ItemDescription || !ad_Item.ItemDescriptionTwo || !ad_Item.ItemCode">
+                                        <i class="fa fa-floppy-o"></i>&nbsp;{{btnSaveItem}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                <div class="row">
+                                    <button id="Button2" class="customBtn custmoBtnDelete" ng-show="btnItemDeleleShow" ng-click="Delete()" title="Search">
+                                        <i class="fa fa-trash"></i>&nbsp;Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                <div class="row">
+                                    <button id="Button3" class="customBtn custmoBtnReset" ng-click="ResetForm()" title="Clear">
+                                        <i class="fa fa-refresh"></i>&nbsp;Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Product Search</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" title="Search Company and Invoice No">
+                            <input type="text" class="form-control" id="textItemCodeAndDescription" ng-model="ItemCodeAndDescription" ng-change="ItemSearch();" name="name" placeholder="Item Code / Item Description" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center" width="15%">Category</th>
+                                    <!--<th class="txt-center" width="15%">Subcategory</th>-->
+                                    <th class="txt-center" width="5%">Code</th>
+                                    <th class="txt-center" width="5%">HS Code</th>
+                                    <th class="txt-center">Product Name</th>
+                                    <th class="txt-center">Description 1</th>
+                                    <th class="txt-center">Pc Per Roll</th>
+                                    <th class="txt-center" width="5%">Status</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="anItem in ItemSearchResultList | itemsPerPage: PerPage" ng-click="SelItem(anItem);itemVatAll(anItem.ItemId)" current-page="currentPage" total-items="total_count">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="txt-center">{{anItem.CategoryName}}</td>
+                                    <!--<td class="txt-center">{{anItem.SubCategoryName}}</td>-->
+                                    <td class="txt-center">{{anItem.ItemCode}}</td>
+                                    <td class="txt-center">{{anItem.HsCode}}</td>
+
+                                    <td>{{anItem.ItemName}}</td>
+                                    <td>{{anItem.ItemDescription}}</td>
+                                    <td>{{anItem.UnitPerPackage}}</td>
+                                    <td class="txt-center">{{anItem.Status}}</td>
+                                    
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="panel-body custom-panal-body">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" ng-model="SrcCode" class="form-control" data-toggle="tooltip" data-placement="bottom" title="Code" placeholder="Code" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" ng-model="Description" class="form-control" data-toggle="tooltip" data-placement="bottom" title="Item Description" placeholder="Item Description" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                        <select ng-model="ddlSrcCategory" class="form-control selectNotMandetory" name="SrcCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId">
+                            <option value="" label="Select Category"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                        <select ng-model="ddlSrcSubategory" class="form-control selectNotMandetory" name="SrcSubategory" ng-options="subategory.SubCategoryName for subategory in SubcategoryList| filter:{CategoryId: ddlSrcCategory.CategoryId} : true track by subategory.SubCategoryId" ng-disabled="!ddlSrcCategory">
+                            <option value="" label="Select Subcategory"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                <div class="row">
+                    <button id="Button4" class="customBtn custmoBtnReset" ng-click="Search()" title="Search">
+                        <i class="fa fa-search"></i>&nbsp;Search
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table class="responstable table-hover">
+            <tbody>
+                <tr class="t-head">
+                    <th>S/N</th>
+                    <th class="txt-center" width="15%">Category</th>
+                    <th class="txt-center" width="15%">Subcategory</th>
+                    <th class="txt-center" width="5%">Code</th>
+                    <th class="txt-center" width="5%">HsCode</th>
+                    <th class="txt-center" >Product Name</th>
+                    <th class="txt-center" >Description 1</th>
+                    <th class="txt-center" width="5%">Status</th>
+                </tr>
+                <tr class="HoverTable" dir-paginate="anItem in ItemSearchResultList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelItem(anItem)">
+                    <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                    <td class="txt-center">{{anItem.CategoryName}}</td>
+                    <td class="txt-center">{{anItem.SubCategoryName}}</td>
+                    <td class="txt-center">{{anItem.ItemCode}}</td>
+                    <td class="txt-center">{{anItem.HsCodeId}}</td>
+
+                    <td>{{anItem.ItemName}}</td>
+                    <td>{{anItem.ItemDescription}}</td>
+                    <td class="txt-center">{{anItem.Status}}</td>
+                </tr>
+                <tr class="t-foot" ng-show="total_count>PerPage">
+                    <th colspan="9">
+                        <dir-pagination-controls max-size="8"
+                                                 direction-links="true"
+                                                 boundary-links="true"
+                                                 on-page-change="getData(newPageNumber)" style="text-align: center;">
+                        </dir-pagination-controls>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row pagination-footer">
+            <div class="col-md-6">
+                <span>Show </span>
+                <input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage">
+                <span>Records </span>
+            </div>
+            <div class="col-md-6">
+                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+ItemSearchResultList.length}} of {{total_count}} Records</span>
+            </div>
+        </div>
+    </div>-->
+        </div>
+    </div>
+</form>
+<script>
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('.nav-tabs li:eq(0) a').tab('show');
+    });
+    var tabOrder = 0;
+    $('.nav-tabs li').click(function (e) {
+        var nextId = $(this).index();
+        tabOrder = nextId;
+    });
+    $(document).keydown(function (eventObject) {
+        if (eventObject.keyCode == 9) {
+            if (eventObject.shiftKey) {
+                tabOrder++;
+                if (tabOrder == 7)
+                    tabOrder = 0;
+                $('.nav-tabs li:eq(' + tabOrder + ') a').tab('show');
+            }
+        }
+    });
+</script>
+

@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+        }
+
+        .footer {
+            position: fixed;
+            left: 29px;
+            bottom: 0px;
+        }
+        .flexcontainer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+ /*       @page {
+            size: A4;
+            margin-top: 2.2cm;
+            margin-bottom: 2cm;
+            margin-left: 0;
+            margin-right: 0;
+            font-family: 'Times New Roman';
+        }*/
+        /*@page {
+            size: A4;
+            margin: 0;
+            margin-top: 2.2cm;
+            margin-bottom: 2cm;
+            margin-left: 0;
+            margin-right: 0;
+        }*/
+    </style>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div class="container" id="source-html">
+
+                        <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;line-height: 1.2;" ng-if="InvoiceMasterList[0].PaymentProcessTypeId == 1"><b><u>PROFORMA INVOICE</u></b></p>
+                        <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;line-height: 1.2;" ng-if="InvoiceMasterList[0].PaymentProcessTypeId == 2 || InvoiceMasterList[0].PaymentProcessTypeId == 3"><b><u>SALES CONTRACT</u></b></p>
+
+                        <table style="width:100%; border: 1px solid black; border-collapse: collapse;">
+                            <tbody>
+                                <tr style="padding-top: 5px; ">
+                                    <td style="width:50%; height:auto; border:1px solid black; padding-left: 5px; font-family: Times New Roman, Times, serif;">
+                                        <span style="font-size: .9em;"><b><u>Exporter:</u></b></span>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterName"><b>{{InvoiceMasterList[0].ExporterName}}</b></p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">
+                                            {{InvoiceMasterList[0].ExporterFactory}}
+                                        </p>
+                                        <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterTIN"><b>TIN:</b> {{InvoiceMasterList[0].ExporterTIN}}</span>
+                                        <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterBIN">, <b>BIN:</b> {{InvoiceMasterList[0].ExporterBIN}}</span>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterEmail"><b>E-Mail:</b>  {{InvoiceMasterList[0].ExporterEmail}} <b>or</b>  {{InvoiceMasterList[0].ExporterEmailRef}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterWeb || InvoiceMasterList[0].ExporterPhone"><b>Web:</b>  {{InvoiceMasterList[0].ExporterWeb}} &nbsp; <b>Tel: </b>{{InvoiceMasterList[0].ExporterPhone}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterMobile"><b>Cell:</b> {{InvoiceMasterList[0].ExporterMobile}} {{(InvoiceMasterList[0].ExporterMobileRef) ? '&':'' }} {{InvoiceMasterList[0].ExporterMobileRef}}</p>
+
+                                    </td>
+                                    <td style="width:50%; border:1px solid black; padding-left: 5px;">
+                                        <div class="flexcontainer">
+                                            <div>
+                                                <p style="font-size: .9em;" ng-if="InvoiceMasterList[0].PaymentProcessTypeId == 1"><b>Proforma Invoice No: </b>{{InvoiceMasterList[0].InvoiceNo}}</p>
+                                                <p style="font-size: .9em;" ng-if="InvoiceMasterList[0].PaymentProcessTypeId == 2 || InvoiceMasterList[0].PaymentProcessTypeId == 3"><b>Sales Contract No: </b>{{InvoiceMasterList[0].InvoiceNo}}</p>
+                                            </div>
+                                            <div>
+                                                <p style="font-size: .9em;"><b>Date: </b>{{InvoiceMasterList[0].InvoiceDate}}</p>
+                                            </div>
+                                        </div>
+                                            
+                                        <!-- PO -->
+                                        <div class="flexcontainer" style="border-bottom: 1px solid black; line-height:1;">
+                                            <div>
+                                                <table>
+                                                    <tr ng-repeat="PONo in PONoList track by $index">
+                                                        <td>
+                                                            <span style="font-size: .9em; margin : 0;  padding : 0 ;" ng-if="PONoList.length"><b>PO No: </b> {{PONo}}</span>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div>
+                                                <table>
+                                                    <tr ng-repeat="PODate in PODateList track by $index">
+                                                        <td>
+                                                            <span style="font-size: .9em;" ng-if="PONoList.length"><b>Date:</b> {{PODate}}</span>
+
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                            
+                                        <p style="font-size: .9em;"><b><u>Exporter Bank Details:</u></b></p>
+
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterBank"><b>Bank Name:</b> {{InvoiceMasterList[0].ExporterBank}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterAccountName"><b>Account Name:</b> {{InvoiceMasterList[0].ExporterAccountName}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterAccountNo"><b>Account No:</b> {{InvoiceMasterList[0].ExporterAccountNo}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterSwift"><b>Swift Code No:</b> {{InvoiceMasterList[0].ExporterSwift}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].ExporterBranchAddress">
+                                            <b>Branch Address:</b>
+                                            {{InvoiceMasterList[0].ExporterBranchAddress}}
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:50%; border:1px solid black; padding: 5px; padding-top:0px; padding-bottom:0px;">
+                                        <span style="font-size: .9em;"><b><u>Impoter Billing Address:</u></b></span>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].CompanyNameBilling"><b> {{InvoiceMasterList[0].CompanyNameBilling}}</b></p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].AddressBilling">
+
+                                            {{InvoiceMasterList[0].AddressBilling}}
+                                        </p>
+                                    </td>
+                                    <td style="width:50%; border:1px solid black; padding: 5px; padding-top:0px; padding-bottom:0px;">
+                                        <span style="font-size: .9em;"><b><u>Delivery Address:</u></b></span>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].CompanyNameDelivery"><b> {{InvoiceMasterList[0].CompanyNameDelivery}}</b></p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].AddressDelivery">
+
+                                            {{InvoiceMasterList[0].AddressDelivery}}
+                                        </p>
+
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width:.000001%; border:1px solid black; padding: 5px;" colspan="2">
+
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].PlaceOfLoading"><b>Place Of Loading:  </b>{{InvoiceMasterList[0].PlaceOfLoading}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].TypeOfCarrier"><b>Type of Carrier: </b>{{InvoiceMasterList[0].TypeOfCarrier}}</p>
+                                        <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="InvoiceMasterList[0].DescriptionOfGoods"><b>Descripton Of Goods: </b>{{InvoiceMasterList[0].DescriptionOfGoods}}</p>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="hideButton hidden-print">
+                            <br />
+                            <button ng-click="tableSortResize()" ng-disabled="qtyAmountChecked"><i class="fa fa-sort" aria-hidden="true" style="color: #D245F3;"></i>Sorting/Resize</button>
+                            <button ng-click="mergeTableData()"><i class="fa fa-code-fork" aria-hidden="true" style="color: #2227B5;"></i>Merge </button>
+                            <button ng-click="unmergeTableData()"><i class="fa fa-undo" style="color: #FF652F;"></i>Un-Merge</button>
+                            <button ng-click="enableDrag()" ng-disabled="qtyAmountChecked"><i class="fa fa-puzzle-piece" style="color: #FF652F;"></i>Enable Drag-Drop</button>
+                            <button ng-click="alignLeft()"><i class="fa fa-align-left" style="color: #FF652F;"></i>&nbsp;Align Left</button>
+                            <input type="checkbox" id="showPackInfo" value="checked" ng-model="checked" ng-change="ShowPackInfo(checked);" />&nbsp;Pack Info
+                            <input type="checkbox" id="showQtyAmount" value="qtyAmountChecked" ng-model="qtyAmountChecked" ng-change="ShowTotalQuantityAndAmount(qtyAmountChecked);" />&nbsp;Qty & Amount
+                            <input type="checkbox" id="showQtyAmount" value="dollarChecked" ng-model="dollarChecked" ng-change="ShowDollar(dollarChecked);" />&nbsp;Dollar
+                            <select ng-model="ddlDot" id="ddlDot" class="form-control selectMendatory" name="ddlDot" ng-options="dot.Dot for dot in DotList" ng-change="GetInvoiceMasterByInvoiceId()" autofocus required>
+                                <option value="" label="--Select fractional point--"></option>
+                            </select>
+                            <hr />
+                        </div>
+                        <div id="result" class="hidden-print"> </div>
+                        <div class="row">
+                            <div class="col-md-12" id="htmlTable" style="font-family: 'Times New Roman'">
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span ng-if="showPackInfo && InvoiceMasterList[0].ExporterId == 1" style="font-size: .9em; line-height: 1;"><b ng-if="InvoiceMasterList[0].LabelNetWeight">Label Net Weight: {{InvoiceMasterList[0].LabelNetWeight}},&nbsp;</b><b ng-if="InvoiceMasterList[0].LabelGrossWeight"> Label Gross Weight: {{InvoiceMasterList[0].LabelGrossWeight}},&nbsp; </b><b ng-if="InvoiceMasterList[0].RibonNetWeight"> Ribon Net Weight: {{InvoiceMasterList[0].RibonNetWeight}},&nbsp; </b><b ng-if="InvoiceMasterList[0].RibonGrossWeight"> Ribon Gross Weight: {{InvoiceMasterList[0].RibonGrossWeight}}</b></span>
+                                <span ng-if="showPackInfo && InvoiceMasterList[0].ExporterId == 2" style="font-size: .9em; line-height: 1;"><b ng-if="NetWeight">Net Weight: {{NetWeight}},&nbsp;</b><b ng-if="GrossWeight">Gross Weight: {{GrossWeight}}, </b></span>
+                                <br />
+                                <span style="font-size: .9em; line-height: 1;"><b><u>Amount in words: </u>{{InvoiceMasterList[0].AmountInWords}}</b></span>
+                            </div>
+
+                        </div>
+                        <br />
+                        <div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="row" style="font-family: 'Times New Roman'">
+                                                <div class="col-md-12">
+                                                    <span style="font-size: .9em; line-height: 1;"><b><u>Terms & Conditions:</u></b></span>
+                                                    <br />
+                                                    <div style="font-size: .9em; line-height: 1; font-family: 'Times New Roman'" id="htmlTermsAndCondition">
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div id="footer">
+                                <table style="width: 100%;position: relative; font-family: 'Times New Roman'">
+                                    <tbody style="left:30px; right: 50px;">
+                                        <tr>
+                                            <td style="text-align:left;">
+                                                <div>
+                                                    <br />
+                                                    <br />
+                                                    <span style="font-size: .9em; line-height: 1;"><b>Authorized Signature</b></span>
+                                                    <br />
+                                                    <span style="font-size: .9em; line-height: 1;"><b>{{InvoiceMasterList[0].ImporterName}}</b></span>
+
+                                                </div>
+                                            </td>
+                                            <td style="text-align: right;" ng-if="InvoiceMasterList[0].ExporterId == 1">
+                                                <div>
+                                                    <span style="font-size: .9em; line-height: 1;"><b>{{InvoiceMasterList[0].ExporterName}}</b></span>
+                                                    <br />
+                                                    <br />
+                                                    <br />
+                                                    <span style="font-size: .9em; line-height: 1;"><b>Authorized Signature</b></span>
+
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br />
+
+                            <!--<table style="width: 100%;position: relative;" >
+                                <tbody style="left:30px; right: 50px;">
+                                    <tr>
+                                        <td style="text-align:left;">
+                                            <div>
+                                                <span>{{currentDatetimeFormated}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>-->
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <style>
+        #mofiz tbody tr:nth-child(1) {
+            counter-reset: rowNumber;
+        }
+
+        #mofiz tbody tr {
+            counter-increment: rowNumber;
+        }
+
+            #mofiz tbody tr td:first-child::before {
+                content: counter(rowNumber);
+                min-width: 1em;
+                margin-right: 0.5em;
+            }
+    </style>
+
+    <script type="text/javascript">
+        $("#footer").draggable();
+        $('#mofiz tbody').sortable();
+        function ExportToDoc() {
+            $('.hideButton').hide();
+            $('#result').hide();
+            
+            var countSL = 1;
+            $('#mofiz tbody tr').each((indextr, tr) => {
+                $(tr).children('td').each((indextd, td) => {
+                    if (indextd == 0) {
+                        td.innerHTML = countSL++;
+                        console.log(td.innerHTML);
+                    }
+                });
+            });
+            $('#mofiz tbody tr').each((indextr, tr) => {
+                $(tr).children('td').each((indextd, td) => {
+                    if (indextd < $('#mofiz thead tr th').length) {
+                        var preStyle = $(td).attr("style");
+                        if (preStyle != undefined) {
+                            var pos = preStyle.indexOf("display: none;");
+                            if (pos != -1) {
+                                $(td).remove();
+                            }
+                        }
+                    }
+                });
+            });
+
+            var sourceHTML = document.getElementById("source-html").innerHTML;
+            // console.log(sourceHTML);
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            }
+            function replaceAll(str, term, replacement) {
+                return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+            }
+
+            var removeTableBorderStr;
+            var thCount = 0;
+            $('#mofiz thead tr th').each(function () {
+                thCount++;
+            });
+
+            if (thCount <= 10 && thCount > 0) {
+                removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+            }
+            else if (thCount <= 15 && thCount > 10) {
+                removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .7em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+            }
+            else {
+                alert('Please insert less then 15 column.');
+                return;
+            }
+            
+            $('#mofiz tbody tr').each((indextr, tr) => {
+                $(tr).children('td').each((indextd, td) => {
+                    if (indextd == 0) {
+                        td.innerHTML = '';
+                    }
+                });
+            });
+            var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(removeTableBorderStr);
+            var fileDownload = document.createElement("a");
+            document.body.appendChild(fileDownload);
+            fileDownload.href = source;
+            fileDownload.download = 'Proforma Invoice.doc';
+            fileDownload.click();
+            document.body.removeChild(fileDownload);
+            $('.hideButton').show();
+            $('#result').show();
+        }
+
+        function PrintPdf() {
+            window.print();
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+
+</body>
+</html>

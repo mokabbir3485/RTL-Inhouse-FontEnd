@@ -1,0 +1,176 @@
+﻿<form name="OpeningQtyEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-folder-open"></i>&nbsp;Opening Quantity Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : OpeningQtyEntryForm.Store.$invalid && OpeningQtyEntryForm.Store.$touched }">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Store">
+                                <select ng-model="ddlStore" ng-disabled="StoreDisable" class="form-control selectMendatory" name="Store" ng-options="department.DepartmentName for department in StoreList track by department.DepartmentId" ng-change="OpeningDate(ddlStore.DepartmentId);ClearOpenintQtyList();" required autofocus>
+                                    <option value="" label="Outlet"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="OpeningQtyEntryForm.Store.$touched && OpeningQtyEntryForm.Store.$invalid">Store is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Opening Date ">
+                            <div class="input-group">
+                                <input type="text" name="openingDate" id="txtOpeningDate" class="form-control datepicker" placeholder="Opening Date" ng-model="txtOpening" disabled="disabled" />
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary" style="background-color: #f69c55; border-color: #F69C6E; ">
+                                        Browse&hellip;
+                                        <input type="file" accept=".xls,.xlsx,.ods" openingqtyfileread="" style="display: none;" multiple="false" />
+                                    </span>
+                                </label>
+                                <input type="text" id="fileName" class="form-control" placeholder="Browse For Excel File" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlCategory" class="form-control selectNotMandetory" name="Category" ng-change="SelectSubategory(ddlCategory.category);ClearOpenintQtyList();" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId" required>
+                                            <option value="" label="Select Category"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Subcategory">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlSubCategory" class="form-control selectNotMandetory" ng-disabled="!ddlCategory" id="ddlStore" name="SubCategory" ng-change="SelectSubategory(ddlSubCategory.Subcategory);ClearOpenintQtyList();" ng-options="Subcategory.SubCategoryName  for Subcategory in SubcategoryList| filter:{CategoryId: ddlCategory.CategoryId} : true track by Subcategory.SubCategoryId" required>
+                                            <option value="" label="Select Sub-Category"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : OpeningQtyEntryForm.Product.$dirty && OpeningQtyEntryForm.Product.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Product">
+                                    <div class="input-group input-group-md ddl">
+                                        <select ng-model="ddlProduct" name="Product" class="form-control selectNotMandetory" ng-change="ClearOpenintQtyList();" ng-options="item.ItemName for item in ItemSearchResultList track by item.ItemId">
+                                            <option value="" label="Select Product"></option>
+                                        </select>
+
+                                    </div>
+                                    <span class="help-block" ng-show="adjustmentEntryForm.Product.$dirty && adjustmentEntryForm.Product.$invalid">Product is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button id="btnSearch" ng-disabled="SearchBtnDisable || !ddlStore" ng-click="SearchOpeningQuantity(ddlStore.DepartmentId, ddlCategory.CategoryId, ddlSubCategory.SubCategoryId, ddlProduct.ItemId)" class="customBtn custmoBtnSearch" title="Search">
+                                    <i class="fa fa-search"></i>&nbsp;Search
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <button id="btnExport" class="customBtn custmoBtnSearch" ng-show="ExportBtnDisable" ng-click="exportData()" style="background-color: #1F7745; color: #fff" title="Export">
+                                    <i class="fa fa-expand"></i>&nbsp;Export
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Product Opening Quantity Details"><span>Product Name</span></th>
+                                    <th class="t-cell-center" width="90">Unit</th>
+                                    <th class="t-cell-center" width="100">QTY</th>
+                                    <th class="t-cell-center" width="90">Package</th>
+                                    <th class="t-cell-center" width="100">QTY</th>
+                                    <th width="90" class="t-cell-center">Container</th>
+                                    <th width="100" style="text-align:center;">QTY</th>
+                                    <th width="120" style="text-align:center;">Value</th>
+                                    <th class="t-cell-center" style="width: 50px;"><span class="fa fa-check-square-o"></span></th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="alistXsl in OpeningQuantityList">
+                                    <td>{{$index+1}}</td>
+                                    <td>{{alistXsl.ItemName}}</td>
+
+                                    <td class="t-cell-center">{{alistXsl.OpeningUnitName}}</td>
+                                    <td><input type="text" ng-disabled="(alistXsl.OpeningUnitName == '')" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control txt-center" ng-change="RowSelect(alistXsl)" ng-model="alistXsl.OpeningUnitQuantity" onclick="return this.select();" min="0"></td>
+
+
+                                    <td class="t-cell-center">{{alistXsl.OpeningPackageName}}</td>
+                                    <td><input type="text" ng-disabled="(alistXsl.OpeningPackageName == '')" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control txt-center" ng-change="RowSelect(alistXsl)" ng-model="alistXsl.OpeningPackageQuantity" onclick="return this.select();" min="0"></td>
+
+                                    <td class="t-cell-center">{{alistXsl.OpeningContainerName}}</td>
+                                    <td><input type="text" ng-disabled="(alistXsl.OpeningContainerName == '')" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control txt-center" ng-change="RowSelect(alistXsl)" ng-model="alistXsl.OpeningContainerQuantity" onclick="return this.select();" min="0"></td>
+
+                                    <td><input type="text" class="form-control txt-center" onkeypress="return event.charCode >= 48 && event.charCode <= 57" ng-change="RowSelect(alistXsl)" ng-model="alistXsl.OpeningValue " onclick="return this.select();" min="0"></td>
+                                    <td class="t-cell-center"><input type="checkbox" disabled="disabled" ng-checked="(alistXsl.OpeningUnitQuantity>0 || alistXsl.OpeningPackageQuantity>0 ||alistXsl.OpeningContainerQuantity>0) && alistXsl.OpeningValue>0 " readonly="readonly" ng-model="alistXsl.selected" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button id="btnDelete" ng-click="AddOpeningQty(ddlStore.DepartmentId)" class="customBtn custmoBtnSave" title="Save">
+                            <i class="fa fa-save"></i>&nbsp;{{saveBtn}}
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                    <div class="row">
+                        <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        // We can attach the `fileselect` event to all file inputs on the page
+        $(document).on('change', ':file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+        // We can watch for our custom `fileselect` event like this
+        $(document).ready(function () {
+            $(':file').on('fileselect', function (event, numFiles, label) {
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = numFiles > 1 ? numFiles + ' files selected' : label;
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+

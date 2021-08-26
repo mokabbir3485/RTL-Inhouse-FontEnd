@@ -1,0 +1,324 @@
+﻿<form name="returnFromDepartmentForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Return From Outlet</h3>
+                    </div>
+                    <!--
+                        <div class="col-md-5 col-md-offset-3" >
+                        <div class="col-md-4 pull-right" style="text-align:right;" data-toggle="modal" data-target="#myModal" ng-click="ForAdvanceIssueSearch()"><a style="cursor:pointer;">Issue&nbsp;&nbsp;</a><i class="glyphicon glyphicon-search"></i></div>
+                        <div class="col-md-8 pull-right" style="text-align:right;" data-toggle="modal" data-target="#myModal" ng-click="ForAdvanceReturnSearch()" ng-show="HasApproval"><a style="cursor:pointer;" ng-show="HasApproval">Return From Outlet&nbsp;&nbsp;</a><i class="glyphicon glyphicon-search"></i></div>
+                    </div>
+                        -->
+                </div>
+            </div>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialogs">
+                    <button type="button" style="position:absolute !important; padding-left:89% !important; background:#fff;" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <iframe id="AdSearch" src="/SPA/AdvancedSearch/AdvancedSearch.cshtml" width="100%" height="100%" class="embed-responsive-item"></iframe>
+                    <div class="col-md-12" style="background:white; margin-top:-7px;">
+                        <button type="button" class="customBtn loadBtn" data-dismiss="modal" ng-click="LoadAdvanceSearch()"><i class="fa fa-undo" aria-hidden="true"></i>&nbsp;Load</button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-md-12">
+                <div class="col-md-7">
+                    <div class="col-md-offset-12"></div>
+                </div>
+                <div class="col-md-5">
+                    <div class="col-md-4 pull-right" style="text-align:right;" data-toggle="modal" data-target="#myModal" ng-click="ForAdvanceIssueSearch()"><a style="cursor:pointer;">Issue&nbsp;&nbsp;</a><i class="glyphicon glyphicon-search"></i></div>
+                    <div class="col-md-8 pull-right" style="text-align:right;" data-toggle="modal" data-target="#myModal" ng-click="ForAdvanceReturnSearch()" ng-show="HasApproval"><a style="cursor:pointer;" ng-show="HasApproval">Return From Depertment&nbsp;&nbsp;</a><i class="glyphicon glyphicon-search"></i></div>
+                </div>
+            </div>-->
+            <!-- Modal end -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class='input-group'>
+                                        <input type="text" onkeydown="return false" ng-model="inv_ReturnFromDepartment.FromDate" name="OpeningDate" id="txtOpeningDate" class="form-control " placeholder="From" />
+                                        <span class="input-group-addon" id="calender"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class='input-group'>
+                                        <input type="text" onkeydown="return false" ng-model="inv_ReturnFromDepartment.ToDate" name="OpeningDate" id="txtOpeningDate2" class="form-control " placeholder="To" />
+                                        <span class="input-group-addon" id="calender2"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <!--<div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.ReceiveNo.$invalid && returnFromDepartmentForm.ReceiveNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Receive No">
+                                    <div class="input-group ">
+                                        <input type="number" id="txtReceiveNo" name="ReceiveNo" class="form-control" ng-model="ReceiveNo" placeholder="Receive No" maxlength="41" ng-maxlength="40">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.ReceiveNo.$error.required && returnFromDepartmentForm.ReceiveNo.$touched">Receive No. is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.ReceiveNo.$error.maxlength">40 Character Max</span>
+                                </div>
+                            </div>-->
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.IssueNo.$invalid && returnFromDepartmentForm.IssueNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Issue No">
+                                    <div class="input-group ">
+                                        <input type="number" id="txtIssueNo" name="IssueNo" class="form-control" ng-model="inv_ReturnFromDepartment.IssueNo" placeholder="Issue No" maxlength="41" ng-maxlength="40">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.IssueNo.$error.required && returnFromDepartmentForm.IssueNo.$touched">Issue No. is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.IssueNo.$error.maxlength">40 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.ddlFromStore.$dirty && returnFromDepartmentForm.ddlFromStore.$invalid }" data-toggle="tooltip" data-placement="bottom" title="From Store">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="SearchItem.ddlStore" class="form-control selectMendatory" name="Store" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId">
+                                    <option value="" label="From HO Store"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="returnFromDepartmentForm.ddlFromStore.$dirty && returnFromDepartmentForm.ddlFromStore.$invalid">From Store is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.ddlToDepartment.$dirty && returnFromDepartmentForm.ddlToDepartment.$invalid }" data-toggle="tooltip" data-placement="bottom" title="To Outlet">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="SearchItem.ddlDepartment" id="ddlDepartment" class="form-control selectMendatory" name="Department" ng-options="department.DepartmentName for department in DepartmentList | filter:{DepartmentId: '!' + SearchItem.ddlStore.DepartmentId} track by department.DepartmentId">
+                                    <option value="" label="To Outlet"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="returnFromDepartmentForm.ddlToDepartment.$dirty && returnFromDepartmentForm.ddlToDepartment.$invalid">To Outlet is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.ddlIssuedBy.$dirty && returnFromDepartmentForm.ddlIssuedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Issued By">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlIssuedBy" ng-model="SearchItem.ddlIssuedBy" class="form-control selectNotMandetory" name="ddlIssuedBy" ng-change="inv_ReturnFromDepartment.PreparedById=ddlPreparedBy.EmployeeId;inv_ReturnFromDepartment.PreparedBy=ddlPreparedBy.FullName" ng-options="employee.FullName  for employee in EmployeeList track by employee.EmployeeId">
+                                    <option value="" label="Issued By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="returnFromDepartmentForm.ddlIssuedBy.$dirty && returnFromDepartmentForm.ddlIssuedBy.$invalid">Issued By is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.ddlReceivedBy.$dirty && returnFromDepartmentForm.ddlReceivedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Received By">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlReceivedBy" ng-model="SearchItem.ddlReceivedBy" class="form-control selectNotMandetory" name="ddlReceivedBy" ng-change="inv_ReturnFromDepartment.ReceivedById=ddlPreparedBy.EmployeeId;inv_ReturnFromDepartment.ReceivedBy=ddlPreparedBy.FullName" ng-options="employee.FullName  for employee in EmployeeList track by employee.EmployeeId">
+                                    <option value="" label="Received By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="returnFromDepartmentForm.ddlReceivedBy.$dirty && returnFromDepartmentForm.ddlReceivedBy.$invalid">Received By is required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--<div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom">
+                                <input type="text" id="txtBarCode" name="BarCode" ng-model="BarCode" onblur="$('#txtVarietyName').focus()" class="form-control" autocomplete="off" onclick="    this.setSelectionRange(0, this.value.length)" placeholder="Bar code">
+                                <span class="input-group-addon"><i class="fa fa-android"></i></span>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom">
+                                <input type="text" id="txtVarietyName" name="ProName" class="form-control" ng-model="VarietyName" autocomplete="off" uib-typeahead="aVariety as aVariety.ItemName for aVariety in VarietyList | filter:{ItemName:$viewValue} | limitTo:8" placeholder="Variety Name">
+                                <!--<select class="form-control selectNotMandetory" ng-model="SearchItem.ddlProduct" ng-options="item.ItemName for item in ItemList track by item.ItemId">
+                                    <option value="" label="Select Product"></option>
+                                </select>-->
+                                <span class="input-group-addon"><i class="fa fa-android"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <button id="Button4" class="btn btn-info pull-right" ng-click="Search()" title="Search" ng-disabled="(!inv_ReturnFromDepartment.FromDate && !inv_ReturnFromDepartment.IssueNo && !SearchItem.ddlIssuedBy && !SearchItem.ddlReceivedBy && !SearchItem.ddlProduct) || !SearchItem.ddlStore ">
+                                    <i class="fa fa-search"></i>&nbsp;Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center"><span class="t-cell-center">Requisition #</span></th>
+                                    <th class="t-cell-center">Issue No</th>
+                                    <th class="t-cell-center">Issue Date</th>
+                                    <th class="t-cell-center">From Store</th>
+                                    <th class="t-cell-center">To Outlet</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aIssue in IssueList" ng-click="FillControll(aIssue)">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aIssue.RequisitionNo}}</td>
+                                    <td class="t-cell-center">{{aIssue.IssueNo}}</td>
+                                    <td class="t-cell-center">{{aIssue.IssueDate }}</td>
+                                    <td class="t-cell-center">{{aIssue.IssueFromDepartmentName}}</td>
+                                    <td class="t-cell-center">{{aIssue.IssueToDepartmentName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.ReturnNo.$invalid && returnFromDepartmentForm.ReturnNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Return No">
+                            <div class="input-group ">
+                                <input type="number" id="txtReturnNo" name="ReturnNo" class="form-control" ng-model="ReturnFromDepartmentMaster.ReturnNo" placeholder="Return No" ng-blur="CheckDuplicateReturnNo()" ng-change="foundChange()" maxlength="41" ng-maxlength="40" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.ReturnNo.$error.required && returnFromDepartmentForm.ReturnNo.$touched">Return No. is required</span>
+                            <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.ReturnNo.$error.maxlength">40 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <input type="text" onkeydown="return false" ng-model="ReturnFromDepartmentMaster.ReturnDate" name="OpeningDate" id="txtOpeningDate3" class="form-control " placeholder="Return Date" required />
+                                <span class="input-group-addon" id="calender3"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <select ng-model="ddlReturnFrom" ng-change="ReturnFromDepartmentMaster.ReturnFromId=ddlReturnFrom.EmployeeId;ReturnFromDepartmentMaster.ReturnFrom=ddlReturnFrom.FullName;" class="form-control selectMendatory" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId">
+                                    <option value="" label="Return From"></option>
+                                </select>
+                                <span class="input-group-addon"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <select ng-model="ddlReturnTo" ng-change="ReturnFromDepartmentMaster.ReturnFromId=ddlReturnTo.EmployeeId; ReturnFromDepartmentMaster.ReturnTo=ddlReturnTo.FullName" class="form-control selectMendatory" ng-options="employee.FullName for employee in EmployeeList track by employee.EmployeeId">
+                                    <option value="" label="Return To"></option>
+                                </select>
+                                <span class="input-group-addon"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group" ng-class="{ 'has-error' : returnFromDepartmentForm.Remarks.$invalid && returnFromDepartmentForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <input type="text" id="txtRemarks" name="Remarks" class="form-control" ng-model="ReturnFromDepartmentMaster.Remarks" placeholder="Remarks" maxlength="201" ng-maxlength="200">
+                                <span class="input-group-addon"><i class="fa fa-map-pin"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.Remarks.$error.required && returnFromDepartmentForm.Remarks.$touched">Remarks is required</span>
+                            <span class="help-block" style="display: block;" ng-if="returnFromDepartmentForm.Remarks.$error.maxlength">200 Character Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Issue Product Details"><span>Variety Name</span></th>
+                                    <th width="120" class="t-cell-center">Variety Code</th>
+                                    <th class="t-cell-center t-unit-width">Unit</th>
+                                    <th class="t-cell-center t-qty-width">Issued Qty</th>
+                                    <th class="t-cell-center t-qty-width">Returned Qty</th>
+                                    <th class="t-cell-center t-qty-width">Return Qty</th>
+                                    <th width="15%">Reason</th>
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="aIssueDetails in IssueListDetails" ng-init="aIssueDetails.ReturnUnitName=aIssueDetails.IssueUnitName; aIssueDetails.ReturnUnitPrice=0; aIssueDetails.ReturnUnitId=aIssueDetails.IssueUnitId">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aIssueDetails.ItemName}}</td>
+                                    <td class="t-cell-center">{{aIssueDetails.ItemCode}}</td>
+                                    <td class="t-cell-center">{{aIssueDetails.IssueUnitName }}</td>
+                                    <td class="t-cell-center">{{aIssueDetails.IssueQuantity}}</td>
+                                    <td class="t-cell-center">{{aIssueDetails.ReturnedQuantity }}</td>
+                                    <td class="t-cell-center"><input type="number" class="form-control txt-center" ng-init="aIssueDetails.ReturnQuantity=0" value="0" placeholder="Qty" ng-model="aIssueDetails.ReturnQuantity" /> </td>
+                                    <td>
+                                        <select ng-model="ddlReturnReason" class="form-control selectNotMandetory" style="width: 100%" name="ddlReturnReason" ng-options="RReason.ReturnReasonName for RReason in ReturnReasonList track by RReason.ReturnReasonId" ng-change="aIssueDetails.ReturnReasonId=ddlReturnReason.ReturnReasonId;aIssueDetails.ReturnReasonName=ddlReturnReason.ReturnReasonName">
+                                            <option value="" label="Sel. Reason"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-1 col-xs-12">
+                        <div class="input-group">
+                            <button ng-click="Save()" id="Button1" ng-disabled="!ReturnFromDepartmentMaster.ReturnNo|| !ReturnFromDepartmentMaster.ReturnDate||!ddlReturnFrom.EmployeeId||!ddlReturnTo.EmployeeId||!ReturnFromDepartmentMaster.Remarks" style="margin-left: -15px;" class="btn btn-success" title="Search">
+                                <i class="fa fa-floppy-o"></i>&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="input-group">
+                            <button type="button" id="btnReset" ng-click="resetForm()" class="btn btn-primary" title="Reset">
+                                <i class="fa fa-refresh"></i>&nbsp;Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtOpeningDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender").addEventListener("click", function () {
+        picker.show();
+    });
+    var picker = new Pikaday({
+        field: document.getElementById('txtOpeningDate2'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender3").addEventListener("click", function () {
+        picker.show();
+    });
+    var picker = new Pikaday({
+        field: document.getElementById('txtOpeningDate3'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender3").addEventListener("click", function () {
+        picker.show();
+    });
+</script>
+

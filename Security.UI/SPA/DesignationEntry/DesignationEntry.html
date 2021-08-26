@@ -1,0 +1,127 @@
+﻿<form name="designationEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Designation Entry {{message}}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : designationEntryForm.Department.$dirty && designationEntryForm.Department.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Store" hidden>
+                    <div class="input-group input-group-md ddl">
+                        <select id="selDepartment" ng-model="ddlDepartment" class="form-control selectMendatory" name="Department" ng-options="department.DepartmentName for department in departmentlist track by department.DepartmentId">
+                            <option value="" label="Select Store"></option>
+                        </select>
+                    </div>
+                    <!--<span class="help-block" ng-show="designationEntryForm.Department.$dirty && designationEntryForm.Department.$invalid">Store is required</span>-->
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : designationEntryForm.DesignationName.$invalid && designationEntryForm.DesignationName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Designation Name">
+                    <div class="input-group">
+                        <input type="text" id="txtDesignationName" name="DesignationName" class="form-control" ng-model="ad_Designation.DesignationName" ng-blur="CheckDuplicateDesignationName()" ng-change="foundChange()" placeholder="Designation Name" maxlength="51" ng-maxlength="50" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="designationEntryForm.DesignationName.$error.required && designationEntryForm.DesignationName.$touched">Designation Name is required</span>
+                    <span class="help-block" ng-if="designationEntryForm.DesignationName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : designationEntryForm.ContactNo.$invalid && designationEntryForm.ContactNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact No.">
+                    <div class="input-group">
+                        <input type="text" id="txtContactNo" name="ContactNo" class="form-control" ng-model="ad_Designation.ContactNo" placeholder="Contact No." maxlength="21" ng-maxlength="20">
+                        <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="designationEntryForm.ContactNo.$error.maxlength">20 Character Max</span>
+                </div>
+                <div class="input-group">
+                    <label>Status: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="true" ng-model="ad_Designation.IsActive">
+                        Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="false" ng-model="ad_Designation.IsActive"> Inactive
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <br />
+                    <div class=" row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="AddDesignation()" class="customBtn custmoBtnSave" ng-disabled="designationEntryForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" ng-click="Delete()" ng-show="btnDeleleShow" title="Search">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="Button3" class="customBtn custmoBtnReset" title="Search" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Designation List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th class="txt-center">S/N</th>
+                                <!--<th class="txt-center">Store Name</th>-->
+                                <th class="txt-center" data-th="Designation details"><span>Designation Name</span></th>
+                                <th class="txt-center">Contact No.</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aDesignation in designationlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelDesignation(aDesignation)">
+                                <td class="txt-center">{{$index + ((currentPage-1)*PerPage) + 1 }}</td>
+                                <!--<td class="txt-center">{{aDesignation.DepartmentName}}</td>-->
+                                <td class="txt-center">{{aDesignation.DesignationName}}</td>
+                                <td class="txt-center">{{aDesignation.ContactNo}}</td>
+                                <td class="txt-center">{{aDesignation.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="5">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+designationlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,133 @@
+﻿<form name="itemAdditionalAttributeValueForm" novalidate>
+    <!--<pre>{{AdditionalAttributeList |json}}</pre>-->
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Additional Attribute Value Entry </h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : itemAdditionalAttributeValueForm.ddlAdditionalAttribute.$touched && itemAdditionalAttributeValueForm.ddlAdditionalAttribute.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Additional Attribute">
+                    <div class="input-group input-group-md ddl">
+                        <select ng-model="ddlAdditionalAttribute" id="ddlAdditionalAttribute" class="form-control selectMendatory" name="ddlAdditionalAttribute" ng-change="ad_AdditionalAttributeValue.AttributeId=ddlAdditionalAttribute.AttributeId" ng-options="addatt.AttributeName for addatt in AdditionalAttributeList track by addatt.AttributeId" autofocus required>
+                            <option value="" label="Select Additional Attribute"></option>
+                        </select>
+                        <!-- <span class="input-group-addon"><i class="fa fa-asterisk text-danger"></i></span>-->
+                    </div>
+                    <span class="help-block" ng-show="itemAdditionalAttributeValueForm.ddlAdditionalAttribute.$touched && itemAdditionalAttributeValueForm.ddlAdditionalAttribute.$invalid">Additional Attribute is required</span>
+                </div>
+
+
+                <div class="form-group" ng-class="{ 'has-error' : itemAdditionalAttributeValueForm.Value.$invalid && itemAdditionalAttributeValueForm.Value.$touched }" data-toggle="tooltip" data-placement="bottom" title="Additional Attribute Value">
+                    <div class="input-group">
+                        <input type="text" ng-model="ad_AdditionalAttributeValue.Value" maxlength="51" id="txtValue" name="Value" class="form-control" placeholder="Additional Attribute Value" ng-maxlength="50" ng-blur="CheckDuplicateAdditionalAttributeValue()" ng-change="foundChange()" required />
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" style="display: block;" ng-if="itemAdditionalAttributeValueForm.Value.$error.required && itemAdditionalAttributeValueForm.Value.$touched">Additional Attribute Value is required</span>
+                    <span class="help-block" ng-if="itemAdditionalAttributeValueForm.Value.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <input type="radio" name="status" ng-value="true" ng-model="ad_AdditionalAttributeValue.IsActive">
+                        Active&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="status" ng-value="false" ng-model="ad_AdditionalAttributeValue.IsActive">
+                        Inactive<br>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button type="submit" id="Button1" class="customBtn custmoBtnSave" ng-click="AddAddAttValue()" title="{{button}}" ng-disabled="itemAdditionalAttributeValueForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" title="Delete" ng-click="Delete()" ng-show="Show">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Additional Attribute Value List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+              
+                <div class="tbl-outer">
+                        <table class="responstable table-hover">
+                            <thead>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th data-th="Additional Attribute Value Detalis"><span>Additional Attribute Name</span></th>
+                                    <th class="t-cell-center">Value</th>
+                                    <th width="10%" class="t-cell-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-show="AddAttValuelist.length <= 0">
+                                    <td colspan="4" style="text-align:center;">Loading new data!!<img src="/UploadedFiles/spinner.gif"></td>
+                                </tr>
+                                <tr class="HoverTable" dir-paginate="aAddAttValue in AddAttValuelist | itemsPerPage : PerPage" total-items="total_count" ng-click="SelAddAttValue(aAddAttValue)">
+                                    <td>{{$index + ((currentPage-1) * PerPage) + 1}}</td>
+                                    <td>{{aAddAttValue.AttributeName}}</td>
+                                    <td class="t-cell-center">{{aAddAttValue.Value}}</tdclass>
+                                    <td class="t-cell-center">{{aAddAttValue.Status}}</td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="4">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+AddAttlist.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</form>
+
+

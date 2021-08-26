@@ -1,0 +1,131 @@
+﻿<form name="issueApproveForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <!--Body Header -->
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Issue Receive</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <table class="responstable table-hover">
+                    <tbody>
+                        <tr class="t-head">
+                            <th>S/N</th>
+                            <th class="t-cell-center">Issue No </th>
+                            <th class="t-cell-center" width="10%">Issue Date</th>
+                            <th class="t-cell-center" width="22%">From</th>
+                            <th class="t-cell-center" width="22%">To</th>
+                            <th class="t-cell-center" width="15%">Issue By</th>
+                            <th class="t-cell-center" width="15%">Recive By</th>
+                        </tr>
+                        <tr class="HoverTable searchRow" onclick="RowSelect(this)" ng-repeat="unApproveIssue in UnApproveIssueList" ng-click="CellClick(unApproveIssue)">
+                            <td>{{$index+1}}</td>
+                            <td class="t-cell-center">{{unApproveIssue.IssueNo}}</td>
+                            <td class="t-cell-center">{{unApproveIssue.IssueDate}}</td>
+                            <td class="t-cell-center">{{unApproveIssue.IssueFromDepartmentName}}</td>
+                            <td class="t-cell-center">{{unApproveIssue.IssueToDepartmentName}}</td>
+                            <td class="t-cell-center">{{unApproveIssue.IssuedBy}}</td>
+                            <td class="t-cell-center">{{unApproveIssue.ReceivedBy}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+
+                <div ng-show="showContent">
+                    <table class="responstable table-hover" ng-show="showContent">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th>Variety Name</th>
+                                <th class="t-cell-center" width="15%">Variety Code</th>
+                                <th class="t-cell-center" width="15%">Issue Quantity</th>
+                                <th class="t-cell-center" width="15%">Unit</th>
+                            </tr>
+                            <tr class="HoverTable" ng-repeat="issueDetail in IssueDetailList">
+                                <td>{{$index+1}}</td>
+                                <td class="t-cell-center">{{issueDetail.ItemName}}</td>
+                                <td class="t-cell-center">{{issueDetail.ItemCode}}</td>
+                                <td class="t-cell-center">{{issueDetail.IssueQuantity}}</td>
+                                <td class="t-cell-center">{{issueDetail.IssueUnitName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3">
+                            <!--Issue Receive By-->
+                            <div class="form-group" ng-class="{ 'has-error' : issueApproveForm.ddlReceiveBy.$dirty && issueApproveForm.ddlReceiveBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Receive By">
+                                <div class="input-group input-group-md ddl">
+                                    <select id="ddlApproveBy" ng-model="ddlApproveBy" class="form-control selectMendatory" name="ddlApproveBy" ng-change="issueApproveForm.ReceivedById=ddlApproveBy.EmployeeId;issueApproveForm.ReceivedBy=ddlApproveBy.FullName" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId">
+                                        <option value="" label="Receive By"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Date-->
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : issueApproveForm.issueDate.$invalid && issueApproveForm.issueDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Date">
+                                <div class="input-group">
+                                    <input type="text" ng-model="Date" onkeydown="return false" name="Date" id="txtDate" class="form-control datepicker" placeholder=" Date" />
+                                    <span class="input-group-addon" ng-show="showContent" id="calender1"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Approve Button -->
+                        <div class="col-md-3">
+                            <div class="col-md-12 col-sm-4 col-lg-12 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                <button id="btnApprove" class="customBtn custmoBtnSave" ng-click="Approve()" title="Approve" ng-disabled="!ddlApproveBy||!Date">
+                                    <i class="fa fa-save"></i>&nbsp; Receive
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtDate'),
+        firstDay: 1,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender1").addEventListener("click", function () {
+        picker.show();
+    });
+</script>
+
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>
+
+<!--<script>
+$(document).ready(function() {
+    var table = $('#example').DataTable();
+
+    $('#example tbody').on( 'click', 'tr', function () {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+
+    $('#button').click( function () {
+        table.row('.selected').remove().draw( false );
+    } );
+});
+</script>-->

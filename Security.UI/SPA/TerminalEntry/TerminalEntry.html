@@ -1,0 +1,359 @@
+﻿<script>
+    (function ($) {
+        // private functions
+        var backup = function (index) {
+            var input = this;
+            if (index !== undefined) {
+                input.prevValues[index] = $($(input).find(".ipv4-cell")[index]).val();
+            } else {
+                $(input).find(".ipv4-cell").each(function (i, cell) {
+                    input.prevValues[i] = $(cell).val();
+                });
+            }
+        };
+
+        var revert = function (index) {
+            var input = this;
+            if (index !== undefined) {
+                $($(input).find(".ipv4-cell")[index]).val(input.prevValues[index]);
+            } else {
+                $(input).find(".ipv4-cell").each(function (i, cell) {
+                    $(cell).val(input.prevValues);
+                });
+            }
+        };
+
+        var selectCell = function (index) {
+            var input = this;
+            if (index === undefined && index < 0 && index > 3) return;
+            $($(input).find(".ipv4-cell")[index]).focus();
+        };
+
+        var isValidIPStr = function (ipString) {
+            if (typeof ipString !== "string") return false;
+
+            var ipStrArray = ipString.split(".");
+            if (ipStrArray.length !== 4) return false;
+
+            return ipStrArray.reduce(function (prev, cur) {
+                if (prev === false || cur.length === 0) return false;
+                return (Number(cur) >= 0 && Number(cur) <= 255) ? true : false;
+            }, true);
+        };
+
+        var getCurIPStr = function () {
+            var str = "";
+            this.find(".ipv4-cell").each(function (index, element) {
+                str += (index == 0) ? $(element).val() : "." + $(element).val();
+            });
+            return str;
+        };
+
+        // function for text input cell
+        var getCursorPosition = function () {
+            var cell = this;
+            if ('selectionStart' in cell) {
+                // Standard-compliant browsers
+                return cell.selectionStart;
+            } else if (document.selection) {
+                // IE
+                cell.focus();
+                var sel = document.selection.createRange();
+                var selLen = document.selection.createRange().text.length;
+                sel.moveStart('character', -cell.value.length);
+                return sel.text.length - selLen;
+            }
+            throw new Error("cell is not an input");
+        };
+
+        $.fn.ipv4_input = function (action, value) {
+            this.each(function () {
+                // only initialize in the first time
+                if ($(this).hasClass("ipv4-input")) return;
+                var input = this;
+                input.prevValues = [];
+
+
+                $(input).toggleClass("ipv4-input", true);
+                $(input).html(
+                    '<input type="text" id="iPSeg1" class="ipv4-cell" ng-model="IPSeg1" required />' +
+                        '<label class="ipv4-dot">.</label>' +
+                        '<input type="text" class="ipv4-cell" ng-model="IPSeg2" required />' +
+                        '<label class="ipv4-dot">.</label>' +
+                        '<input type="text" class="ipv4-cell" ng-model="IPSeg3" required />' +
+                        '<label class="ipv4-dot">.</label>' +
+                        '<input type="text"  class="ipv4-cell" ng-model="IPSeg4" ng-blur="CheckDuplicateIpAddress()" ng-change="foundChangeIP()" required />'
+                );
+
+
+                $(this).find(".ipv4-cell").focus(function () {
+                    $(this).select(); // input select all when tab in
+                    $(input).toggleClass("selected", true);
+                });
+
+                $(this).find(".ipv4-cell").focusout(function () {
+                    $(input).toggleClass("selected", false);
+                });
+
+                $(this).find(".ipv4-cell").each(function (index, cell) {
+                    $(cell).keydown(function (e) {
+                        if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {	// numbers, backup last status
+                            backup.call(input, index);
+                        }
+                        else if (e.keyCode == 37 || e.keyCode == 39) {	// left key ,right key
+                            if (e.keyCode == 37 && getCursorPosition.call(cell) === 0) {
+                                selectCell.call(input, index - 1);
+                                e.preventDefault();
+                            }
+                            else if (e.keyCode == 39 && getCursorPosition.call(cell) === $(cell).val().length) {
+                                selectCell.call(input, index + 1);
+                                e.preventDefault();
+                            }
+                        }
+                        else if (e.keyCode == 9) {	// allow tab
+                        }
+                        else if (e.keyCode == 8 || e.keyCode == 46) {	// allow backspace, delete
+                        }
+                        else {
+                            e.preventDefault();
+                        }
+                    });
+
+                    $(cell).keyup(function (e) {
+                        if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {	// numbers
+                            var val = $(this).val();
+                            var num = Number(val);
+
+                            if (num > 255)
+                                revert.call(input, index);
+                            else if (val.length > 1 && val[0] === "0")
+                                revert.call(input, index);
+                            else if (val.length === 3)
+                                selectCell.call(input, index + 1);
+                        }
+                    });
+                });
+            });
+
+            if (action == "value") {
+                if (value === undefined)	// get func
+                    return getCurIPStr.call(this);
+
+                // set func
+                if (!isValidIPStr(value)) throw new Error("invalid ip address");
+
+                var strArray = value.split(".");
+                this.find(".ipv4-cell").each(function (index, cell) {
+                    $(cell).val(strArray[index]);
+                });
+            }
+
+            if (action == "valid") {
+                return isValidIPStr(getCurIPStr.call(this));
+            }
+
+            if (action == "clear") {
+                this.find(".ipv4-cell").each(function (index, cell) {
+                    $(cell).val("");
+                });
+            }
+
+            return this;
+        };
+
+    }(jQuery));
+
+</script>
+<style>
+    .ipv4-input {
+        display: inline-block;
+        border: 1px rgb(210, 210, 210) solid;
+    }
+
+        .ipv4-input.selected {
+            border-color: rgb(155, 155, 155);
+        }
+
+    .ipv4-cell {
+        border: none;
+        width: 23%;
+        text-align: center;
+        outline: none;
+    }
+
+    .ipv4-dot {
+    }
+</style>
+
+<form name="terminalEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp;  &#9755;&nbsp; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Terminal Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : terminalEntryForm.ddlStore.$dirty && terminalEntryForm.ddlStore.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Store">
+                    <div class="input-group input-group-md ddl">
+                        <select id="ddlStore" ng-model="ddlStore" ng-change="ad_Terminal.DepartmentId=ddlStore.DepartmentId;ad_Terminal.DepartmentName=ddlStore.DepartmentName;CheckDuplicateIpAddress()" class="form-control selectMendatory" name="ddlStore" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId" autofocus required>
+                            <option value="" label="Select Store"></option>
+                        </select>
+                    </div>
+                    <span class="help-block" ng-show="terminalEntryForm.ddlStore.$dirty && terminalEntryForm.ddlStore.$invalid">Store is Required</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : terminalEntryForm.TerminalName.$invalid && terminalEntryForm.TerminalName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Terminal Name">
+                    <div class="input-group botton-pad-remove">
+                        <input type="text" id="txtTerminalName" name="TerminalName" class="form-control" ng-model="ad_Terminal.TerminalName" ng-blur="CheckDuplicateTerminalName()" ng-change="foundChange()" placeholder="Terminal Name" maxlength="51" ng-maxlength="50" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                    <span class="help-block" style="display: block;" ng-if="terminalEntryForm.TerminalName.$error.required && terminalEntryForm.TerminalName.$touched">Terminal Name is required</span>
+                    <span class="help-block" style="display: block;" ng-if="terminalEntryForm.TerminalName.$error.maxlength">50 Character Max</span>
+                </div>
+                <!--<div class="form-group" ng-class="{ 'has-error' : terminalEntryForm.IpAddress.$invalid && terminalEntryForm.IpAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Terminal IP">
+                        <div class="input-group botton-pad-remove" >
+                            <input type="text" id="txtIpAddress" name="IpAddress" class="form-control" ng-model="ad_Terminal.IpAddress" ng-blur="CheckDuplicateIpAddress()" placeholder="Terminal IP" ng-maxlength="16" required>
+                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                        </div>
+                        <span class="help-block" style="display: block;" ng-if="terminalEntryForm.IpAddress.$error.required && terminalEntryForm.IpAddress.$touched">Terminal IP is required</span>
+                        <span class="help-block" style="display: block;" ng-if="terminalEntryForm.IpAddress.$error.maxlength">16 Character Max</span>
+                    </div>-->
+        
+                <div class="form-group" title="Terminal IP">
+                    <label>Terminal IP Address:</label>
+                    <div class="input-group ">
+                        <div id="txtIpAddress" class=""></div>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group nopadding">
+                        <label>This Computer</label>
+                        <label style="margin-bottom:15px;margin-left:10px" class="checkbox-inline ">
+                            <input type="checkbox" ng-change="GetPcInfo()" value="true" ng-model="ipAddress">
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="true" ng-model="ad_Terminal.IsActive">
+                            Active
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" name="optionsRadios"
+                                   ng-value="false" ng-model="ad_Terminal.IsActive"> Inactive
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="col-md-12">                  
+                    <div class=" row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button type="submit" id="Button1" class="customBtn custmoBtnSave" ng-click="AddTerminal()" title="{{button}}" ng-disabled="terminalEntryForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" title="Delete" ng-click="Delete()" ng-show="Show">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                   
+                </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Terminal List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th>Store</th>
+                                <th data-th="Terminal Details"><span>Terminal Name</span></th>
+                                <th>IP Address</th>
+                                <th>Status</th>
+                            </tr>
+                            <tr ng-show="Terminallist.length <= 0">
+                                <td colspan="4" style="text-align:center;">Loading new data!! <img src="/UploadedFiles/spinner.gif"></td>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aTerminal in Terminallist | filter:q | itemsPerPage: PerPage" total-items="total_count" ng-click="SelTerminal(aTerminal)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td>{{aTerminal.DepartmentName}}</td>
+                                <td>{{aTerminal.TerminalName}}</td>
+                                <td>{{aTerminal.IpAddress}}</td>
+                                <td>{{aTerminal.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="4">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Terminallist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+
+    $(function () {
+        $("#txtIpAddress").ipv4_input();
+
+        $("#button1").click(function () {
+            $("#demo").ipv4_input("value", "127.0.0.1");
+        })
+        $("#button2").click(function () {
+            alert($("#demo").ipv4_input("value"));
+        })
+        $("#button3").click(function () {
+            $("#demo").ipv4_input("clear");
+        })
+        $("#button4").click(function () {
+            alert($("#demo").ipv4_input("valid"));
+        })
+    });
+</script>
+
+
+

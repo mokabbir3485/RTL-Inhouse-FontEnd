@@ -1,0 +1,141 @@
+﻿<form name="itemAdditionalAttributeForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Additional Attribute Entry </h3>
+            </div>
+
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : itemAdditionalAttributeForm.AddAttName.$invalid && itemAdditionalAttributeForm.AddAttName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Additional Attributes Name">
+                    <div class="input-group botton-pad-remove">
+                        <input type="text" id="txtAddAttName" maxlength="51" name="AddAttName" class="form-control" ng-model="ad_AdditionalAttribute.AttributeName" placeholder="Additional Attributes Name" ng-maxlength="50" ng-blur="CheckDuplicateAdditionalAttribute()" ng-change="foundChange()" required autofocus>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                    </div>
+                    <span class="help-block" style="display: block;" ng-if="itemAdditionalAttributeForm.AddAttName.$error.required && itemAdditionalAttributeForm.AddAttName.$touched">Additional Attributes Name is required</span>
+                    <span class="help-block" style="display: block;" ng-if="itemAdditionalAttributeForm.AddAttName.$error.maxlength">50 Character Max</span>
+                </div>
+                <div class="form-group">
+
+                    <div class="input-group">
+                        <label>Value: </label>
+                        &nbsp;&nbsp;
+
+                        <label>
+                            <input type="radio" name="ValueAddMethod"
+                                   value="1" ng-model="ad_AdditionalAttribute.ValueAvailibilityType" ng-required="!ad_AdditionalAttribute.ValueAvailibilityType"> From Saved
+                        </label>&nbsp;
+
+
+                        <label>
+                            <input type="radio" name="ValueAddMethod"
+                                   value="2" ng-model="ad_AdditionalAttribute.ValueAvailibilityType" ng-required="!ad_AdditionalAttribute.ValueAvailibilityType"> Provide In Operation
+                        </label>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <label>Status: </label>
+                        &nbsp;&nbsp;
+                        <input type="radio" name="status" ng-value="true" ng-model="ad_AdditionalAttribute.IsActive">
+                        Active&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="status" ng-value="false" ng-model="ad_AdditionalAttribute.IsActive">
+                        Inactive<br>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button type="submit" id="Button1" class="customBtn custmoBtnSave" ng-click="AddAddAtt()" title="{{button}}" ng-disabled="itemAdditionalAttributeForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" title="Delete" ng-click="Delete()" ng-show="Show">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnReset" ng-click="resetForm()" class="customBtn custmoBtnReset" title="Reset">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Additional Attribute List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <thead>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th data-th="Branch Details"><span>Additional Attribute Name</span></th>
+                                <th width="20%" class="t-cell-center">Value</th>
+                                <th width="10%" class="t-cell-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="BranchTypelist.length <= 0">
+                                <td colspan="2" style="text-align:center;">Loading new data!!<img src="/UploadedFiles/spinner.gif"></td>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aAddAttlist in AddAttlist|itemsPerPage:PerPage" total-items="total_count" ng-click="SelAddAtt(aAddAttlist)">
+                                <td>{{$index + ((currentPage-1) * PerPage) + 1}}</td>
+                                <td>{{aAddAttlist.AttributeName}}</td>
+                                <td class="t-cell-center">{{aAddAttlist.ValueAvailibilityTypeName}}</td>
+                                <td class="t-cell-center">{{aAddAttlist.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="3">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+AddAttlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</form>
+
+

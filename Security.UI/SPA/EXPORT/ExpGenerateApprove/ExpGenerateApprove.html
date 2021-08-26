@@ -1,0 +1,129 @@
+﻿
+<form name="amendmentRequestApproveForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>  
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Exp. Generate Approval</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <ul class="nav nav-tabs">
+                    <li class="active" style="cursor:pointer;"><a data-toggle="tab" data-target="#NewApproval"><span><i class="fa fa-list"></i></span>&nbsp;New Approval</a></li>
+                    <li style="cursor:pointer;"><a data-toggle="tab" data-target="#AmendmentRequest"><span><i class="fa fa-list"></i></span>&nbsp;Amendment Request</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="NewApproval" class="tab-pane fade in active">
+                        <div class="col-md-12 tabBorder">
+                            <div class="panel-footer">
+                                <div class="clearfix">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="responstable table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="t-cell-center">S/N</th>
+                                                    <th class="t-cell-center">Chk</th>
+                                                    <th class="t-cell-center">Type</th>
+                                                    <th class="t-cell-center">LC/SC No</th>
+                                                    <th class="t-cell-center">Invoices</th>
+                                                    <th class="t-cell-center">Importer</th>
+                                                    <th class="t-cell-center">Amount</th>
+                                                </tr>
+                                                <tr ng-show="PaymentProcessNewList.length" class="HoverTable searchRow" ng-repeat="aPaymentProcessApprove in PaymentProcessNewList">
+                                                    <td class="t-cell-center">{{$index+1}}</td>
+                                                    <td class="t-cell-center">
+                                                        <input type="checkbox" ng-model="selected" ng-click="RowNewSelect(selected, aPaymentProcessApprove)" />
+                                                    </td>
+                                                    <td class="t-cell-center">{{aPaymentProcessApprove.DocType}}</td>
+                                                    <td class="t-cell-center">{{aPaymentProcessApprove.DocNo}}</td>
+                                                    <td class="t-cell-center">{{aPaymentProcessApprove.InvoicesNo}}</td>
+                                                    <td class="t-cell-center">{{aPaymentProcessApprove.Party}}</td>
+                                                    <td style="text-align:right; padding-right:10px">{{aPaymentProcessApprove.Amount.toFixed(2)}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SubmitNewApproval()" title="Save" ng-disabled="!ChackSelect">
+                                            <i class="fa fa-save"></i>&nbsp;Submit
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="AmendmentRequest" class="tab-pane fade">
+                        <div class="col-md-12 tabBorder">
+                            <div class="panel-footer">
+                                <div class="clearfix">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="responstable table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="t-cell-center">S/N</th>
+                                                    <th class="t-cell-center">Chk</th>
+                                                    <th class="t-cell-center">Type</th>
+                                                    <th class="t-cell-center">LC/SC No</th>
+                                                    <th class="t-cell-center">Invoices</th>
+                                                    <th class="t-cell-center">Importer</th>
+                                                    <th class="t-cell-center">Amount</th>
+                                                </tr>
+                                                <tr ng-show="AmendmentRequestList.length" class="HoverTable searchRow" ng-repeat="aAmendmentRequest in AmendmentRequestList">
+                                                    <td class="t-cell-center">{{$index+1}}</td>
+                                                    <td class="t-cell-center">
+                                                        <input type="radio" name="radioBtn" value="false" ng-model="selected" ng-click="RowRequestSelect(selected, aAmendmentRequest)" />
+                                                    </td>
+                                                    <td class="t-cell-center">{{aAmendmentRequest.DocType}}</td>
+                                                    <td class="t-cell-center">{{aAmendmentRequest.DocNo}}</td>
+                                                    <td class="t-cell-center">{{aAmendmentRequest.InvoicesNo}}</td>
+                                                    <td class="t-cell-center">{{aAmendmentRequest.Party}}</td>
+                                                    <td style="text-align:right; padding-right:10px">{{aAmendmentRequest.Amount.toFixed(2)}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <input type="text" name="OTP" class="form-control" ng-model="aPassword" id="txtPassword"  placeholder="One Time Password" >
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SubmitAmendmentRequestApproval()" title="Save" ng-disabled="!RadioSelected || !aPassword">
+                                            <i class="fa fa-save"></i>&nbsp;Submit
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

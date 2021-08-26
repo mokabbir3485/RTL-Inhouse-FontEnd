@@ -1,0 +1,780 @@
+﻿<form name="BillOfMaterialForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="row">
+                    <h3 class="panel-title">&nbsp; <i class="fa fa-list"></i>&nbsp;Bill Of Material (Input-Output Coefficient)</h3>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.SubmitDate.$invalid && BillOfMaterialForm.SubmitDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Finished Date">
+                                    <!--<div class="input-group">
+        <input type="text" name="SubmitDate" id="txtSubmitDate" ng-model="BillOfMaterial.SubmitDate" onkeydown="return false" class="form-control datepicker" placeholder="Finished Date" required readonly="readonly" />
+        <span class="input-group-addon" id="calender1"><i class="fa fa-calendar req-icon-color"></i></span>
+    </div>-->
+                                    <div class="input-group">
+                                        <input type="text" id="txtSubmitDate" ng-model="BillOfMaterial.SubmitDate" class="form-control datepicker" placeholder="Finished Date" readonly />
+                                        <span class="input-group-addon" id="SubmitDate"><i class="fa fa-calendar " style="color:red;"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.FinishedGood.$dirty && BillOfMaterialForm.FinishedGood.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Finished Good">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="ddlFinishedGood" ng-model="ddlFinishedGood" class="form-control" name="ddlFinishedGood" ng-options="aFinishedGood.TempItemName for aFinishedGood in FinishedGoodList track by aFinishedGood.ItemId" ng-change="BillOfMaterial.ItemName = ddlFinishedGood.ItemName; BillOfMaterial.ItemId = ddlFinishedGood.ItemId; ">
+                                            <option value="" label="--Select Finished Good--"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Current Quantity">
+                            <div class="input-group">
+                                <input type="number" name="FinishedQty" class="form-control txt-center" ng-model="BillOfMaterial.Qty" placeholder="Finished Qty">
+                                <span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-placement="bottom" title="Unit">
+                            <div class="input-group">
+                                <input type="text" id="txtUnit" class="form-control txt-center" ng-model="BillOfMaterial.Unit" placeholder="Unit">
+                                <span class="input-group-addon"><i class="fa fa-qq"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.DeliveryDate.$invalid && BillOfMaterialForm.DeliveryDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Delivery Date">
+                            <!--<div class="input-group">
+        <input type="text" name="DeliveryDate" id="txtDeliveryDate" ng-model="BillOfMaterial.DeliveryDate" onkeydown="return false" class="form-control datepicker" placeholder="Delivery Date" required readonly="readonly" />
+        <span class="input-group-addon" id="calender2"><i class="fa fa-calendar req-icon-color"></i></span>
+    </div>-->
+                            <div class="input-group">
+                                <input type="text" id="txtDeliveryDate" ng-model="BillOfMaterial.DeliveryDate" class="form-control datepicker" placeholder="Delivery Date" readonly />
+                                <span class="input-group-addon" id="DeliveryDate"><i class="fa fa-calendar " style="color:red;"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <hr />
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.RawMaterial.$dirty && BillOfMaterialForm.RawMaterial.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Raw Material">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlRawMaterial" ng-model="ddlRawMaterial" class="form-control" name="ddlRawMaterial" ng-options="aRawMaterial.TempItemName for aRawMaterial in RawMaterialList track by aRawMaterial.ItemId" ng-change="BillOfMaterialDetail.ItemName = ddlRawMaterial.ItemName; BillOfMaterialDetail.ItemId = ddlRawMaterial.ItemId;">
+                                    <option value="" label="--Select Raw Material--"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Qty.">
+                            <div class="input-group">
+                                <input type="number" name="Quantity" class="form-control txt-center" ng-model="BillOfMaterialDetail.Qty" ng-change="WastageCalculetion(); CalValue();" placeholder="Qty.">
+                                <span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-placement="bottom" title="Unit">
+                            <div class="input-group">
+                                <input type="text" id="txtUnit" class="form-control txt-center" ng-model="BillOfMaterialDetail.Unit" placeholder="Unit">
+                                <span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-placement="bottom" title="Wastage%">
+                            <div class="input-group">
+                                <input type="number" id="txtWastage" class="form-control txt-center" ng-model="BillOfMaterialDetail.WastagePercentage" ng-change="WastageCalculetion();CalValue();" placeholder="Wastage%">
+                                <span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-placement="bottom" title="Wastage">
+                            <div class="input-group">
+                                <input type="number" id="txtWastage" class="form-control txt-center" ng-model="BillOfMaterialDetail.WastageAmount" placeholder="Wastage" readonly>
+                                <span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="form-group" data-placement="bottom" title="Total Production">
+                            <div class="input-group-btn">
+                                <input type="number" id="txtTotalProduction" class="form-control txt-center" ng-model="BillOfMaterialDetail.TotalProduction" placeholder="Total Production" readonly>
+                                <!--<span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-placement="bottom" title="Unit Price">
+                            <div class="input-group">
+                                <input type="number" id="txtUnitPrice" class="form-control txt-center" ng-model="BillOfMaterialDetail.UnitPrice" ng-change="CalValue();" placeholder="Unit Price">
+                                <span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group" data-placement="bottom" title="Total Value">
+                            <div class="input-group">
+                                <input type="text" id="txtTotalValue" class="form-control txt-center" ng-model="BillOfMaterialDetail.TotalValue" disabled placeholder="Total Value">
+                                <span class="input-group-addon"><i class="fa fa-qq req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddBillOfMaterialDetail()" ng-disabled="!ddlRawMaterial || !BillOfMaterialDetail.Qty || !BillOfMaterialDetail.Unit || !BillOfMaterialDetail.WastagePercentage || !BillOfMaterialDetail.WastagePercentage || !BillOfMaterialDetail.WastageAmount || !BillOfMaterialDetail.TotalProduction || !BillOfMaterialDetail.UnitPrice || !BillOfMaterialDetail.TotalValue">
+                            <i class=" fa fa-plus-square"></i>&nbsp;Add
+                        </button>
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center">SL No.</th>
+                                <th class="t-cell-center">Item</th>
+                                <th class="t-cell-center">Req Qty</th>
+                                <th class="t-cell-center">Unit</th>
+                                <th class="t-cell-center">Wastage %</th>
+                                <th class="t-cell-center">Wastage Amount</th>
+                                <th class="t-cell-center">Total Production</th>
+                                <th class="t-cell-center">Unit Price</th>
+                                <th class="t-cell-center">Total Value</th>
+                                <th class="t-cell-center">Action</th>
+                            </tr>
+                            <tbody>
+                                <tr ng-repeat="aBillOfMaterialDetail in BillOfMaterialDetaillist track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.ItemName}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.Qty}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.Unit}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.WastagePercentage}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.WastageAmount}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.TotalProduction}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.UnitPrice}}</td>
+                                    <td class="t-cell-center">{{aBillOfMaterialDetail.TotalValue}}</td>
+                                    <td class="t-cell-center">
+                                        <button id="btnAdd" class="btn btn-danger" title="Delete" ng-click="RemoveBillOfMaterialDetail($index);">
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+
+                <br />
+                <!--<div class="row">
+        <div class="col-md-12">
+            <table class="responstable table-hover">
+                <tr>
+                    <th class="t-cell-center">SL No.</th>
+                    <th class="t-cell-center">Overhead Cost</th>
+                    <th class="t-cell-center">Amount</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td class="t-cell-center">1</td>
+                        <td class="t-cell-center">Vehicle</td>
+                        <td class="t-cell-center">3</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>-->
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.Overhead.$dirty && BillOfMaterialForm.Overhead.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Overhead">
+                                <div class="input-group input-group-md ddl">
+                                    <select ng-model="ddlOverhead" class="form-control selectMendatory" name="Overhead" ng-options="overhead.OverHeadName for overhead in OverheadList track by overhead.OverHeadId" ng-change="OverheadDetail.SectorName = ddlOverhead.OverHeadName" required>
+                                        <option value="" label="Select Overhead"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="BillOfMaterialForm.Overhead.$dirty && BillOfMaterialForm.Overhead.$invalid"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.OverHeadAmount.$invalid && BillOfMaterialForm.OverHeadAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                <div class="input-group">
+                                    <input type="number" id="txtOverHeadAmount" name="OverHeadAmount" class="form-control" ng-model="OverheadDetail.Amount" placeholder="Overhead Amount" maxlength="100" ng-maxlength="100">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-show="BillOfMaterialForm.OverHeadAmount.$dirty && BillOfMaterialForm.OverHeadAmount.$invalid">OverHead Amount is required</span>
+                                <span class="help-block" ng-if="BillOfMaterialForm.OverHeadAmount.$error.maxlength">8 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="customBtn custmoBtnReset" id="btnAddProduct" ng-click="AddOverheadDetail()" ng-disabled="!OverheadDetail.SectorName || !OverheadDetail.Amount"  title="Add OverHead">
+                                <i class="fa fa-arrow-down"></i>&nbsp;Add OverHead
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th colspan="4" class="t-cell-center">Over Head Details</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="t-cell-center">SL No.</th>
+                                        <th class="t-cell-center">Overhead Cost</th>
+                                        <th class="t-cell-center">Amount</th>
+                                        <th class="t-cell-center"></th>
+                                    </tr>
+                                    <tr class="HoverTable" ng-repeat="aOverheadDetail in OverheadDetailListUI track by $index">
+                                        <td class="t-cell-center">{{$index+1}}</td>
+                                        <td class="t-cell-center">{{aOverheadDetail.SectorName}}</td>
+                                        <td class="t-cell-center">{{aOverheadDetail.Amount | number:2}}</td>
+                                        <td class="t-cell-center"><input class="btn btn-danger" type="button" value="Remove" ng-click="RemoveOverHead($index)" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <!-- Packing  & Support SectorName-->
+                    <br />
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.Packing.$dirty && BillOfMaterialForm.Packing.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Packing">
+                                    <div class="input-group">
+                                        <input type="text" id="txtSectorName" name="SectorName" class="form-control" ng-model="OverheadDetail.PackingSectorName" placeholder="Sector Name" maxlength="100" ng-maxlength="100">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-show="BillOfMaterialForm.Packing.$dirty && BillOfMaterialForm.Packing.$invalid"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.PackingAmount.$invalid && BillOfMaterialForm.PackingAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                    <div class="input-group">
+                                        <input type="number" id="txtPackingAmount" name="PackingAmount" class="form-control" ng-model="OverheadDetail.PackingAmount" placeholder="Packing Amount" maxlength="100" ng-maxlength="100">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-show="BillOfMaterialForm.PackingAmount.$dirty && BillOfMaterialForm.PackingAmount.$invalid">Packing Amount is required</span>
+                                    <span class="help-block" ng-if="BillOfMaterialForm.PackingAmount.$error.maxlength">8 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="customBtn custmoBtnReset" id="btnAddPacking" ng-click="AddPackingDetail()" ng-disabled="!OverheadDetail.PackingSectorName || !OverheadDetail.PackingAmount" title="Add Packing">
+                                    <i class="fa fa-arrow-down"></i>&nbsp;Add Packing
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th colspan="4" class="t-cell-center">Packing & Supporting Material</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="t-cell-center">SL No.</th>
+                                            <th class="t-cell-center">Packing Cost</th>
+                                            <th class="t-cell-center">Amount</th>
+                                            <th class="t-cell-center"></th>
+                                        </tr>
+                                        <tr class="HoverTable" ng-repeat="aPackingDetail in PackingDetailListUI track by $index">
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <td class="t-cell-center">{{aPackingDetail.SectorName}}</td>
+                                            <td class="t-cell-center">{{aPackingDetail.Amount | number:2}}</td>
+                                            <td class="t-cell-center"><input class="btn btn-danger" type="button" value="Remove" ng-click="RemovePacking($index)" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Packing  & Support-->
+                    <!-- Service & Other Rebate Item -->
+                    <br />
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.Service.$dirty && BillOfMaterialForm.Service.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Service">
+                                    <div class="input-group">
+                                        <input type="text" id="txtSectorName" name="SectorName" class="form-control" ng-model="OverheadDetail.ServiceSectorName" placeholder="Sector Name" maxlength="100" ng-maxlength="100">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-show="BillOfMaterialForm.Service.$dirty && BillOfMaterialForm.Service.$invalid"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{ 'has-error' : BillOfMaterialForm.ServiceAmount.$invalid && BillOfMaterialForm.ServiceAmount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                    <div class="input-group">
+                                        <input type="number" id="txtServiceAmount" name="ServiceAmount" class="form-control" ng-model="OverheadDetail.ServiceAmount" placeholder="Service Amount" maxlength="100" ng-maxlength="100">
+                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                    </div>
+                                    <span class="help-block" ng-show="BillOfMaterialForm.ServiceAmount.$dirty && BillOfMaterialForm.ServiceAmount.$invalid">Service Amount is required</span>
+                                    <span class="help-block" ng-if="BillOfMaterialForm.ServiceAmount.$error.maxlength">8 Character Max</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="customBtn custmoBtnReset" id="btnAddService" ng-click="AddServiceDetail()" ng-disabled="!OverheadDetail.ServiceSectorName || !OverheadDetail.ServiceAmount" title="Add Service">
+                                    <i class="fa fa-arrow-down"></i>&nbsp;Add Service
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="responstable table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th colspan="4" class="t-cell-center">Service & Other Rebate Item</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="t-cell-center">SL No.</th>
+                                            <th class="t-cell-center">Service Cost</th>
+                                            <th class="t-cell-center">Amount</th>
+                                            <th class="t-cell-center"></th>
+                                        </tr>
+                                        <tr class="HoverTable" ng-repeat="aServiceDetail in ServiceDetailListUI track by $index">
+                                            <td class="t-cell-center">{{$index+1}}</td>
+                                            <td class="t-cell-center">{{aServiceDetail.SectorName}}</td>
+                                            <td class="t-cell-center">{{aServiceDetail.Amount | number:2}}</td>
+                                            <td class="t-cell-center"><input class="btn btn-danger" type="button" value="Remove" ng-click="RemoveService($index)" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveBillOfMaterial()" ng-disabled="!BillOfMaterialDetaillist.length > 0 || !ddlFinishedGood || !BillOfMaterial.Qty || !BillOfMaterial.Unit" title="Save">
+                            <i class="fa fa-save"></i>&nbsp;Submit
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Bill Of Material List</h3>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="input-group " data-toggle="tooltip" title="From Date">
+                                    <input type="text" name="FromDate" id="txtFromDateForBOM" ng-model="FromDate" ng-change="BillOfMaterialSearch();" class="form-control " placeholder="From Date" readonly />
+                                    <span class="input-group-addon" ng-click="FormDateChangeForBOM();" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group " data-toggle="tooltip" title="To Date">
+                                        <input type="text" name="ToDate" id="txtToDateForBOM" ng-model="ToDate" ng-change="BillOfMaterialSearch();" class="form-control " placeholder="To Date" readonly />
+                                        <span class="input-group-addon" ng-click="ToDateChangeForBOM();" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" data-toggle="tooltip" title="Search Item Name">
+                                <input type="text" class="form-control" id="textBillOfMaterialNo" ng-model="SearchBillOfMaterialNo" ng-change="BillOfMaterialSearch();" name="name" placeholder="Bill Of Material No" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="row">
+                                <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                    <i class="fa fa-refresh"></i>&nbsp;Clear
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                            <div class="row">
+                                <!--<button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="getToAndFormDate();CommercialInvoiceSearch()">
+                            <i class="fa fa-search-plus"></i>&nbsp;Search
+                        </button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="responstable table-hover">
+                                <tbody>
+                                    <tr class="t-head">
+                                        <th>S/N</th>
+                                        <th class="txt-center">Bill Of Material No</th>
+                                        <th class="txt-center">Item Name</th>
+                                        <th class="txt-center">Qty</th>
+                                        <th class="txt-center">Unit</th>
+                                        <th class="txt-center">Submit Date</th>
+                                        <th class="txt-center">Delivery Date</th>
+                                        <th class="txt-center">Action</th>
+                                    </tr>
+                                    <tr class="HoverTable searchRow" dir-paginate="aBillOfMaterial in BillOfMaterialListPaged | itemsPerPage: PerPage" ng-click="SelBillOfMaterial(aBillOfMaterial);" current-page="currentPage" total-items="total_count">
+                                        <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                        <td class="txt-center">{{aBillOfMaterial.BillOfMaterialNo }}</td>
+                                        <td class="txt-center">{{aBillOfMaterial.ItemName }}</td>
+                                        <td class="txt-center">{{aBillOfMaterial.Qty }}</td>
+                                        <td class="txt-center">{{aBillOfMaterial.Unit }}</td>
+                                        <td class="txt-center">{{aBillOfMaterial.SubmitDate }}</td>
+                                        <td class="txt-center">{{aBillOfMaterial.DeliveryDate }}</td>
+                                        <td class="t-cell-center">
+
+                                            <button class="btn btn-lg" style="font-size:13px; padding:12.5px"
+                                                    ng-click="BOMReportBtn(aBillOfMaterial)">
+                                                Report
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="t-foot" ng-show="total_count>PerPage">
+                                        <th colspan="8">
+                                            <dir-pagination-controls max-size="8"
+                                                                        direction-links="true"
+                                                                        boundary-links="true"
+                                                                        on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                            </dir-pagination-controls>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row pagination-footer">
+                                <div class="col-md-6">
+                                    <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + BillOfMaterialListPaged.length}} of {{total_count}} Records</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<!--<pre>{{AllCombinationSearch | json}}</pre>-->
+<script>
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtSubmitDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+    //var picker2 = new Pikaday({
+    //    field: document.getElementById('txtDeliveryDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender2").addEventListener("click", function () {
+    //    picker2.show();
+    //});
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+    }
+</script>

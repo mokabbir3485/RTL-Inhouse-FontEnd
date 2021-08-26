@@ -1,0 +1,138 @@
+﻿<form name="categoryEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-4" >
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-share-alt"></i>&nbsp;Category Entry </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group" ng-class="{ 'has-error' : categoryEntryForm.CategoryName.$invalid && categoryEntryForm.CategoryName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Category Name">
+                    <div class="input-group">
+                        <input type="text" id="txtCategoryName" name="CategoryName" class="form-control" ng-model="ad_ItemCategory.CategoryName" ng-blur="CheckDuplicateCategoryName()" ng-change="foundChange()" placeholder="Category Name" maxlength="151" ng-maxlength="150" autofocus required>
+                        <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="categoryEntryForm.CategoryName.$error.required && categoryEntryForm.CategoryName.$touched">Category Name is required</span>
+                    <span class="help-block" ng-if="categoryEntryForm.CategoryName.$error.maxlength">150 Character Max</span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : categoryEntryForm.ShortName.$invalid && categoryEntryForm.ShortName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Category Short Name">
+                    <div class="input-group">
+                        <input type="text" id="txtShortName" name="ShortName" class="form-control" ng-model="ad_ItemCategory.ShortName" ng-blur="CheckDuplicateShortName()" ng-change="foundChangeShortName()" placeholder="Category Short Name" maxlength="16" ng-maxlength="15">
+                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                    </div>
+                    <span class="help-block" ng-if="categoryEntryForm.ShortName.$error.required && categoryEntryForm.ShortName.$touched">Category Short Name is required</span>
+                    <span class="help-block" ng-if="categoryEntryForm.ShortName.$error.maxlength">15 Character Max</span>
+                </div>
+                <div class="input-group">
+                    <label>Status: </label>
+                    &nbsp;&nbsp;
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="true" ng-model="ad_ItemCategory.IsActive">
+                        Active
+                    </div>
+                    <div class="radio-inline">
+                        <input type="radio" name="optionsRadios"
+                               ng-value="false" ng-model="ad_ItemCategory.IsActive"> Inactive
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <br />
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button ng-click="AddCategory()" class="customBtn custmoBtnSave" ng-disabled="categoryEntryForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" ng-click="Delete()" ng-show="btnDeleleShow" title="Search">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="Button3" class="customBtn custmoBtnReset" title="Search" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Category List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-change="GetCropSearch()" ng-model="SearchCropName" placeholder="Category Name" />
+                            <span class="input-group-addon"><i class="fa fa-user-plus"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group input-group-md ddl">
+                            <select ng-model="ddlSearchStatus" ng-change="GetCropSearch()" class="form-control selectNotMandetory">
+                                <option value="" label="Select Status"></option>
+                                <option value="1" label="Active"></option>
+                                <option value="0" label="Inactive"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr>
+                                <th>S/N</th>
+                                <th class="txt-center" data-th="Category Details"><span>Category Name</span></th>
+                                <th class="txt-center">Category Short Name</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aCategory in categorylist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelCategory(aCategory)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aCategory.CategoryName}}</td>
+                                <td class="txt-center">{{aCategory.ShortName}}</td>
+                                <td class="txt-center">{{aCategory.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="4">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;" >
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+categorylist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

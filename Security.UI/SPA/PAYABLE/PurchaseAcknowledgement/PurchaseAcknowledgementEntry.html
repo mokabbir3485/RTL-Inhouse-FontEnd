@@ -1,0 +1,139 @@
+﻿<form name="purchaseAcknowledgementEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update</div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-shield"></i>&nbsp;Purchase Acknowledgement</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" id="dtFromDate" ng-model="FromDate" placeholder="From Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenFromDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" id="dtToDate" ng-model="ToDate" placeholder="To Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenToDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlSupplier" name="supplier" class="form-control selectNotMandetory" ng-options="supplier.SupplierName for supplier in supplierList track by supplier.SupplierId">
+                                    <option value="" label="-- Select Supplier --"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-lg-3 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="SearchPurchaseBill()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="clearfix">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Chk</th>
+                                    <th class="t-cell-center">Invoice No.</th>
+                                    <th class="t-cell-center">Invoice Date</th>
+                                    <th class="t-cell-center">Supplier</th>
+                                    <th class="t-cell-center">Reference</th>
+                                    <th class="t-cell-center">Amount</th>
+                                </tr>
+                                <tr ng-show="PurchaseBillList.length" class="HoverTable searchRow" ng-repeat="aPurchaseBill in PurchaseBillList">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">
+                                        <input type="checkbox" ng-model="aPurchaseBill.selected" ng-init="aPurchaseBill.selected=false"
+                                               ng-click="RowSelect()" />
+                                    </td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PBNo}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.PBDate}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.SupplierName}}</td>
+                                    <td class="t-cell-center">{{aPurchaseBill.RefEmployeeName}}</td>
+                                    <td style="text-align:right; padding-right:10px">{{aPurchaseBill.Amount.toFixed(2)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <br />
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" id="dtApprovedDate" ng-model="inv_PurchaseBill.ApprovedDate" placeholder="Approved Date" readonly="readonly" />
+                                <div class="input-group-addon" ng-click="CalendarOpenApprovedDate()">
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" ng-class="{ 'has-error' : purchaseAcknowledgementEntryForm.VoucherNo.$dirty && PurchaseAcknowledgementEntryForm.VoucherNo.$invalid }" ng-hide="true">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Voucher No">
+                                <input type="text" class="form-control" ng-model="inv_PurchaseBill.VoucherNo" name="VoucherNo" placeholder="Voucher No" maxlength="50" ng-maxlength="49" ng-blur="CheckVoucherNoExists()">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="purchaseAcknowledgementEntryForm.VoucherNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="pull-right" style="line-height:35px">Acknowledge Amount: </label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group pull-right">
+                            <div class='input-group'>
+                                <input type="text" class="form-control" ng-model="inv_PurchaseBill.Amount" readonly="readonly" style="text-align:right">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveAcknowledgement()" title="Save" ng-disabled="inv_PurchaseBill.Amount<=0">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+            </div>
+            <div class="col-md-6 col-sm-12 col-lg-4 col-xs-12">
+                <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="ResetForm()">
+                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--<pre>{{inv_PurchaseBill | json}}</pre>-->
+</form>

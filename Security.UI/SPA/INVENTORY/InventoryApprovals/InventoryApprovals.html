@@ -1,0 +1,419 @@
+﻿<style>
+    .selectWidthForThisPage {
+        width: 158px !important;
+    }
+
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        float: left;
+    }
+
+    .btnFile {
+        border: 2px solid gray;
+        color: gray;
+        background-color: white;
+        padding: 1px 10px;
+        /*border-radius: 8px;*/
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+</style>
+<link href="../../../Content/bootstrap-datepicker.css" rel="stylesheet" />
+<script src="../../../Scripts/bootstrap-datepicker.js"></script>
+<form name="InventoryApprovalsForm" novalidate>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title  "><i class="fa fa-list"></i>&nbsp;Internal Work Order Approve</h3>
+            </div>
+            <div class="panel-body">
+
+
+
+                <div class="row">
+                    <table class="responstable table-hover"></table>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th ng-show="!$first" ng-repeat="column in cols"><span ng-show="!$first">{{column}}</span></th>
+                            </tr>
+                            <tr class="searchRow" onclick="RowSelect(this)" ng-repeat="row in dataList">
+                                <td ng-show="!$first" ng-repeat="column in cols" ng-click="SelSearch(row,cols[0])"><span ng-show="!$first">{{row[column]}}</span></td>
+                            </tr>
+                        </table>
+                        <label ng-show="NotFound">&nbsp;&nbsp;&nbsp;&nbsp;Not Found</label>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-3" style="display:none;">
+                        <div class="form-group" style="display:none;">
+                            <div data-toggle="tooltip" data-placement="bottom">
+                                <select ng-model="Approval.ddlApprovalType" ng-change="ApprovalChange();" class="form-control selectMendatory" ng-init="Approval.ddlApprovalType.ScreenId=0" ng-options="aGetModuleExAdminSecurityList.ScreenName for aGetModuleExAdminSecurityList in GetModuleExAdminSecurityList track by aGetModuleExAdminSecurityList.ScreenId" required>
+                                    <option value="" label="Approval Type"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div data-toggle="tooltip" data-placement="bottom" title="Place Of Delivery">
+                            <div class="input-group">
+                                <input type="text" name="PlaceOfDelivery" id="PlaceOfDelivery" ng-model="Approval.PlaceOfDelivery" class="form-control" placeholder="Place Of Delivery" />
+                                <span class="input-group-addon" id="iwoCalender"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group" ng-class="{ 'has-error' : InventoryApprovalsForm.MasterRemarks.$invalid && InventoryApprovalsForm.MasterRemarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks for All Details">
+                            <input type="text" name="MasterRemarks" id="MasterRemarks" ng-model="Approval.Remarks" class="form-control" placeholder="Main Remarks" />
+                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group" ng-class="{ 'has-error' : InventoryApprovalsForm.ApprovalDate.$invalid && InventoryApprovalsForm.ApprovalDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Approval Date">
+                            <input type="text" ng-model="Approval.ApprovalDate" name="ApprovalDate" id="txtApprovalDate" class="form-control " placeholder="Approval Date" required readonly="readonly" />
+                            <span class="input-group-addon" id="calender"><i class="fa fa-calendar req-icon-color"></i></span>
+                        </div>
+                        <span class="help-block" style="display: block;color:red" ng-if="InventoryApprovalsForm.ApprovalDate.$error.required && InventoryApprovalsForm.ApprovalDate.$touched">Approval Date is required</span>
+                    </div>
+                    <div class="col-md-3">
+
+                        <div class="form-group" ng-class="{ 'has-error' : InventoryApprovalsForm.ddlApprovedBy.$dirty && InventoryApprovalsForm.ddlApprovedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Prepared By">
+                            <div class="input-group" data-toggle="tooltip" data-placement="bottom">
+                                <select class="form-control selectMendatory" id="ddlApprovedBy" name="ddlApprovedBy" ng-init="Approval.ddlApprovedBy.EmployeeId=LoginUser.EmployeeId" ng-model="Approval.ddlApprovedBy" ng-options="Employee.FullName for Employee in EmployeeList track by Employee.EmployeeId" required>
+                                    <option value="" label="Approved by"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="InventoryApprovalsForm.ddlApprovedBy.$dirty && InventoryApprovalsForm.ddlApprovedBy.$invalid">Approve By is Required</span>
+                        </div>
+                    </div>
+                </div>
+               <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center"></th>
+                                <th class="t-cell-center">SL.No</th>
+                                <th class="t-cell-center">Product Type</th>
+                                <th class="t-cell-center">Name</th>
+                                <th class="t-cell-center">Barcode</th>
+                                <th class="t-cell-center">Order Qty</th>
+
+                                <th class="t-cell-center">Action</th>
+                            </tr>
+                            <tbody ng-repeat="inv_InternalOrderDetail in inv_InternalOrderDetailList ">
+
+                                <tr>
+                                    <!--ng-click="$event.stopPropagation();"-->
+                                    <td class="t-cell-center"><label><i ng-show="!inv_InternalOrderDetail.DisplaySta" ng-click="itemIdGet(inv_InternalOrderDetail)" class="fa fa-plus-square"></i><i ng-show="inv_InternalOrderDetail.DisplaySta" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="inv_InternalOrderDetail.DisplaySta" /></label></td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{inv_InternalOrderDetail.CategoryName}}</td>
+                                    <td class="t-cell-center">{{inv_InternalOrderDetail.ItemName}}</td>
+                                    <td class="t-cell-center">{{inv_InternalOrderDetail.Barcode}}</td>
+                                    <td class="t-cell-center">
+                                        <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Order Qty" style="width:100%">
+                                            <input type="number" min="0" class="form-control" ng-model="inv_InternalOrderDetail.OrderQty" placeholder="Order Qty" style="text-align:center" />
+                                        </div>
+                                    </td>
+                                    <td class="t-cell-center" style="width:100px">
+                                        <button title="Remove" ng-click="RemoveProduct(inv_InternalOrderDetail)">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+                                <tr ng-click="$event.stopPropagation();" ng-show="inv_InternalOrderDetail.DisplaySta">
+                                    <td></td>
+                                    <td colspan="6">
+                                        <div>
+                                            <table id="IWODetailsTable" class="responstable table-hover">
+                                                <!--<tr>
+                                        <th class="t-cell-center" ng-repeat="AttributeName in inv_InternalOrderDetail.HeaderOfAttribute">{{AttributeName}} Date</th>
+                                    </tr>-->
+                                                <tr ng-if="inv_InternalOrderDetail.CategoryName=='Finished Goods' && inv_InternalOrderDetail.SubCategoryName!='Barcode Ribbon (R)'">
+                                                    <td>
+
+                                                        <table>
+                                                            <tr>
+                                                                <td class="t-cell-center text-center">
+                                                                    <select id="ddlItem" ng-model="inv_InternalOrderDetail.ddlItem" ng-change="checkDdlStockRamatrial(inv_InternalOrderDetail.ddlItem.ItemId)" style="text-align: center;" class="form-control selectMendatory selectWidthForThisPage" name="ddlItem" ng-options="rawItem.ItemName for rawItem in inv_InternalOrderDetail.RawItemList track by rawItem.ItemId">
+                                                                        <option value="" label="--Select Item--"></option>
+                                                                    </select>
+                                                                    <br />
+                                                                    <input style="text-align: center;width:87%" type="text" name="name" ng-model="inv_InternalOrderDetail.Ups" class="form-control" placeholder="UPS" />
+                                                                </td>
+
+                                                                <td class="t-cell-center">
+
+                                                                    <select id="ddlCore" ng-model="inv_InternalOrderDetail.ddlCore" style="text-align: center;" class="form-control selectMendatory selectWidthForThisPage" name="ddlCore" data-toggle="tooltip" data-placement="bottom" title="Select Core">
+                                                                        <option value="" label="--Select Core--"></option>
+                                                                        <option value="12.5" label="12.5"></option>
+                                                                        <option value="25" label="25"></option>
+                                                                        <option value="40" label="40"></option>
+                                                                        <option value="76" label="76"></option>
+                                                                    </select>
+                                                                    <br />
+                                                                    <select id="Radius" ng-model="inv_InternalOrderDetail.Radius" name="Radius" style="text-align: center;" class="form-control selectMendatory selectWidthForThisPage" data-toggle="tooltip" data-placement="bottom" title="Select Core">
+                                                                        <option value="" label="Radius / Corner"></option>
+                                                                        <option value="Round" label="Round"></option>
+                                                                        <option value="Square" label="Square"></option>
+
+
+                                                                    </select>
+                                                                    <!--<input style="text-align: center;width:87%" ng-model="inv_InternalOrderDetail.Radius" type="text" name="name" class="form-control" placeholder="Radius" />-->
+                                                                </td>
+                                                                <td class="t-cell-center">
+
+                                                                    <div class="input-group-btn search-panel">
+                                                                        <input type="text" onkeydown="newControl(this)" id="SearchTextBox" ng-model="inv_InternalOrderDetail.QtyPerRoll" ng-change="QtyPerRollTextChange(inv_InternalOrderDetail.QtyPerRoll)" autocomplete="off" class="form-control arrow-togglable" placeholder="Type Qty Per Roll" style="text-align:center" />
+                                                                        <div id="SearchResultsQPR">
+                                                                            <ul ng-show="inv_InternalOrderDetail.QtyPerRoll.length && VisibilityOfSuggession" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9;">
+                                                                                <li ng-repeat="aQty in QtyPerRollSearch" ng-bind-html-unsafe="aQty.Qty">
+                                                                                    <button ng-click="inv_InternalOrderDetail.QtyPerRoll = aQty.Qty; QtyPerRollSuggestionClick()" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                                                                        {{aQty.Qty}}
+                                                                                    </button>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <input style="text-align: center;width:99%" type="text" ng-model="inv_InternalOrderDetail.Color" name="name" class="form-control" placeholder="Color" />
+                                                                </td>
+                                                                <td class="t-cell-center" style="align-content:center">
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <select id="ddlRollDirection" ng-model="inv_InternalOrderDetail.ddlRollDirection" style="text-align: center;" class="form-control selectMendatory selectWidthForThisPage" name="ddlRollDirection" data-toggle="tooltip" data-placement="bottom" title="Select Roll Direction" ng-change="VisibilityOfSuggession=false; QtyPerRollSearch=[]">
+                                                                                <option value="" label="--Direction--"></option>
+                                                                                <option value="Face In" label="FI"></option>
+                                                                                <option value="Face Out" label="FO"></option>
+                                                                                <option value="Clock Wise" label="CW"></option>
+                                                                                <option value="Anti Clock Wise" label="ACW"></option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Delivery of Date" style="width: 100%;">
+                                                                                <input type="text" name="DeliveryDate" id="finishedGoodDeliveryDate" style="text-align:center" ng-model="inv_InternalOrderDetail.DeliveryDate" class="form-control datepicker DeliveryDatePicker" placeholder="DD/MM/YYYYY" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <textarea style="margin-top:6px;" cols="4" rows="2" class="form-control" ng-model="inv_InternalOrderDetail.DetailRemarks" placeholder="Remarks"></textarea>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="6">
+                                                                    <div class="row">
+                                                                        <div class="col-md-4">
+
+                                                                            <div class="panel panel-info">
+                                                                                <div class="panel-heading" style="height:18px;">
+
+                                                                                    <div style="margin-top:-10px;" class="clearfix">
+                                                                                        <p class="panel-title pull-left " style="font-size:12px;font-weight:bold;"><i class="fa fa-list " style="font-size:12px;font-weight:bold;color:black;"></i>&nbsp; Stock Available </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="panel-body">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12 text-justify">
+
+
+                                                                                            <div>
+                                                                                                <p ng-if="inv_InternalOrderDetail.ddlItem.ItemId" ng-repeat="store in sockQtyWithRequestQty |filter:{ItemId: inv_InternalOrderDetail.ddlItem.ItemId}">
+                                                                                                    {{store.DepartmentName}} : Stock ({{store.CurrentQuantity}})
+                                                                                                </p>
+                                                                                            </div>
+
+
+                                                                                        </div>
+
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="col-md-8">
+                                                                            <div class="panel panel-info">
+                                                                                <div class="panel-heading" style="height:18px;">
+
+                                                                                    <div style="margin-top:-10px;" class="clearfix">
+                                                                                        <p class="panel-title pull-left " style="font-size:12px;font-weight:bold;"><i class="fa fa-upload " style="font-size:12px;font-weight:bold;color:red;"></i>&nbsp; Document Upload</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="panel-body">
+
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <!--<div style="color: red">{{Message}}</div>
+                                                                                            <div class="input-group">
+                                                                                    <label class="input-group-btn">
+                                                                                        <span style="background-color: #f69c55; border-color: #F69C6E;">
+                                                                                            Browse …
+
+                                                                                            <span> <input ng-model="inv_InternalOrderDetail.ArtWork" class="form-control" select-ng-files type="file" name="image_{{$index}}" id="image_{{$index}}" onchange="angular.element(this).scope().SelectFile(this)" placeholder="{{inv_InternalOrderDetail.ArtWork}}"/> </span>
+
+
+                                                                                        </span>
+
+
+                                                                                    </label>
+
+                                                                                </div>-->
+                                                                                            <div class="upload-btn-wrapper text-justify">
+                                                                                                <button class="btnFile">Upload a file</button>
+
+                                                                                                <input ng-model="inv_InternalOrderDetail.ArtWork" class="form-control hideView" select-ng-files type="file" name="image_{{$index}}" id="image_{{$index}}" onchange="angular.element(this).scope().SelectFile(this);" />
+
+                                                                                                <input type="text" style="border:none;" name="imageUpdateName_{{$index}}" id="imageUpdateName_{{$index}}" value="{{inv_InternalOrderDetail.ArtWork}}" />
+
+                                                                                                <span>
+                                                                                                    <input style="border:none;" type="text" name="imageName_{{$index}}" id="imageName_{{$index}}" />
+                                                                                                </span>
+
+                                                                                            </div>
+
+                                                                                            <br />
+                                                                                            <input class="customBtn custmoBtnSave ng-binding" type="submit" ng-click="ClearImage($index)" value="Clear" />
+                                                                                        </div>
+
+
+                                                                                        <div class="col-md-6">
+                                                                                            <div id="InserTImage">
+                                                                                                <!--<input ng-show="btnSave !='Save' " type="text" ng-model="inv_InternalOrderDetail.ArtWork" name="name" value="" />-->
+                                                                                                <br />
+                                                                                                <img src="../../../UploadedFiles/ArtWork/{{inv_InternalOrderDetail.ArtWork}}" style="border-radius: 5px 5px 5px 5px ;" width="200" height="155" class=" ng-pristine ng-untouched ng-valid ng-empty" ng-src="{{inv_InternalOrderDetail.thumb}}" />
+                                                                                            </div>
+
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+
+                                                        </table>
+                                                    </td>
+
+
+                                                </tr>
+
+
+
+                                                <tr ng-if="inv_InternalOrderDetail.CategoryName!='Finished Goods' || inv_InternalOrderDetail.SubCategoryName==='Barcode Ribbon (R)'">
+                                                    <td class="t-cell-center">
+                                                        <table style="width:100%;">
+                                                            <tr>
+                                                                <th colspan="3">Delivary Date</th>
+                                                                <th style="text-align:center;">Stock Available</th>
+
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <div class="input-group" data-toggle="tooltip" data-placement="bottom" title="Delivery of Date" style="width: 100%;">
+
+                                                                        <input type="text" name="DeliveryDate" style="text-align:center" ng-model="inv_InternalOrderDetail.DeliveryDate" ng-blur="CheckValidityForDeliveryDate(inv_InternalOrderDetail)" class="form-control datepicker DeliveryDatePicker" placeholder="DD/MM/YYYYY" />
+                                                                    </div>
+
+                                                                </td>
+
+                                                                <td>
+
+                                                                    <table style="width:100%;border:none;">
+                                                                        <tr>
+                                                                            <td style="text-align:justify;width:40%;border-right:none;">
+                                                                                <p ng-repeat="store in inv_InternalOrderDetail.DepartmentName">
+                                                                                    {{store.DepartmentName}}
+                                                                                </p>
+                                                                            </td>
+                                                                            <td>
+
+                                                                                <p ng-repeat="store in inv_InternalOrderDetail.CurrentQuantity">
+                                                                                    {{store.CurrentQuantity}}
+
+                                                                                </p>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    </table>
+
+                                                                </td>
+
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-4">
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button id="btnApprove" class="customBtn custmoBtnSave" ng-click="Approve()" title="Approve" ng-disabled="!Approval.ApprovalDate||!Approval.ddlApprovedBy ||!inv_InternalOrderDetailList.length">
+                                    <i class="glyphicon glyphicon-ok"></i>&nbsp;Approve
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="btnReload" class="customBtn custmoBtnReset" ng-click="Reset()" title="Reload">
+                                    <i class="glyphicon glyphicon-ok-circle"></i>&nbsp;Reload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--<pre>{{inv_InternalOrderDetailList |json}}</pre>-->
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtApprovalDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender").addEventListener("click", function () {
+        picker.show();
+    });
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>

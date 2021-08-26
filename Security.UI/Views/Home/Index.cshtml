@@ -1,0 +1,439 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RTL</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/vendors")
+    @Scripts.Render("~/bundles/spa")
+
+    <script src="~/Scripts/marked.js"></script>
+    <script src="~/Scripts/lodash.js"></script>
+    <script src="~/Scripts/screenfull.js"></script>
+    <script src="~/Scripts/angular-screenfull.js"></script>
+
+    <script src="../../../Scripts/angularjs-dropdown-multiselect.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <script src="/signalR/hubs"></script>
+</head>
+<body ng-app="AngularDemoApp" class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <div ng-controller="IndexController">
+            <header class="main-header">
+                <a href="#" class="logo" style="position: fixed;">
+                    <span class="logo-mini"><b>RT</b></span>
+                    <span class="logo-lg"><b>RETAIL</b> TECHNOLOGIES LTD.</span>
+                </a>                
+                <nav class="navbar navbar-fixed-top">
+                    <a href="" id="togle" class="sidebar-toggle" data-toggle="offcanvas" role="button" onclick="return change(this);">
+                        <span id="arrow" class="leftArrow"></span>
+                        <span class="fa-arrow-left"></span>
+                    </a>
+                    <div class="navbar-custom-menu">
+                        <ul class="nav navbar-nav">                              
+                            <li ng-show="online" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: green; background-color: white">Online&nbsp;<i class="fa fa-wifi" aria-hidden="true"></i>&nbsp;</li>
+                            <li ng-hide="online" style="border-radius: 5px; padding: 1px; margin-top: 15px; color: red; background-color: white; ">Offline&nbsp;<i class="fa fa-spinner" aria-hidden="true">&nbsp;</i></li> 
+                            <li class="dropdown messages-menu">
+                                <a href="" class="dropdown-toggle" data-toggle="modal" data-target="#NotificationMessageModal">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="label label-success">{{UnreadMessageNo}}</span>
+                                </a>
+
+                                @*<ul class="dropdown-menu">
+                                    <li class="header">You have 4 messages</li>
+                                    <li>
+                                        <ul class="menu">
+                                            <li>
+                                                <a href="">
+                                                    <h4>
+                                                        Reviewers
+                                                        <small><i class="fa fa-clock-o"></i>2 days</small>
+                                                    </h4>
+                                                    <p>Why not buy a new awesome theme? Why not buy a new awesome theme?</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="footer">
+                                        <textarea rows="2" ng-model="ad_Employee.PresentAddress" class="form-control" placeholder="Input your message"></textarea>
+                                    </li>
+                                </ul>*@
+                            </li>  
+                            <li class="dropdown user user-menu">
+                                <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="/UploadedFiles/profile.png" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">{{UserName}}</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="user-header">
+                                        <img src="/UploadedFiles/profile.png" class="img-circle" alt="User Image">
+                                        <p>
+                                            {{UserName}} - {{RoleName}}
+                                        </p>
+                                    </li>
+                                    <li class="user-footer">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <button class="btnLogOut btn-default"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btnLogOut btn-default" ng-click="RemoveScreenLock()"><i class="fa fa-unlock" aria-hidden="true"></i>&nbsp;Unlock</button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <button class="btnLogOut btn-default" ng-click="SignOut()"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Log out</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <div class="modal fade" id="NotificationMessageModal" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 style="text-align:center !important;" class="modal-title"><strong><i class="fa fa-newspaper-o"></i>  &nbsp;&nbsp;Notice Board &nbsp;&nbsp;<i class="fa fa-newspaper-o"></i> </strong></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row" ng-repeat="aNotice in NoticeList">
+                                <div class="col-md-1">
+                                    <img width="100%;" src="~/UploadedFiles/notice.png" />
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="col-md-6 pull-left">
+                                       <u><strong>{{aNotice.SenderName}}</strong></u>
+                                    </div>
+                                    <div style="text-align:right !important;" class="col-md-6 pull-right">
+                                        <i class="fa fa-clock-o"></i>  &nbsp;&nbsp;{{aNotice.CreateDate}},&nbsp;&nbsp;{{aNotice.Time}}
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p style="text-align: justify;">{{aNotice.NoticeContent}}</p>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-md-4  pull-left">
+                                    <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal"><i class="fa fa-crosshairs"></i>&nbsp;Close </button>
+                                </div>
+                                <div class="col-md-4 pull-right">
+                                    <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal"><i class="fa fa-crosshairs"></i>&nbsp;Close & Mark as Read</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aside class="main-sidebar sideScroll" style="position: fixed; transition: width 0.3s ease;">
+                <section class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li><a href="#/Home"><i class="fa fa-home"></i><span>Home</span></a></li>
+                        <li class="treeview" ng-class="SecurityView">
+                            <a href="">
+                                <i class="fa fa-unlock-alt"></i><span>Security</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li ng-class="ModuleView"><a href="#/ModuleEntry"><i class="fa fa-circle-o"></i>Module</a></li>
+                                <li ng-class="RoleView"><a href="#/RoleEntry"><i class="fa fa-circle-o"></i>User Group</a></li>
+                                <li ng-class="ScreenView"><a href="#/ScreenEntry"><i class="fa fa-circle-o"></i>Screen</a></li>
+                                <li ng-class="PermisionView"><a href="#/PermissionEntry"><i class="fa fa-circle-o"></i>Permission</a></li>
+                                <li ng-class="ChangePasswordView"><a href="#/ChangePassword"><i class="fa fa-circle-o"></i>Change Password</a></li>
+                                <li ng-class="SyncView"><a href="#/Sync"><i class="fa fa-circle-o"></i>Sync</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview" ng-class="AdminView">
+                            <a href="">
+                                <i class="fa fa-adn"></i><span>Admin</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li ng-class="BranchTypeCustomerView"><a href="#/BranchTypeEntry"><i class="fa fa-circle-o"></i>Outlet Type</a></li>
+                                <li ng-class="BranchView"><a href="#/BranchEntry"><i class="fa fa-circle-o"></i>Branch</a></li>
+                                <li ng-class="DepartmentTypeView"><a href="#/DepartmentTypeEntry"><i class="fa fa-circle-o"></i>Department Type</a></li>
+                                <li ng-class="DepartmentView"><a href="#/DepartmentEntry"><i class="fa fa-circle-o"></i>Department</a></li>
+                                <li ng-class="DesignationView"><a href="#/DesignationEntry"><i class="fa fa-circle-o"></i>Designation</a></li>
+                                <li ng-class="EmployeeView"><a href="#/Employee"><i class="fa fa-circle-o"></i>Employee</a></li>
+                                <li ng-class="CustomerTypeView"><a href="#/CustomerType"><i class="fa fa-circle-o"></i>Customer Type</a></li>
+                                <li ng-class="CustomerView"><a href="#/CustomerEntry"><i class="fa fa-circle-o"></i>Customer</a></li>
+                                <li ng-class="CompanyView"><a href="#/CompanyEntry"><i class="fa fa-circle-o"></i>Company Entry</a></li>
+                                <li ng-class="SupplierView"><a href="#/SupplierEntry"><i class="fa fa-circle-o"></i>Supplier</a></li>
+                                <li ng-class="PriceTypeView"><a href="#/PriceType"><i class="fa fa-circle-o"></i>Price Type</a></li>
+                                <li ng-class="ChargeTypeView"><a href="#/ChargeTypeEntry"><i class="fa fa-circle-o"></i>Charge Type</a></li>
+                                <li ng-class="FinalPriceConfigView"><a href="#/FinalPriceConfig"><i class="fa fa-circle-o"></i>Final Price Config</a></li>
+                                <li ng-class="UnitView"><a href="#/Unit"><i class="fa fa-circle-o"></i>Unit</a></li>
+                                <li ng-class="CategoryView"><a href="#/CategoryEntry"><i class="fa fa-circle-o"></i>Category</a></li>
+                                <li ng-class="SubcategoryView"><a href="#/SubcategoryEntry"><i class="fa fa-circle-o"></i>Subcategory</a></li>
+                                <li ng-class="OverheadView"><a href="#/Overhead"><i class="fa fa-circle-o"></i>Overhead</a></li>
+                                <li ng-class="ProductView"><a href="#/ItemEntry"><i class="fa fa-circle-o"></i>Product</a></li>
+                                <li ng-class="PaymentTypeView"><a href="#/PaymentType"><i class="fa fa-circle-o"></i>Payment Type</a></li>
+                                <li ng-class="PaymentGroupView"><a href="#/PaymentGroup"><i class="fa fa-circle-o"></i>Payment Group</a></li>
+                                <li ng-class="AuditTypeView"><a href="#/AuditType"><i class="fa fa-circle-o"></i>Audit Type</a></li>
+                                <li ng-class="ItemAdditionalAttributeView"><a href="#/ItemAdditionalAttribute"><i class="fa fa-circle-o"></i>Additional Attribute</a></li>
+                                <li ng-class="ItemAdditionalAttributeView"><a href="#/ItemAdditionalAttributeValue"><i class="fa fa-circle-o"></i>Additional Attribute Value</a></li>
+                                <li ng-class="ItemAdditionalAttributePriceView"><a href="#/ItemAdditionalAttributePrice"><i class="fa fa-circle-o"></i>Additional Attribute Price</a></li>
+                                <li ng-class="TerminalView"><a href="#/Terminal"><i class="fa fa-circle-o"></i>Terminal</a></li>
+                                <li ng-class="StockDeclarationTypeView"><a href="#/StockDeclarationType"><i class="fa fa-circle-o"></i>Stock Declaration Type</a></li>
+                                <li ng-class="RequisitionPurposeEntryView"><a href="#/RequisitionPurposeEntry"><i class="fa fa-circle-o"></i>Requisition Purpose</a></li>
+                                <li ng-class="ReturnReasonEntryView"><a href="#/ReturnReasonEntry"><i class="fa fa-circle-o"></i>Return Reason</a></li>
+                                <li ng-class="VoidReasonEntryView"><a href="#/VoidReasonEntry"><i class="fa fa-circle-o"></i>Void Reason</a></li>
+                                <li ng-class="ApprovalSetupView"><a href="#/ApprovalSetup"><i class="fa fa-circle-o"></i>Approval Setup</a></li>
+                                <li ng-class="BarcodePrintView"><a href="#/BarcodePrint"><i class="fa fa-circle-o"></i>Barcode Print</a></li>
+                                <li ng-class="BankEntryView"><a href="#/BankEntry"><i class="fa fa-circle-o"></i>Bank</a></li>
+                                <li ng-class="BankAccountView"><a href="#/BankAccount"><i class="fa fa-circle-o"></i>Bank Account</a></li>
+                                <li ng-class="AttendancePunchUploadView"><a href="#/AttendancePunchUpload"><i class="fa fa-circle-o"></i>Punch Upload</a></li>
+                                <li ng-class="TestView"><a href="#/Test"><i class="fa fa-circle-o"></i>Test</a></li>
+                            </ul>
+                        </li>
+                        <li class="treeview" ng-class="HRView">
+                            <a href="">
+                                <i class="fa fa-child"></i><span>HR</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li ng-class="AttendancePolicyView"><a href="#/AttendancePolicy"><i class="fa fa-circle-o"></i>Attendance Policy</a> </li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview" ng-class="PurchaseMenuView">
+                            <a href="">
+                                <i class="fa fa-credit-card"></i><span>Procurement </span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                @*<li ng-class="PurchaseBillView"><a href="#/PurchaseBillEntry"><i class="fa fa-circle-o"></i> Purchase Bill </a> </li>*@
+                                <li ng-class="ImportPurchaseBillView"><a href="#/ImportPurchaseBill"><i class="fa fa-circle-o"></i>Import Purchase</a></li>
+                                @*<li ng-class="LocalPurchaseBillView"><a href="#/LocalPurchaseBillEntry"><i class="fa fa-circle-o"></i>Local Purchase </a> </li>*@
+                                <li ng-class="LocalPurchaseBillView"><a href="#/LocalPurchaseBillEntry"><i class="fa fa-circle-o"></i>Local Purchase</a></li>
+                                <li ng-class="WarrentyAndSerialNoView"><a href="#/WarrentyAndSerialNo"><i class="fa fa-circle-o"></i>Warrenty And SerialNo</a></li>
+                                <li ng-class="SupplierPaymentView"><a href="#/SupplierPayment"><i class="fa fa-circle-o"></i>Supplier Payment</a></li>
+                                <li ng-class="SupplierPaymentAdjustmentView"><a href="#/SupplierPaymentAdjustment"><i class="fa fa-circle-o"></i>Supplier Payment Adjustment</a></li>
+
+                                <li ng-class="SupplierLedgerView"><a href="#/SupplierLedger"><i class="fa fa-circle-o"></i>Supplier Ledger</a></li>
+                            </ul>
+                        </li>
+
+                        @*<li class="treeview" ng-class="ProcurementMenuView">
+                            <a href="">
+                                <i class="fa fa-credit-card"></i><span>Procurement</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                              
+                                <li ng-class="SupplierPaymentAdjustmentView"><a href="#/SupplierPaymentAdjustmentBill"><i class="fa fa-circle-o"></i>Supplier Payment Adjustment</a></li>
+                               
+                            </ul>
+                        </li>*@
+
+                        <li class="treeview" ng-class="POSView">
+                            <a href="">
+                                <i class="fa fa-credit-card"></i><span>POS</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+
+                                <li ng-class="OfferView"><a href="#/Offer"><i class="fa fa-circle-o"></i>Offer</a> </li>
+                                @*<li ng-class="SaleView"><a href="#/Sale"><i class="fa fa-circle-o"></i>Sale</a> </li>*@
+                                <li ng-class="ExchangeView"><a href="#/Exchange"><i class="fa fa-circle-o"></i>Exchange</a> </li>
+                                <li ng-class="SaleVoidView"><a href="#/SaleVoid"><i class="fa fa-circle-o"></i>Sale Cancel</a> </li>
+                                <li ng-class="CashDepositView"><a href="#/CashDeposit"><i class="fa fa-circle-o"></i>Payment</a> </li>
+                                <li ng-class="SalesOrderView"><a href="#/SalesOrder"><i class="fa fa-circle-o"></i>Sales Order</a> </li>
+                                <li ng-class="ReviseSalesOrderView"><a href="#/ReviseSalesOrder"><i class="fa fa-circle-o"></i>Revise Sales Order</a> </li>
+
+
+                                <li ng-class="SalesOrderApproveView"><a href="#/SalesOrderApprove"><i class="fa fa-circle-o"></i>Sales Order Approve</a></li>
+                                <li ng-class="InternalWorkOrderView"><a href="#/InternalWorkOrder"><i class="fa fa-circle-o"></i>Internal Work Order</a></li>
+                                <li ng-class="InventoryApprovalsView"><a href="#/InventoryApprovals"><i class="fa fa-circle-o"></i>Internal Work Order Approve</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview" ng-class="ExportView">
+                            <a href="">
+                                <i class="fa fa-credit-card"></i><span>Export</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li ng-class="ProformaInvoiceView"><a href="#/ProformaInvoice"><i class="fa fa-circle-o"></i>Proforma Invoice</a></li>
+                                <li ng-class="ProformaInvoiceApproveView"><a href="#/ProformaInvoiceApprove"><i class="fa fa-circle-o"></i>Proforma Invoice Approve</a></li>
+                                <li ng-class="ReviseProformaInvoiceView"><a href="#/ReviseProformaInvoice"><i class="fa fa-circle-o"></i>Revise Proforma Invoice</a></li>
+                                <li ng-class="ExpGenerateView"><a href="#/ExpGenerate"><i class="fa fa-circle-o"></i>Exp Generate</a></li>
+                                <li ng-class="ExpGenerateApproveView"><a href="#/ExpGenerateApprove"><i class="fa fa-circle-o"></i>Exp Generate Approve</a></li>
+                                <li ng-class="ReviseExpGenerateView"><a href="#/ReviseExpGenerate"><i class="fa fa-circle-o"></i>Revise Exp Generate</a></li>
+                                <li ng-class="CommercialInvoiceView"><a href="#/CommercialInvoice"><i class="fa fa-circle-o"></i>Commercial Invoice</a></li>
+                                <li ng-class="CommercialInvoiceApproveView"><a href="#/CommercialInvoiceApprove"><i class="fa fa-circle-o"></i>Commercial Invoice Approve</a></li>
+                                <li ng-class="ReviseCommercialInvoiceView"><a href="#/ReviseCommercialInvoice"><i class="fa fa-circle-o"></i>Revise Commercial Invoice</a></li>
+                                <li ng-class="PostCiProcessView"><a href="#/PostCiProcess"><i class="fa fa-circle-o"></i>After CI Process</a></li>
+                                <li ng-class="ExportDocumentUploadView"><a href="#/ExportDocumentUpload"><i class="fa fa-circle-o"></i>Document Upload</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview" ng-class="ProductionMenuView">
+                            <a href="">
+                                <i class="fa fa-credit-card"></i><span>Production</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li ng-class="RequisitionView"><a href="#/RequisitionEntry"><i class="fa fa-circle-o"></i>Requisition To Consume</a></li>
+                                <li ng-class="ProductionEntryView"><a href="#/ProductionEntry"><i class="fa fa-circle-o"></i>Production Entry</a> </li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview" ng-class="InventoryView">
+                            <a href="">
+                                <i class="fa fa-book"></i><span>Inventory</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li ng-class="StockValuationSetupView"><a href="#/StockValuationSetup"><i class="fa fa-circle-o"></i>Stock Valuation Setup </a> </li>
+                                <li ng-class="ReorderLevelSetupView"><a href="#/ReorderLevelSetup"><i class="fa fa-circle-o"></i>Reorder Level Setup</a></li>
+                                <li ng-class="OpeningQuantityView"><a href="#/OpeningQuantity"><i class="fa fa-circle-o"></i>Opening Quantity </a> </li>
+                                <li ng-class="PurchaseOrderView"><a href="#/PurchaseOrder"><i class="fa fa-circle-o"></i>Purchase Order</a> </li>
+                                <li ng-class="StockReceiveView"><a href="#/StockReceiveEntry"><i class="fa fa-circle-o"></i>Stock Receive</a></li>
+                                <li ng-class="StockIssueView"><a href="#/StockIssue"><i class="fa fa-circle-o"></i>Stock Issue To Consume</a> </li>
+                                <li ng-class="DeliveryView"><a href="#/Delivery"><i class="fa fa-circle-o"></i>Delivery</a></li>
+                                <li ng-class="StockIssueWithoutRequisitionView"><a href="#/StockIssueWithoutRequisition"><i class="fa fa-circle-o"></i>Stock Transfer</a></li>
+                                <li ng-class="IssueApproveView"><a href="#/IssueApprove"><i class="fa fa-circle-o"></i>Issue Receive</a> </li>
+                                <li ng-class="ReturnToSupplierView"><a href="#/ReturnToSupplier"><i class="fa fa-circle-o"></i>Return To Supplier</a></li>
+                                <li ng-class="ReturnFromDepartmentView"><a href="#/ReturnFromDepartment"><i class="fa fa-circle-o"></i>Return From Outlet</a></li>
+                                <li ng-class="StockAuditEntryView"><a href="#/StockAuditEntry"><i class="fa fa-circle-o"></i>Stock Audit</a></li>
+                                <li ng-class="StockDeclarationEntryView"><a href="#/StockDeclarationEntry"><i class="fa fa-circle-o"></i>Stock Declaration</a></li>
+                                <li ng-class="PurchaseRequisitionView"><a href="#/PurchaseRequisition"><i class="fa fa-circle-o"></i>Purchase Requisition</a></li>
+                                <li ng-class="BillOfMaterialView"><a href="#/BillOfMaterial"><i class="fa fa-circle-o"></i>Bill Of Material</a></li>
+
+                            </ul>
+                        </li>
+                        <li ng-class="ReceivableView">
+                            <a href=""><i class="fa fa-credit-card"></i><span>Receivable</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li ng-class="CompanyAdvanceView"><a href="#/CompanyAdvance"><i class="fa fa-circle-o"></i>Company Advance</a></li>
+                                <li ng-class="SaleAcknowledgementView"><a href="#/SaleAcknowledgement"><i class="fa fa-circle-o"></i>Sale Acknowledgement</a></li>
+                                <li ng-class="SaleAdjustmentView"><a href="#/SaleAdjustment"><i class="fa fa-circle-o"></i>Sale Adjustment</a></li>
+                                <li ng-class="SaleRealizationView"><a href="#/SaleRealization"><i class="fa fa-circle-o"></i>Sale Realization</a></li>
+                            </ul>
+                        </li>
+                        <li ng-class="PayableView">
+                            <a href=""><i class="fa fa-credit-card"></i><span>Payable</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+                                <li ng-class="SupplierAdvanceView"><a href="#/SupplierAdvance"><i class="fa fa-circle-o"></i>Supplier Advance</a></li>
+                                <li ng-class="PurchaseAcknowledgementView"><a href="#/PurchaseAcknowledgement"><i class="fa fa-circle-o"></i>Purchase Acknowledgement</a></li>
+                                <li ng-class="PurchaseAdjustmentView"><a href="#/PurchaseAdjustment"><i class="fa fa-circle-o"></i>Purchase Adjustment</a></li>
+                                <li ng-class="PurchaseRealizationView"><a href="#/PurchaseRealization"><i class="fa fa-circle-o"></i>Purchase Realization</a></li>
+                            </ul>
+                        </li>
+                        <li ng-class="AccountView">
+                            <a href=""><i class="fa fa-credit-card"></i><span>Accounts</span> <i class="fa fa-angle-left pull-right"></i></a>
+                            <ul class="treeview-menu">
+
+                                <li ng-class="AccountTypeView"><a href="#/AccountType"><i class="fa fa-circle-o"></i>Account Type</a></li>
+                                <li ng-class="AccountTypeDetailView"><a href="#/AccountTypeDetail"><i class="fa fa-circle-o"></i>Account Type Detail</a></li>
+                                <li ng-class="ChartOfAccountsView"><a href="#/ChartOfAccounts"><i class="fa fa-circle-o"></i>Chart of Accounts</a></li>
+                                <li ng-class="ReceiptVoucherView"><a href="#/ReceiptVoucher"><i class="fa fa-circle-o"></i>Receipt Voucher</a></li>
+                                <li ng-class="PaymentVoucherView"><a href="#/PaymentVoucher"><i class="fa fa-circle-o"></i>Payment Vouchers</a></li>
+                                <li ng-class="JournalVoucherView"><a href="#/JournalVoucher"><i class="fa fa-circle-o"></i>Journal Voucher</a></li>
+                                <li ng-class="ContraVoucherView"><a href="#/ContraVoucher"><i class="fa fa-circle-o"></i>Contra Voucher</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li class="treeview" ng-class="ReportsView">
+                            <a href="">
+                                <i class="fa fa-area-chart"></i><span>Reports</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li ng-class="InventoryAndSaleReportsView"><a href="#/InventoryAndSaleReports"><i class="fa fa-circle-o"></i>HR Reports</a></li>
+                                @*<li ng-class="InventoryAndSaleReportsMushakView"><a href="#/InventoryAndSaleReportsMushak"><i class="fa fa-circle-o"></i>Mushak</a></li>*@
+                                @*<li ng-class="ExportReportsView"><a href="http://43.224.119.250/Reports_MSSQLSERVER2016/browse/Reports/Export" target="_blank"><i class="fa fa-circle-o"></i>Export Reports</a></li>*@
+                            </ul>
+                        </li>
+                        @*<li ng-class="ReportView"><a href=""><i class="fa fa-area-chart"></i><span>Report</span></a> </li>*@
+
+                        <li class="treeview2" ng-class="ReportsView2">
+                            <a href="">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i><span>Mushak</span> <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                @*<li ng-class="InventoryAndSaleReportsView"><a href="#/InventoryAndSaleReports"><i class="fa fa-circle-o"></i>HR Reports</a></li>*@
+                                <li ng-class="InventoryAndSaleReportsMushakView"><a href="#/InventoryAndSaleReportsMushak"><i class="fa fa-circle-o"></i>Mushak</a></li>
+                                @*<li ng-class="ExportReportsView"><a href="http://43.224.119.250/Reports_MSSQLSERVER2016/browse/Reports/Export" target="_blank"><i class="fa fa-circle-o"></i>Export Reports</a></li>*@
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
+        </div>
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="row">
+                    <div id="Hidebr">
+                        <br /><br /><br />
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="ng-view" autoscroll="true"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 3.1.3
+            </div>
+            <strong>Copyright & copy; 2021-2022 <a href="http://rtbd.com">RTBD</a>.</strong> All rights
+            reserved.
+        </footer>
+    </div>
+
+   
+    <script>
+        $('ul.nav li.dropdown').hover(function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+        }, function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.sidebar-toggle').click(function () {
+                if ($(".main-sidebar").hasClass('sideScroll')) {
+                    $('.main-sidebar').removeClass('sideScroll');
+
+                } else {
+                    $(".main-sidebar").addClass('sideScroll');
+                }
+            });
+            $(".treeview-menu li").click(function () {
+                $(".treeview-menu li").removeClass("active");
+                $(this).addClass("active");
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#togle").click(function () {
+                if ($('#arrow').hasClass('leftArrow')) {
+                    $('#arrow').removeClass('leftArrow');
+                    $('#arrow').addClass('rightArrow');
+                    $('.treeview-menu').addClass('siteScroll');
+                }
+                else {
+                    $('#arrow').removeClass('rightArrow');
+                    $('#arrow').addClass('leftArrow');
+                    $('.treeview-menu').removeClass('siteScroll');
+                }
+            });           
+        });
+    </script>
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 10);
+        window.onunload = function () { null };
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('window').on('touchmove', function (event) {
+                event.preventDefault();
+            });
+        })
+    </script>
+</body>
+</html>

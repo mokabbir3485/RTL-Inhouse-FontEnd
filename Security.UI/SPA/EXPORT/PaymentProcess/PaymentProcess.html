@@ -1,0 +1,319 @@
+﻿<form name="paymentProcessEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Payment Process </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.PaymentProcessType.$touched && paymentProcessEntryForm.PaymentProcessType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Type">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlPaymentProcessType" id="ddlPaymentProcessType" class="form-control selectMendatory" name="PaymentProcessType" ng-options="payment.PaymentProcessType for payment in PaymentProcessTypeList track by payment.PaymentProcessType" ng-change="exp_PaymentProcess.PaymentProcessType = ddlPaymentProcessType.PaymentProcessType ; GetCompanyByPaymentProcessType()"autofocus required>
+                                    <option value="" label="Select Type"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="paymentProcessEntryForm.PaymentProcessType.$touched && paymentProcessEntryForm.PaymentProcessType.$invalid">Payment process type is required</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.LcNo.$invalid && paymentProcessEntryForm.LcNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="LC / Sales Contract No">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_PaymentProcess.LcNo" maxlength="50" id="txtLcNo" name="LcNo" class="form-control" placeholder="LC / Sales Contract No" ng-blur="CheckDuplicateLcNo()" ng-change="foundChange()" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.LcNo.$error.required && paymentProcessEntryForm.LcNo.$touched">LC / Sales contract no is required</span>
+                            <span class="help-block" ng-if="paymentProcessEntryForm.LcNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <!--<div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.ExpNo.$invalid && paymentProcessEntryForm.ExpNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Exp No">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_PaymentProcess.ExpNo" maxlength="16" name="ExpNo" id="txtExpNo" class="form-control" placeholder="Exp No" ng-blur="CheckDuplicateExpNo()" ng-change="foundChangeExpNo()" ng-maxlength="15" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.ExpNo.$error.required && paymentProcessEntryForm.ExpNo.$touched">Exp no is required</span>
+                            <span class="help-block" ng-if="paymentProcessEntryForm.ExpNo.$error.maxlength">15 Character Max</span>
+                        </div>-->
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.ExpTo.$invalid && paymentProcessEntryForm.ExpTo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Application To">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_PaymentProcess.ExpTo" maxlength="50" id="txtExpTo" name="ExpTo" class="form-control" placeholder="Application To" ng-blur="CheckDuplicateExpTo()" ng-change="foundChange()" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.ExpTo.$error.required && paymentProcessEntryForm.ExpTo.$touched">Application to is required</span>
+                            <span class="help-block" ng-if="paymentProcessEntryForm.ExpTo.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.BbDcNo.$invalid && paymentProcessEntryForm.BbDcNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bangladesh Bank DC No">
+                            <div class=" input-group">
+                                <input type="text" ng-model="exp_PaymentProcess.BbDcNo" maxlength="50" id="txtBbDcNo" name="BbDcNo" class="form-control" placeholder="Bangladesh Bank DC No" ng-blur="CheckDuplicateBbDcNo()" ng-change="foundChange()" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="paymentProcessEntryForm.BbDcNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.CompanyId .$invalid && paymentProcessEntryForm.CompanyId.$touched }" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                            <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Importer">
+                                <select ng-model="ddlCompany" class="form-control selectMendatory ng-pristine ng-untouched ng-valid ng-empty" name="CompanyId" ng-options="company.CompanyName for company in CompanyDropdownList track by company.CompanyId" ng-change="CompanyChange()" required>
+                                    <option value="" label="Select Importer" class="" selected="selected"> </option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="paymentProcessEntryForm.CompanyId.$touched && paymentProcessEntryForm.CompanyId.$invalid">Importer is required</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.LcDate.$invalid && paymentProcessEntryForm.LcDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="LC / Sales Contract Date">
+                            <div class='input-group'>
+                                <input type="text" onkeydown="return false" ng-model="exp_PaymentProcess.LcDate" name="LcDate" id="txtLcDate" class="form-control " placeholder="LC / Sales Contract Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarLcDate()" id="calender"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.LcDate.$error.required && paymentProcessEntryForm.LcDate.$touched">LC / Sales Contract date is required</span>
+                        </div>
+                      
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.Amount.$invalid && paymentProcessEntryForm.Amount.$touched }" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_PaymentProcess.Amount" maxlength="18" name="Amount" id="txtAmount" class="form-control" placeholder="Amount" ng-blur="CheckDuplicateAmount()" ng-change="foundChangeAmount()" ng-maxlength="17" readonly required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.Amount.$error.required && paymentProcessEntryForm.Amount.$touched">Amount is required</span>
+                            <span class="help-block" ng-if="paymentProcessEntryForm.Amount.$error.maxlength">18 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.ExportContactNo.$invalid && paymentProcessEntryForm.ExportContactNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Export Contact No">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_PaymentProcess.ExportContactNo" maxlength="50" name="ExportContactNo" id="txtExportContactNo" class="form-control" placeholder="Export Contact No" ng-blur="CheckDuplicateExportContactNo()" ng-change="foundExportContactNo()" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="paymentProcessEntryForm.ExportContactNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.ApplicationDate.$invalid && paymentProcessEntryForm.ApplicationDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Application Date">
+                            <div class='input-group'>
+                                <input type="text" onkeydown="return false" ng-model="exp_PaymentProcess.ApplicationDate" name="ApplicationDate" id="txtApplicationDate" class="form-control " placeholder="Application Date" required readonly />
+                                <span class="input-group-addon req-icon-color" ng-click="CalendarAppDate()" id="calender"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.ApplicationDate.$error.required && paymentProcessEntryForm.ApplicationDate.$touched">Application date is required</span>
+                        </div>
+                       
+                        <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.AppliedBy.$invalid && paymentProcessEntryForm.AppliedBy.$touched }" data-toggle="tooltip" data-placement="bottom" title="Applied By">
+                            <div class="input-group">
+                                <input type="text" ng-model="exp_PaymentProcess.AppliedBy" maxlength="50" name="AppliedBy" id="txtAppliedBy" class="form-control" placeholder="Applied By" ng-blur="CheckDuplicateAppliedBy()" ng-change="foundChangeAppliedBy()" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.AppliedBy.$error.required && paymentProcessEntryForm.AppliedBy.$touched">Applied by is required</span>
+                            <span class="help-block" ng-if="paymentProcessEntryForm.AppliedBy.$error.maxlength">50 Character Max</span>
+                        </div>
+                       
+                       <div class="row">
+                           <div class="col-md-6">
+                               <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.IrcNo.$invalid && paymentProcessEntryForm.IrcNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Irc No">
+                                   <div class="input-group">
+                                       <input type="text" ng-model="exp_PaymentProcess.IrcNo" maxlength="40" name="IrcNo" id="txtIrcNo" class="form-control" placeholder="Irc No" ng-blur="CheckDuplicateIrcNo()" ng-change="foundChangeIrcNo()" ng-maxlength="39" />
+                                       <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                   </div>
+                                   <span class="help-block" ng-if="paymentProcessEntryForm.IrcNo.$error.maxlength">40 Character Max</span>
+                               </div>
+                           </div>
+                           <div class="col-md-6">
+                               <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.LcaNo.$invalid && paymentProcessEntryForm.LcaNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Lca No">
+                                   <div class="input-group">
+                                       <input type="text" ng-model="exp_PaymentProcess.LcaNo" maxlength="40" name="LcaNo" id="txtLcaNo" class="form-control" placeholder="Lca No" ng-blur="CheckDuplicateLcaNo()" ng-change="foundChangeLcaNo()" ng-maxlength="39" />
+                                       <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                   </div>
+                                   <span class="help-block" ng-if="paymentProcessEntryForm.LcaNo.$error.maxlength">40 Character Max</span>
+                               </div>
+                           </div>
+                       </div>
+                            <div class="form-group" ng-class="{ 'has-error' : paymentProcessEntryForm.ExportContactDate.$invalid && paymentProcessEntryForm.ExportContactDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Export Contact Date">
+                            <div class='input-group'>
+                                <input type="text" onkeydown="return false" ng-model="exp_PaymentProcess.ExportContactDate" name="ExportContactDate" id="txtExportContactDate" class="form-control " placeholder="Export Contact Date" readonly />
+                                <span class="input-group-addon" ng-click="CalendarExportContactDate()" id="calender"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="paymentProcessEntryForm.ExportContactDate.$error.required && paymentProcessEntryForm.ExportContactDate.$touched">Export contact date is required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp;Invoice Search</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" title="From Date">
+                                <input type="text" onkeydown="return false" name="FromDate" id="txtFromScDate" class="form-control " placeholder="From"  readonly />
+                                <span class="input-group-addon" ng-click="CalendarLCFromDate()" id="calender"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" title="To Date">
+                                <input type="text" onkeydown="return false" name="ToDate" id="txtToScDate" class="form-control " placeholder="To"  readonly />
+                                <span class="input-group-addon" ng-click="CalendarLCToDate()" id="calender"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" title="Search Invoice">
+                                <input type="text" class="form-control" ng-model="OrderNoSearch" placeholder="Search Invoice" maxlength="100">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="SearchSalesOrder()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th class="txt-center"><input type="checkbox" id="checkAll" ng-model="selectCheckBox" ng-change="selectAllCheck(selectCheckBox)" /></th>
+                                    <th class="txt-center">Invoice No</th>
+                                    <th class="txt-center">Invoice Date</th>
+                                    <th class="txt-center">Amount</th>
+                                    <th class="txt-center">View</th>
+                                </tr>
+                                <tr class="HoverTable" dir-paginate="aInvoice in InvoiceSearchList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="Selsalesorder(salesOrderIds)">
+                                    <td style="text-align:center;">
+                                        <input type="checkbox" class="t-cell-center" ng-model="selected" ng-click="SelectCheck(aInvoice,selected)" ng-checked="aInvoice.IsCheck"><br>
+                                    </td>
+                                    <td class="t-cell-center">{{aInvoice.InvoiceNo}}</td>
+                                    <td class="t-cell-center">{{aInvoice.InvoiceDate}}</td>
+                                    <td class="t-cell-center">{{aInvoice.Amount}}</td>
+                                    <td class="t-cell-center"><button class="btn btn-sm">Invoice View</button></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="pull-right">{{Count}} /=</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SavePaymentProcess()" title="Save" ng-disabled="!ddlPaymentProcessType
+                                || !ddlCompany|| !exp_PaymentProcess.AppliedBy|| !exp_PaymentProcess.ApplicationDate|| !exp_PaymentProcess.LcNo||!exp_PaymentProcess.LcDate|| !exp_PaymentProcess.ExpTo|| !exp_PaymentProcess.Amount ">
+                            <i class="fa fa-save"></i>&nbsp;{{button}}
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                    <div class="row">
+                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Payment Process List</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" title="From Date">
+                                <input type="text" onkeydown="return false" name="FromDate" id="txtFromLiDate" class="form-control " placeholder="From" required readonly />
+                                <span class="input-group-addon" ng-click="CalendarFromLiDate()" id="calender"><i class="fa fa-calendar"></i></span>
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="input-group" data-toggle="tooltip" title="To Date">
+                                <input type="text" onkeydown="return false" name="ToDate" id="txtToLiDate" class="form-control " placeholder="To" required readonly />
+                                <span class="input-group-addon" ng-click="CalendarToLiDate()" id="calender"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class='input-group' data-toggle="tooltip" title="Search Payment Process">
+                                <input type="text" class="form-control" ng-model="OrderNoSearch" placeholder="Search Payment Process" maxlength="100">
+                                <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="SearchSalesOrder()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head">
+                                    <th>S/N</th>
+                                    <th class="txt-center">Type</th>
+                                    <th class="txt-center">LC/SC No</th>
+                                    <th class="txt-center">Invoices</th>
+                                    <th class="txt-center">Importer</th>
+                                    <th class="txt-center">Amount</th>
+                                    <th class="txt-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable" dir-paginate="aPaymentProcess in PaymentProcessList | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="Selpaymentprocess(aPaymentProcess)">
+                                    <td>{{$index+1}}</td>
+                                    <td class="txt-center">{{aPaymentProcess.PaymentProcessType}}</td>
+                                    <td class="txt-center">{{aPaymentProcess.LcNo}}</td>
+                                    <td class="txt-center">{{aPaymentProcess.InvoiceNos}}</td>
+                                    <td class="txt-center">{{aPaymentProcess.CompanyName}}</td>
+                                    <td class="txt-center">{{aPaymentProcess.Amount}}</td>
+                                    <td class="txt-center"><button class="btn btn-sm">Exp App</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <pre>{{PaymentProcessList | json}}</pre>
+</form>

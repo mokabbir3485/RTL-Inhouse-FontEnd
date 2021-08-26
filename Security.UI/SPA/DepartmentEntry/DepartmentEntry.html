@@ -1,0 +1,200 @@
+﻿<form name="departmentEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Department Entry</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.Branch.$touched && departmentEntryForm.Branch.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Branch">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlBranch" id="ddlBranch" class="form-control selectMendatory" name="Branch" ng-options="branch.BranchName for branch in Branchlist track by branch.BranchId" autofocus required>
+                                    <option value="" label="Select Branch"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="departmentEntryForm.Branch.$touched && departmentEntryForm.Branch.$invalid">Branch is required</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.DepartmentName.$invalid && departmentEntryForm.DepartmentName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Store Name">
+                            <div class="input-group">
+                                <input type="text" ng-model="ad_Department.DepartmentName" maxlength="50" id="txtDepartmentName" name="DepartmentName" class="form-control" placeholder="Store Name" ng-blur="CheckDuplicateDepartmentName()" ng-change="foundChange()" ng-maxlength="49" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="departmentEntryForm.DepartmentName.$error.required && departmentEntryForm.DepartmentName.$touched">Store Name is required</span>
+                            <span class="help-block" ng-if="departmentEntryForm.DepartmentName.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.DepartmentShortName.$invalid && departmentEntryForm.DepartmentShortName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Store Short Name">
+                            <div class="input-group">
+                                <input type="text" ng-model="ad_Department.DepartmentShortName" maxlength="16" name="DepartmentShortName" id="txtDepartmentShortName" class="form-control" placeholder="Store Short Name" ng-blur="CheckDuplicateDepartmentShortName()" ng-change="foundChangeShortName()" ng-maxlength="15" required />
+                                <span class="input-group-addon"><i class="fa fa-text-width" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="departmentEntryForm.DepartmentShortName.$error.required && departmentEntryForm.DepartmentShortName.$touched">Store Short Name is required</span>
+                            <span class="help-block" ng-if="departmentEntryForm.DepartmentShortName.$error.maxlength">15 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.ContactNo.$invalid && departmentEntryForm.ContactNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact No.">
+                            <div class="input-group">
+                                <input type="text" ng-model="ad_Department.ContactNo" name="ContactNo" id="TxtContactNo" class="form-control" placeholder="Contact No." maxlength="51" ng-maxlength="50" />
+                                <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
+                            </div>
+                            <!--<span class="help-block" style="display: block;" ng-if="departmentEntryForm.ContactNo.$error.required && departmentEntryForm.ContactNo.$touched">Contact No. is required</span>-->
+                            <span class="help-block" ng-if="departmentEntryForm.ContactNo.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.Address.$invalid && departmentEntryForm.Address.$touched }" data-toggle="tooltip" data-placement="bottom" title="Store Address">
+                            <div class="input-group">
+                                <textarea rows="2" type="text" ng-model="ad_Department.Address" maxlength="500" name="Address" id="TxtAddress" class="form-control" placeholder="Store Address" ng-maxlength="499" />
+                                <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+                            </div>
+                            <span class="help-block" ng-if="departmentEntryForm.Address.$error.maxlength">500 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.Email.$invalid && departmentEntryForm.Email.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                            <div class="input-group">
+                                <input type="email" ng-model="ad_Department.Email" name="Email" id="TxtEmail" class="form-control" placeholder="Email" maxlength="50" ng-maxlength="49" />
+                                <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="departmentEntryForm.Email.$error.required && departmentEntryForm.Email.$touched">Email is required</span>
+                            <span class="help-block" style="display: block;" ng-if="departmentEntryForm.Email.$error.email && departmentEntryForm.Email.$touched">Invalid Email</span>
+                            <span class="help-block" ng-if="departmentEntryForm.Email.$error.maxlength">50 Character Max</span>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.Fax.$invalid && departmentEntryForm.Fax.$touched }" data-toggle="tooltip" data-placement="bottom" title="Fax">
+                            <div class="input-group">
+                                <input type="text" ng-model="ad_Department.Fax" name="Fax" id="TxtFax" class="form-control" placeholder="Fax" maxlength="50" ng-maxlength="49">
+                                <span class="input-group-addon"><i class="fa fa-fax"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="departmentEntryForm.Fax.$error.required && departmentEntryForm.Fax.$touched">Fax No. is required</span>
+                            <span class="help-block" ng-if="departmentEntryForm.Fax.$error.maxlength">50 Character Max</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : departmentEntryForm.OpeningDate.$invalid && departmentEntryForm.OpeningDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="Opening Date">
+                            <div class='input-group'>
+                                <input type="text" onkeydown="return false" ng-model="ad_Department.OpeningDate" name="OpeningDate" id="txtOpeningDate" class="form-control " placeholder="Opening Date" required readonly />
+                                <span class="input-group-addon" id="calender"><i class="fa fa-calendar" style="color:red;"></i></span>
+                            </div>
+                            <span class="help-block" style="display: block;" ng-if="departmentEntryForm.OpeningDate.$error.required && departmentEntryForm.OpeningDate.$touched">Opening Date is required</span>
+                        </div>
+                        <div class="col-sm-12 form-group">
+                            <div class="col-sm-4 nopadding">
+                                <label>Store Type: </label>
+                                <label style="color:red;">* </label>
+                            </div>
+                            <div class="col-sm-8 nopadding">
+                                <label class="checkbox-inline" ng-repeat="aDepartmentType in DepartmentTypelist">
+                                    <input type="checkbox" ng-model="aDepartmentType.selected">{{aDepartmentType.DepartmentTypeName}}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 form-group">
+                            <div class="col-sm-4 nopadding">
+                                <label>Status: </label>
+                            </div>
+                            <div class="col-sm-8 nopadding" >
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios"
+                                           ng-value="true" ng-model="ad_Department.IsActive">
+                                    Active
+                                </div>
+                                <div class="radio-inline">
+                                    <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_Department.IsActive"> Inactive
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                            <div class="row">
+                                <button class="customBtn custmoBtnSave" ng-click="AddDepartment()" title="{{button}}" ng-disabled="departmentEntryForm.$invalid">
+                                    <i class="fa fa-floppy-o"></i>&nbsp;{{button}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                            <div class="row">
+                                <button id="Button2" class="customBtn custmoBtnDelete" title="Delete" ng-click="Delete()" ng-show="Show">
+                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                            <div class="row">
+                                <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Department List</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="tbl-outer">
+                    <table class="responstable table-hover">
+                        <tbody>
+                            <tr class="t-head">
+                                <th>S/N</th>
+                                <th class="txt-center"><span>Branch Name</span></th>
+                                <th class="txt-center" data-th="Store Details"><span>Department Name</span></th>
+                                <th class="txt-center">Contact No</th>
+                                <th class="txt-center">Email</th>
+                                <th class="txt-center">Status</th>
+                            </tr>
+                            <tr class="HoverTable" dir-paginate="aDepartment in Departmentlist | filter:q | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" ng-click="SelDepartment(aDepartment)">
+                                <td>{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                <td class="txt-center">{{aDepartment.BranchName}}</td>
+                                <td class="txt-center">{{aDepartment.DepartmentName}}</td>
+                                <td class="txt-center">{{aDepartment.ContactNo}}</td>
+                                <td class="txt-center">{{aDepartment.Email}}</td>
+                                <td class="txt-center">{{aDepartment.Status}}</td>
+                            </tr>
+                            <tr class="t-foot" ng-show="total_count>PerPage">
+                                <th colspan="6">
+                                    <dir-pagination-controls max-size="8"
+                                                             direction-links="true"
+                                                             boundary-links="true"
+                                                             on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                    </dir-pagination-controls>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row pagination-footer">
+                        <div class="col-md-6">
+                            <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1)*PerPage)+Departmentlist.length}} of {{total_count}} Records</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtOpeningDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('2010-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [2010, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender").addEventListener("click", function () {
+        picker.show();
+    });
+</script>

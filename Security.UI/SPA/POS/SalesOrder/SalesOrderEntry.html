@@ -1,0 +1,1699 @@
+﻿<style>
+    @media (min-width: 768px) {
+        .modal-xl {
+            width: 90%;
+            max-width: 1200px;
+        }
+    }
+</style>
+<form name="salesOrderForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left "><i class="fa fa-list"></i>&nbsp;Sales Order {{Mood}}</h3>
+                <div class="clearfix">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.SalesOrderDate.$invalid && salesOrderForm.SalesOrderDate.$touched }">
+                                <div class="input-group " data-toggle="tooltip" title="Sales Order Date">
+                                    <input type="text" id="txtSalesOrderDate" ng-model="salesOrder.SalesOrderDate" class="form-control" ng-change="getMaxSalesOrderByDate();" name="SalesOrderDate" placeholder="Sales Order Date" maxlength="40" required disabled />
+
+                                    <span class="input-group-addon" ng-click="CalendartxtSalesOrderDate()" id="CalendartxtSalesOrderDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="salesOrderForm.SalesOrderDate.$invalid && salesOrderForm.SalesOrderDate.$touched ">Sales Order Date is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.SalesOrderNo.$invalid && salesOrderForm.SalesOrderNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Sales Order No">
+                                <div class="input-group ">
+                                    <input type="text" ng-model="salesOrder.SalesOrderNo" id="txtSalesOrderNo" class="form-control" name="SalesOrderNo" placeholder="Sales Order No" maxlength="40" ng-maxlength="40" readonly />
+                                    <span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="salesOrderForm.salesOrderNo.$error.required && salesOrderForm.salesOrderNo.$touched">Order No is required</span>
+                                <span class="help-block" ng-if="salesOrderForm.salesOrderNo.$error.maxlength">40 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.InvoiceDueDate.$invalid && salesOrderForm.InvoiceDueDate.$touched }">
+                                <div class="input-group " data-toggle="tooltip" title="Invoice Due Date">
+                                    <input type="text" id="txtInvoiceDueDate" ng-model="salesOrder.InvoiceDueDate" class="form-control" name="DueDate" placeholder="Invoice Due Date" maxlength="40" required readonly />
+
+                                    <span class="input-group-addon" ng-click="CalendartxtInvoiceDueDate()" id="CalendartxtInvoiceDueDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="salesOrderForm.InvoiceDueDate.$invalid && salesOrderForm.InvoiceDueDate.$touched ">Invoice Due Date is required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.company.$dirty && salesOrderForm.company.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Company">
+                                <!--<div class="input-group width-hundred-percent">
+                                    <select ng-model="ddlCompany" name="company" class="form-control selectMendatory" ng-options="company.CompanyName for company in companyList track by company.CompanyId" ng-change="GetCompanyAddress(); GetEmployeeByCompany();" ng-disabled="!salesOrder.InvoiceDueDate" required>
+                                        <option value="" label="-- Select company --"></option>
+                                    </select>
+                                    <span class="help-block" ng-show="salesOrderForm.company.$dirty && salesOrderForm.company.$invalid">Company Name is required</span>
+                                </div>-->
+                                <div class="input-group-btn search-panel">
+                                    <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Company">
+                                        <div class="input-group input-group-md ddl">
+                                            <input id="CompanySearchInput" type="text" list="CompanySearch" class="form-control selectNotMandetory" name="CompanySearch" ng-change="GetEmpId(); GetCompanyAddress(); GetEmployeeByCompany(); " ng-model="company.CompanyName" placeholder="Search & Select Company Name" />
+                                        </div>
+                                        <datalist id="CompanySearch">
+                                            <option ng-repeat="company in companyList" data-xyz="{{company.CompanyId}}" value="{{company.CompanyName}}">
+                                        </datalist>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1" style="margin-left:-20px;width:105px">
+                            <button id="btnAddCompany" class="customBtn custmoBtnReset" ng-click="LoadCompanyDetails();" title="New Company">
+                                <i class=" fa fa-plus-square"></i> New
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.CompanyNameOnBill.$invalid && salesOrderForm.CompanyNameOnBill.$touched }" data-toggle="tooltip" data-placement="bottom" title="Company Name On Bill">
+                                <div class="input-group ">
+                                    <input type="text" name="CompanyNameOnBill" class="form-control" ng-model="salesOrder.CompanyNameOnBill" placeholder="Company Name On Bill" maxlength="101" ng-maxlength="100" required>
+                                    <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block; color:red" ng-if="salesOrderForm.CompanyNameOnBill.$error.required && salesOrderForm.CompanyNameOnBill.$touched">Company Name On Bill is Required</span>
+                                <span class="help-block" style="display: block;color:red" ng-if="salesOrderForm.CompanyNameOnBill.$error.maxlength">100 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.BillingAddress.$invalid && salesOrderForm.BillingAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Billing Address">
+                                <div class="input-group ">
+                                    <input type="text" name="BillingAddress" class="form-control" ng-model="salesOrder.BillingAddress" placeholder="Billing Address" maxlength="201" ng-maxlength="200" required>
+                                    <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block; color:red" ng-if="salesOrderForm.BillingAddress.$error.required && salesOrderForm.BillingAddress.$touched">Billing Address is Required</span>
+                                <span class="help-block" style="display: block;color:red" ng-if="salesOrderForm.BillingAddress.$error.maxlength">200 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.SalesOrderType.$dirty && salesOrderForm.SalesOrderType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Sales Order Type">
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="salesOrder.SalesOrderType" name="SalesOrderType" class="form-control selectMendatory" ng-change="setCurrency(salesOrder.SalesOrderType)" ng-options="salesOType for salesOType in SalesOrderTypeList" required>
+                                        <option value="" label="S.O.Type" hidden></option>
+                                    </select>
+                                    <span class="help-block" ng-show="salesOrderForm.SalesOrderType.$dirty && salesOrderForm.SalesOrderType.$invalid">Sales Order Type is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.CurrencyType.$dirty && salesOrderForm.CurrencyType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Currency Type">
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="salesOrder.CurrencyType" name="CurrencyType" ng-disabled="!salesOrder.SalesOrderType" class="form-control selectMendatory" ng-options="currency for currency in CurrencyList" required>
+                                        <option value="" label="Currency Type" hidden></option>
+                                    </select>
+                                    <span class="help-block" ng-show="salesOrderForm.CurrencyType.$dirty && salesOrderForm.CurrencyType.$invalid">Currency is required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--<div class="col-md-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.ReferenceNo.$invalid && salesOrderForm.ReferenceNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Purchase Order No.">
+                                        <div class="input-group ">
+                                            <input type="text" ng-model="salesOrder.ReferenceNo" id="ReferenceNo" class="form-control" name="ReferenceNo" ng-disabled="disblePo" ng-change="remarkDisable();" placeholder="P.O No." maxlength="101" ng-maxlength="100" />
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-if="salesOrderForm.ReferenceNo.$error.maxlength">100 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="margin-left:-20px;width:147px">
+                                    <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.PoDate.$invalid && salesOrderForm.PoDate.$touched }" data-toggle="tooltip" data-placement="bottom" title="P.O Date">
+                                        <div class="input-group ">
+                                            <input type="text" id="txtPoDate" name="PoDate" ng-model="salesOrder.PODate" class="form-control" ng-disabled="disblePo" placeholder="P.O. Date" required readonly />
+                                            <span class="input-group-addon" ng-click="CalendartxttxtPoDate()" id="CalendartxttxtPoDate"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.PoDate.$error.required && salesOrderForm.PoDate.$touched">P.O. Date is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="col-md-4">
+                            <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.ddlPreparedBy.$dirty && salesOrderForm.ddlPreparedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Reference">
+                                <div class="input-group input-group-md ddl">
+                                    <select ng-model="ddlPreparedBy" name="ddlPreparedBy" class="form-control selectMendatory" ng-change="salesOrder.PreparedById=ddlPreparedBy.EmployeeId" ng-options="employee.FullName  for employee in employeeList track by employee.EmployeeId" required>
+                                        <option value="" label="Reference"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="salesOrderForm.ddlPreparedBy.$dirty && salesOrderForm.ddlPreparedBy.$invalid">Reference is Required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.priceType.$dirty && salesOrderForm.priceType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Price Type">
+                                <div class="input-group width-hundred-percent">
+                                    <select ng-model="ddlPriceTypeBy" name="priceType" class="form-control selectMendatory" ng-options="priceType.PriceTypeName for priceType in prictTypeList track by priceType.PriceTypeId" required>
+                                        <option value="" label="Price Type"></option>
+                                    </select>
+                                    <span class="help-block" ng-show="salesOrderForm.priceType.$dirty && salesOrderForm.priceType.$invalid">Price Type is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.Remarks.$invalid && salesOrderForm.Remarks.$touched }" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                                <div class="input-group ">
+                                    <input type="text" id="Remarks" name="Remarks" maxlength="501" class="form-control" ng-disabled="Disableremark;" ng-model="salesOrder.Remarks" placeholder="Remarks" ng-maxlength="500">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="salesOrderForm.Remarks.$error.maxlength">500 Character Max</span>
+                            </div>
+                        </div>
+                        <!--<div class="col-md-1" style="margin-left: -22px;">
+                            <div class="pull-right">
+                                <input type="checkbox" ng-model="salesOrder.IsNonSO" ng-disabled="Disableremark;" ng-change="changePoDate();" /><label>No P.O</label>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <div class="col-md-2">
+                                <div class="pull-left">
+                                    <input type="checkbox" ng-model="salesOrder.isPO" /><label>Show P.O Panel</label>
+                                </div>
+                            </div>
+                            <div ng-show="salesOrder.isPO">
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.PONo.$invalid && salesOrderForm.PONo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Purchase Order No.">
+                                        <div class="input-group ">
+                                            <input type="text" ng-model="POReference.PONo" id="PONo" class="form-control" name="PONo" placeholder="P.O No." ng-maxlength="100" />
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" ng-if="salesOrderForm.PONo.$error.maxlength">100 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.PO_Date.$invalid && salesOrderForm.PO_Date.$touched }" data-toggle="tooltip" data-placement="bottom" title="P.O Date">
+                                        <div class="input-group ">
+                                            <input type="text" id="txtPO_Date" name="PO_Date" ng-model="POReference.PODate" class="form-control" placeholder="P.O. Date" readonly />
+                                            <span class="input-group-addon" ng-click="CalendartxtPO_Date()" id="CalendartxtPODate"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                        <!--<span class="help-block" style="display: block;" ng-if="salesOrderForm.PO_Date.$error.required && salesOrderForm.PO_Date.$touched">P.O. Date is required</span>-->
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddPOReference();" ng-disabled="!POReference.PONo || !POReference.PODate">
+                                        <i class=" fa fa-plus-square"></i>&nbsp;{{AddProductLbl}}
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="center">
+                                            <table class="responstable table-hover" style="width: 50%;  margin-left: auto; margin-right: auto;">
+                                                <tbody>
+                                                    <tr class="t-head">
+                                                        <th class="t-cell-center">S/N</th>
+                                                        <th class="t-cell-center">PO No</th>
+                                                        <th class="t-cell-center" data-th="PO Date"><span>PO Date</span></th>
+                                                        <th class="t-cell-center">Remove</th>
+                                                    </tr>
+                                                    <tr class="HoverTable" ng-repeat="aPOReference in POReferencelist track by $index">
+                                                        <td class="t-cell-center">{{$index+1}}</td>
+                                                        <td class="t-cell-center">{{aPOReference.PONo}}</td>
+                                                        <td class="t-cell-center">{{aPOReference.PODate}}</td>
+                                                        <td class="t-cell-center">
+                                                            <button title="Remove" ng-click="removePOReference(aPOReference)">
+                                                                <i class="fa fa-minus-square"></i>&nbsp;
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group-btn search-panel">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Item">
+                                    <div class="input-group input-group-md ddl">
+                                        <input id="itemNameDisable" type="text" list="itemName" class="form-control selectNotMandetory" name="ItemName" ng-change="loadItemDetails(pos_SalesOrderDetail.TempItemName);CheckDdlStock(pos_SalesOrderDetail)" ng-model="pos_SalesOrderDetail.TempItemName" placeholder="Search for: Item Name ~ Description One ~ Description Two ~ Item Code ~ Pc(s) Per Roll ~ Roll Per Carton ~ Hs Code" />
+                                    </div>
+                                    <datalist id="itemName">
+                                        <option ng-repeat="pos_SalesOrderDetail in ItemSearchList" id="{{pos_SalesOrderDetail.ItemId}}" value="{{pos_SalesOrderDetail.TempItemName}}">
+                                    </datalist>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="customBtn custmoBtnReset" ng-click="ListClear();" title="Add Product">
+                                <i class="fa fa-recycle"></i>Clear
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="customBtn custmoBtnReset" ng-click="AddItem();" title="Add Product">
+                                <i class=" fa fa-plus-square"></i>New Product
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.ItemDescription.$invalid && salesOrderForm.ItemDescription.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Description">
+                                <!--<div class="input-group ">-->
+                                <input type="text" ng-model="pos_SalesOrderDetail.ItemDescription" class="form-control" name="ItemDescription" placeholder="Item Description" autocomplete="off" maxlength="200" ng-maxlength="201" />
+                                <!--<span class="input-group-addon"><i class="fa fa-text-width" style="color:red"></i></span>-->
+                                <!--</div>-->
+                                <span class="help-block" ng-if="salesOrderForm.ItemDescription.$error.required && salesOrderForm.ItemDescription.$touched">Item Description is required</span>
+                                <span class="help-block" ng-if="salesOrderForm.ItemDescription.$error.maxlength">200 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.ddlMu.$dirty && salesOrderForm.ddlMu.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Unit">
+                                        <div class="input-group input-group-md ddl">
+                                            <select class="form-control selectMendatory" ng-model="ddlMu" name="ddlMu" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId">
+                                                <option value="" label="Unit"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="salesOrderForm.ddlMu.$dirty && salesOrderForm.ddlMu.$invalid">Unit is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="margin-left:-20px;width:147px">
+                                    <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.DueDate.$invalid && salesOrderForm.DueDate.$touched }">
+                                        <div class="input-group " data-toggle="tooltip" title="Item Due Date">
+                                            <input type="text" id="txtDueDate" ng-model="pos_SalesOrderDetail.DueDate" class="form-control" name="DueDate" placeholder="DueDate" maxlength="40" required readonly />
+
+                                            <span class="input-group-addon" ng-click="CalendartxtDueDate()" id="CalendartxtDueDate"><i class="fa fa-calendar req-icon-color"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.DueDate.$invalid && salesOrderForm.DueDate.$touched ">Due Date is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <!--<div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Stock Quantity">
+        <div class="input-group">
+            <input type="number" name="currentQty" class="form-control txt-center" ng-model=" pos_SalesOrderDetail.CurrentQuantity" placeholder="Stock Qty" readonly>
+            <span class="input-group-addon"><i class="fa fa-qq"></i></span>
+        </div>
+    </div>-->
+                            <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.HSCode.$invalid && salesOrderForm.HSCode.$touched }" data-toggle="tooltip" id="HSCode" data-placement="bottom">
+                                <div class="input-group">
+                                    <input type="text" name="HSCode" class="form-control" ng-model="HSCode" placeholder="HS Code" maxlength="100" ng-maxlength="99" readonly/>
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="salesOrderForm.HSCode.$error.required && salesOrderForm.HSCode.$touched">Buyer Name is required</span>
+                                <span class="help-block" ng-if="salesOrderForm.HSCode.$error.maxlength">100 Character Max</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Order Quantity">
+                                <div class="input-group">
+                                    <!--<input type="number" id="txtOrderQty" class="form-control txt-center" ng-model="pos_SalesOrderDetail.OrderQty" min="1" max="9999999" ng-change="priceOrAmountChangeForQty(true)" ng-pattern="/^(0|\-?[1-9][0-9]*)$/" placeholder="Order Qty">-->
+                                    <input type="number" id="txtOrderQty" class="form-control txt-center" ng-model="pos_SalesOrderDetail.OrderQty" min="1" max="9999999" ng-change="priceOrAmountChangeForQty(true)" placeholder="Order Qty">
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Sale Price (Tk.)">
+                                <div class="input-group">
+                                    <input type="number" id="txtPrice" min="0" class="form-control txt-center" ng-model="pos_SalesOrderDetail.OrderPrice" ng-disabled="!pos_SalesOrderDetail.OrderQty" ng-change="priceOrAmountChange(true)" placeholder="Price(Tk)" required>
+                                    <span class="input-group-addon"><i class="fa fa-qq" style="color:red;"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Amount">
+                                <div class="input-group">
+                                    <input type="text" id="txtAmount" class="form-control txt-center" ng-model="pos_SalesOrderDetail.Amount" ng-disabled="!pos_SalesOrderDetail.OrderQty" readonly placeholder="Amount">
+                                    <span class="input-group-addon"><i class="fa fa-qq"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" ng-class="{ 'has-error' :salesOrderForm.BuyerName.$invalid && salesOrderForm.BuyerName.$touched }" data-toggle="tooltip" id="BuyerName" data-placement="bottom">
+                                <div class="input-group">
+                                    <input type="text" name="BuyerName" class="form-control" ng-model="pos_SalesOrderDetail.BuyerName" placeholder="Buyer Name" maxlength="100" ng-maxlength="99" />
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" ng-if="salesOrderForm.BuyerName.$error.required && salesOrderForm.BuyerName.$touched">Buyer Name is required</span>
+                                <span class="help-block" ng-if="salesOrderForm.BuyerName.$error.maxlength">100 Character Max</span>
+                            </div>
+                            <div>
+
+                                <button id="btnAdd" class="customBtn custmoBtnReset" title="Add" ng-click="AddSalesOrderDetail()" ng-disabled="!pos_SalesOrderDetail.ItemDescription || !pos_SalesOrderDetail.OrderQty|| !ddlMu || !salesOrder.CurrencyType">
+                                    <i class=" fa fa-plus-square"></i>&nbsp;{{AddProductLbl}}
+                                </button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+
+                                <th class="t-cell-center">SL.No</th>
+                                <!--<th class="t-cell-center">Item Code</th>-->
+                                <th class="t-cell-center">Item Description</th>
+                                <th class="t-cell-center" style="width:30%">Stock AvailAble</th>
+                                <th class="t-cell-center">Quantity</th>
+                                <th class="t-cell-center">Price</th>
+                                <th class="t-cell-center">Amount</th>
+                                <th class="t-cell-center">Action</th>
+                            </tr>
+                            <tbody ng-repeat="aSOrederList in  pos_SalesOrderDetailAdAttributeLst track by $index">
+                                <tr>
+                                    <!--<td class="t-cell-center"><label><i ng-show="!aSOrederList.DisplaySta && aSOrederList.HeaderOfAttribute.length" class="fa fa-plus-square"></i><i ng-show="aSOrederList.DisplaySta && aSOrederList.HeaderOfAttribute.length" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aSOrederList.DisplaySta" /></label></td>-->
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <!--<td class="t-cell-center">{{aSOrederList.ItemCode}}</td>-->
+                                    <td class="t-cell-center">{{aSOrederList.ItemDescription}}</td>
+                                    <td style="width:30%;margin-left:5px;">
+                                        <p ng-repeat="store in aSOrederList.stockList">
+                                            {{store.DepartmentName}} : ({{store.CurrentQuantity}})
+                                        </p>
+                                    </td>
+                                    <td class="t-cell-center">{{aSOrederList.OrderQty}}</td>
+                                    <td class="t-cell-center">{{aSOrederList.OrderPrice}}</td>
+                                    <td class="t-cell-center">{{aSOrederList.Amount}}</td>
+                                    <td class="t-cell-center">
+                                        <button title="Remove" ng-click="RemoveItemAttr($index)">
+                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                    <div class="row">
+                        <button id="btnSave" class="customBtn custmoBtnSave" ng-click="SaveSalesOrder()" title="Save" ng-disabled="!pos_SalesOrderDetailAdAttributeLst.length
+                                || salesOrderForm.ReferenceNo.$invalid || !salesOrder.SalesOrderDate || !salesOrder.InvoiceDueDate || !ddlPreparedBy || salesOrderForm.Remarks.$invalid
+                                || !salesOrder.CompanyNameOnBill || !salesOrder.BillingAddress || !ddlPriceTypeBy || !salesOrder.SalesOrderNo">
+                            <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                    <div class="row">
+                        <button id="Button3" class="customBtn custmoBtnReset" title="Reset" ng-click="resetForm()">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" ng-show="RevisePermission">
+        <br />
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-search"></i>&nbsp;Sales Order Search</h3>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="From Date">
+
+                                <input type="text" name="FromDate" id="txtFromDateForSO" ng-model="FromDate" ng-change="SalesOrderSearch();" class="form-control " placeholder="From Date" readonly />
+                                <span class="input-group-addon" ng-click="FormDateChangeForSO()" id="FormDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="input-group " data-toggle="tooltip" title="To Date">
+                                <input type="text" name="ToDate" id="txtToDateForSO" ng-model="ToDate" ng-change="SalesOrderSearch();" class="form-control " placeholder="To Date" readonly />
+                                <span class="input-group-addon" ng-click="ToDateChangeForSO()" id="ToDateChange"><i class="fa fa-calendar req-icon-color"></i></span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" data-toggle="tooltip" title="Search Company and Sales Order No">
+                            <input type="text" class="form-control" id="textSalesOrderNoAndCompany" ng-model="SearchSalesOrderAndCompanyName" ng-change="SalesOrderSearch();" name="name" placeholder="Company Name / Sales Order No" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="row">
+                            <button id="btnSearch" ng-click="reloadBtn()" class="customBtn custmoBtnSearch" title="Reload">
+                                <i class="fa fa-refresh"></i>&nbsp;Clear
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-lg-2 col-xs-12" style="padding-right: 3%; padding-left: 3%;">
+                        <div class="row">
+                            <!--<button id="btnSearch" class="customBtn custmoBtnSearch" title="Search" ng-click="getToAndFormDate();SalesOrderSearch()">
+                                <i class="fa fa-search-plus"></i>&nbsp;Search
+                            </button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Order No</th>
+                                    <th class="t-cell-center">Order Date</th>
+                                    <th class="t-cell-center">Company Name</th>
+                                    <th class="t-cell-center">Sales Person</th>
+                                    <th class="t-cell-center">Remanrks</th>
+                                    <th class="t-cell-center">Doc Status</th>
+                                    <th class="t-cell-center">Action</th>
+                                </tr>
+                                <tr class="HoverTable searchRow" dir-paginate="aSalesOrder in SalesOrderListPaged | itemsPerPage: PerPage" current-page="currentPage" total-items="total_count" onclick="RowSelect(this)" ng-click="GetSalesOrderDetails(aSalesOrder);">
+                                    <td class="t-cell-center">{{$index + ((currentPage-1)*PerPage) + 1}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.SalesOrderNo}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.SalesOrderDate}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.CompanyName}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.RefEmployeeName}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.Remarks}}</td>
+                                    <td class="t-cell-center">{{aSalesOrder.DocStatus}}</td>
+                                    <td class="t-cell-center">
+                                        <button class="btn btn-lg" style="font-size:13px; padding:12.5px"
+                                                ng-click="OpenReport(aSalesOrder.SalesOrderId)">
+                                            Report
+                                        </button>
+                                        <button class="btn btn-sm" style="font-size:11px" data-toggle="modal" ng-if="aSalesOrder.DocStatus=='New Approved' ||
+                                                                  aSalesOrder.DocStatus=='Amendment Request Approved'" ng-click="exp_AmendmentRequest.DocumentId=aSalesOrder.SalesOrderId;GetAmendment(aSalesOrder);stopPropagation()" data-target="#AmendmentModal">
+                                            Request for <br /> Amendment
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="t-foot" ng-show="total_count>PerPage">
+                                    <th colspan="8">
+                                        <dir-pagination-controls max-size="8"
+                                                                 direction-links="true"
+                                                                 boundary-links="true"
+                                                                 on-page-change="getData(newPageNumber)" style="text-align:center;">
+                                        </dir-pagination-controls>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row pagination-footer">
+                            <div class="col-md-6">
+                                <span>Show </span><input class="input-pagesize" type="number" ng-maxlength="100" ng-minlength="1" width="1" ng-model="PerPage"> <span>Records </span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="pull-right">Showing {{((currentPage-1)*PerPage)+1}} to {{((currentPage-1) * PerPage) + SalesOrderListPaged.length}} of {{total_count}} Records</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="companyEntryForm" novalidate>
+    <!-- Modal -->
+    <div id="companyModal" class="modal fade" ng-model="companyModal" role="dialog">
+        <div class="modal-dialog" style="width: 75%">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header text-center" style="background-color: #3c8dbc; color: white;">
+                    <button type="button" class="close" style="color: red;" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Company</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="alert alert-info alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="topInfo"> &nbsp; &#9755; <span style="color: red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Company Entry</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyName.$invalid && companyEntryForm.CompanyName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Company Name">
+                                        <div class="input-group">
+                                            <input type="text" id="txtCompanyName" name="CompanyName" class="form-control" ng-model="ad_Company.CompanyName" placeholder="Company Name" maxlength="100" ng-blur="CheckDuplicateCompanyName()" ng-change="foundChange()" ng-maxlength="99" required>
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-text-width" style="color: red"></i>
+                                            </span>
+                                        </div>
+                                        <span class="help-block" ng-if="companyEntryForm.CompanyName.$error.required && companyEntryForm.CompanyName.$touched">Company Name is required</span>
+                                        <span class="help-block" ng-if="companyEntryForm.CompanyName.$error.maxlength">100 Character Max</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyCode.$invalid && companyEntryForm.CompanyCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Company Short Name">
+                                        <div class="input-group">
+                                            <input type="text" id="txtCompanyCode" name="CompanyCode" class="form-control" ng-model="ad_Company.CompanyCode" placeholder="Company Short Name" ng-blur="CheckDuplicateCompanyCode()" ng-change="foundChange()" maxlength="50" ng-maxlength="49" required>
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-text-width" style="color: red"></i>
+                                            </span>
+                                        </div>
+                                        <span class="help-block" ng-if="companyEntryForm.CompanyCode.$error.required && companyEntryForm.CompanyCode.$touched">Company Short Name required</span>
+                                        <span class="help-block" ng-if="companyEntryForm.CompanyCode.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{ 'has-error' : companyEntryForm.CompanyType.$dirty && companyEntryForm.CompanyType.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Company  Type">
+                                        <div class="input-group input-group-md ddl">
+                                            <select id="selCompanyType" ng-model="ddlCompanyType" class="form-control selectMendatory" name="CompanyType" ng-options="companyType.CompanyTypeName for companyType in CompanyTypeList track by companyType.CompanyTypeId" required>
+                                                <option value="" label="Select Company  Type"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="companyEntryForm.CompanyType.$dirty && companyEntryForm.CompanyType.$invalid">Company Type is required</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{ 'has-error' : companyEntryForm.ddlEmployeeRef.$touched && companyEntryForm.ddlEmployeeRef.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Employee Reference">
+                                        <div class="input-group input-group-md ddl">
+                                            <select id="ddlEmployeeRef" ng-model="ddlEmployeeRef" class="form-control selectMendatory" name="ddlEmployeeRef" ng-options="employee.FullName for employee in EmployeeListForAdd track by employee.EmployeeId" required>
+                                                <option value="" label="Select Ref. Employee"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="companyEntryForm.ddlEmployeeRef.$touched && companyEntryForm.ddlEmployeeRef.$invalid">Reference Employee is required.</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyWebAddress.$invalid && companyEntryForm.CompanyWebAddress.$touched }" data-toggle="tooltip" data-placement="bottom" title="Web Address">
+                                        <div class="input-group">
+                                            <input type="text" id="txtCustomerWebAddress" name="CompanyWebAddress" class="form-control" ng-model="ad_Company.Web" placeholder="Web Address" maxlength="50" ng-maxlength="49">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-location-arrow"></i>
+                                            </span>
+                                        </div>
+                                        <span class="help-block" ng-if="companyEntryForm.CompanyWebAddress.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <label>Status: </label>
+                                            &nbsp;&nbsp;
+                                            <div class="radio-inline" data-toggle="tooltip" data-placement="bottom" title="If Company is Active">
+                                                <input type="radio" name="optionsRadios"
+                                                       ng-value="true" ng-model="ad_Company.IsActive"> Active
+                                            </div>
+                                            <div class="radio-inline" data-toggle="tooltip" data-placement="bottom" title="If Company is Inactive">
+                                                <input type="radio" name="optionsRadios"
+                                                       ng-value="false" ng-model="ad_Company.IsActive"> Inactive
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <label>Payable ?: </label>
+                                            &nbsp;&nbsp;
+                                            <input type="checkbox" ng-model="ad_Company.IsPayable">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-pencil-square"></i>&nbsp;Bill Policy </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.PolicyDescription.$invalid && companyEntryForm.PolicyDescription.$touched }" data-toggle="tooltip" data-placement="bottom" title="Bill policy">
+                                                    <div class="input-group">
+                                                        <textarea rows="2" type="text" name="PolicyDescription" id="tbxPolicy" class="form-control" ng-model="ad_CompanyBillPolicy.PolicyDescription" placeholder="Policy" maxlength="500" ng-maxlength="499"></textarea>
+                                                        <textarea rows="2" type="text" name="tbxPolicyHidden" id="tbxPolicyHidden" class="form-control" style="display: none;"></textarea>
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-text-width"></i>
+                                                        </span>
+                                                    </div>
+                                                    <span class="help-block" ng-show="companyEntryForm.PolicyDescription.$error.required && companyEntryForm.PolicyDescription.$touched">Policy is required</span>
+                                                    <span class="help-block" ng-if="companyEntryForm.PolicyDescription.$error.maxlength">500 Character Max</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3" style="margin-left: -1%; margin-right: 0%; padding-left: 0%; padding-right: 0%;">
+                                                <button id="btnAdd" class="customBtn custmoBtnReset" title="Add Bill Ploicy" ng-click="AddCompanyBillPolicy()" ng-disabled="companyEntryForm.PolicyDescription.$invalid">
+                                                    <i class=" fa fa-plus-square">
+                                                    </i>&nbsp;{{buttonBillPolicy}}
+                                                </button>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <br />
+                                                <table class="responstable table-hover">
+                                                    <tbody>
+                                                        <tr class="t-head">
+                                                            <th class="t-cell-center">S/N</th>
+                                                            <th class="t-cell-center" data-th="Bill Policy details">
+                                                                <span>Bill Policy</span>
+                                                            </th>
+                                                            <th class="t-cell-center">Remove</th>
+                                                        </tr>
+                                                        <tr class="HoverTable" ng-repeat="aBillPolicy in companyBillPolicylist">
+                                                            <td class="t-cell-center" ng-click="SelCompanyBillPolicy(aBillPolicy)">{{aBillPolicy.SlNo}}</td>
+                                                            <td class="t-cell-center" ng-click="SelCompanyBillPolicy(aBillPolicy)">{{aBillPolicy.PolicyDescription}}</td>
+                                                            <td class="t-cell-center">
+                                                                <button title="Remove" ng-click="removeBillPolicy(aBillPolicy)">
+                                                                    <i class="fa fa-minus-square"></i>&nbsp;
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><i class="fa fa-globe fa-spin" style="color: red;"></i>&nbsp;Address<label style="color: red;">* </label>(Minimum 1 of Each Type is Required)</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <label>Address Type: </label>
+                                                    &nbsp;&nbsp;
+                                                    <div class="radio-inline">
+                                                        <label>
+                                                            <input type="radio" name="optionsRadios1"
+                                                                   value="Billing" ng-model="ad_CompanyAddress.AddressType">Billing
+                                                        </label>
+                                                    </div>
+                                                    <div class="radio-inline">
+                                                        <label>
+                                                            <input type="radio" name="optionsRadios2"
+                                                                   value="Delivery" ng-model="ad_CompanyAddress.AddressType">Delivery
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <label>
+                                                        <span>{{ad_CompanyAddress.AddressType}}</span>
+                                                        Company Name:
+                                                        &nbsp;
+                                                        <input type="checkbox" ng-model="ad_CompanyAddress.IsCompany" ng-change="CheckCompanyAddress(ad_CompanyAddress.IsCompany)">
+                                                        &nbsp;
+                                                        Same As Company
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.AddressCompanyName.$invalid && companyEntryForm.AddressCompanyName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Address Company Name">
+                                                <div class="input-group">
+                                                    <span>
+                                                        <input type="text" id="AddressCompanyName" name="AddressCompanyName" class="form-control" ng-model="ad_CompanyAddress.AddressCompanyName" placeholder="Address Company Name" maxlength="100" ng-maxlength="99" autofocus required>
+                                                    </span>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-text-width" style="color: red"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="help-block" ng-if="companyEntryForm.AddressCompanyName.$error.required && companyEntryForm.AddressCompanyName.$touched">Address Company Name is required</span>
+                                                <span class="help-block" ng-if="companyEntryForm.AddressCompanyName.$error.maxlength">100 Character Max</span>
+                                            </div>
+                                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyAddress.$invalid && companyEntryForm.CompanyAddress.$touched }" data-toggle="tooltip" data-placem `t="bottom" title="Address">
+                                                <div class="input-group">
+                                                    <textarea rows="3" type="text" id="tbxCompanyAddress" name="CompanyAddress" class="form-control" ng-model="ad_CompanyAddress.Address" maxlength="500" ng-maxlength="499" placeholder="Address" required></textarea>
+                                                    <textarea rows="3" type="text" id="tbxCompanyAddressHidden" style="display: none;"></textarea>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-paper-plane" style="color: red"></i>
+                                                    </span>
+                                                </div>
+                                                <!--<span class="help-block" ng-show="companyEntryForm.CompanyAddress.$error.required && companyEntryForm.CompanyAddress.$touched">Address is required</span>-->
+                                                <span class="help-block" ng-if="companyEntryForm.ContactPerson.$error.maxlength">500 Character Max</span>
+                                            </div>
+                                            <div class="form-group" ng-class=" { 'has-error' :companyEntryForm.CompanyConPerson.$invalid && companyEntryForm.CompanyConPerson.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Person">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtCustomerConPerson" name="CompanyConPerson" class="form-control" ng-model="ad_CompanyAddress.ContactPerson" maxlength="50" ng-maxlength="49" placeholder="Contact Person">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-text-width"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="help-block" ng-show="companyEntryForm.CompanyConPerson.$error.required && companyEntryForm.CompanyConPerson.$touched">Company Contact Person is required</span>
+                                                <span class="help-block" ng-if="companyEntryForm.CompanyConPerson.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyConDesignation.$invalid && companyEntryForm.CompanyConDesignation.$touched }" data-toggle="tooltip" data-placement="bottom" title="Contact Designation">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtConDesignation" name="CompanyConDesignation" class="form-control" ng-model="ad_CompanyAddress.ContactDesignation" maxlength="20" ng-maxlength="19" placeholder="Contact Designation">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-text-width"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="help-block" ng-show="companyEntryForm.CompanyConDesignation.$error.required && companyEntryForm.CompanyConDesignation.$touched">Contact Designation is required</span>
+                                                <span class="help-block" ng-if="companyEntryForm.CompanyConDesignation.$error.maxlength">20 Character Max</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyPhone.$invalid && companyEntryForm.CompanyPhone.$touched }" data-toggle="tooltip" data-placement="bottom" title="Phone">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtCompanyPhone" name="CompanyPhone" class="form-control" ng-model="ad_CompanyAddress.Phone" placeholder="Phone" maxlength="50" ng-maxlength="49">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-phone"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="help-block" ng-show="companyEntryForm.CompanyPhone.$error.required && companyEntryForm.CompanyPhone.$touched">Phone No. is required</span>
+                                                <span class="help-block" ng-if="companyEntryForm.CompanyPhone.$error.maxlength">50 Character Max</span>
+                                            </div>
+
+                                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyMobile.$invalid && companyEntryForm.CompanyMobile.$touched }" data-toggle="tooltip" data-placement="bottom" title="Mobile">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtCompanyMobile" name="CompanyMobile" class="form-control" ng-model="ad_CompanyAddress.Mobile" placeholder="Mobile" maxlength="20" ng-maxlength="19" />
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-mobile"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="help-block" ng-show="companyEntryForm.CompanyMobile.$error.required && companyEntryForm.CompanyMobile.$touched">Mobile No. is required</span>
+                                                <span class="help-block" ng-if="companyEntryForm.CompanyMobile.$error.maxlength">20 Character Max</span>
+                                            </div>
+                                            <div class="form-group" ng-class="{ 'has-error' :companyEntryForm.CompanyEmail.$invalid && companyEntryForm.CompanyEmail.$touched }" data-toggle="tooltip" data-placement="bottom" title="Email">
+                                                <div class="input-group">
+                                                    <input type="email" id="txtCompanyEmail" name="CompanyEmail" class="form-control" ng-model="ad_CompanyAddress.Email" placeholder="Email" maxlength="50" ng-maxlength="49">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="help-block" ng-show="companyEntryForm.CompanyEmail.$error.required && companyEntryForm.CompanyEmail.$touched">Email is required</span>
+                                                <span class="help-block" style="display: block;" ng-if="companyEntryForm.CompanyEmail.$error.email && companyEntryForm.CompanyEmail.$touched">Invalid Email</span>
+                                                <span class="help-block" ng-if="companyEntryForm.CompanyEmail.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                            <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Vat">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtVatRegNo" name="VatRegNo" class="form-control" ng-model="ad_CompanyAddress.VatRegNo" placeholder="VAT Registration No" maxlength="50" ng-maxlength="49">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-text-width" style="color: black"></i>
+                                                    </span>
+                                                </div>
+                                                <span class="help-block" ng-if="companyEntryForm.VatRegNo.$error.maxlength">50 Character Max</span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <input type="text" id="txtTIN" name="TIN" class="form-control" ng-model="ad_CompanyAddress.TIN" placeholder="TIN" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <input type="text" id="txtBIN" name="BIN" class="form-control" ng-model="ad_CompanyAddress.Fax" placeholder="BIN" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="input-group">
+                                                        <label>Default: </label>
+                                                        &nbsp;&nbsp;
+                                                        <input type="checkbox" name="DefaultAddress" ng-model="ad_CompanyAddress.IsDefault" ng-change="CheckDefault(ad_CompanyAddress.IsDefault)" value="default">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="row">
+                                                        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 5%; padding-right: 0%;">
+                                                            <button id="btnAdd" class="customBtn custmoBtnReset" title="addAddress" ng-click="AddCompanyAddress()"
+                                                                    ng-disabled="companyEntryForm.AddressCompanyName.$invalid
+                                                        || companyEntryForm.addressType.$invalid
+                                                        || companyEntryForm.CompanyAddress.$invalid
+                                                        ">
+                                                                &nbsp;{{buttonComAddress}}
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-md-5 col-sm-5 col-lg-5 col-xs-12" style="padding-left: 6%; padding-right: 0%;">
+                                                            <button id="btnAdd" class="customBtn custmoBtnDelete" title="Remove" ng-show="btnSuppAddressDeleteShow" ng-click="removeAddress()">
+                                                                <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <table class="responstable table-hover">
+                                                <tbody>
+                                                    <tr class="t-head">
+                                                        <th class="t-cell-center">S/N</th>
+                                                        <th class="t-cell-center">Type</th>
+                                                        <th class="t-cell-center" data-th="Address details">
+                                                            <span>Address</span>
+                                                        </th>
+                                                        <th class="t-cell-center">Default</th>
+                                                        <th class="t-cell-center">Remove</th>
+                                                    </tr>
+                                                    <tr class="HoverTable" ng-repeat="aCompanyAddress in companyAddresslist" ng-click="SelCompanyAddress(aCompanyAddress)">
+                                                        <td class="t-cell-center">{{aCompanyAddress.SlNo}}</td>
+                                                        <td class="t-cell-center">{{aCompanyAddress.AddressType}}</td>
+                                                        <td class="t-cell-center">
+                                                            <input ng-model="aCompanyAddress.Address" ng-click="stopProp()" />
+                                                        </td>
+                                                        <td class="t-cell-center">{{aCompanyAddress.IsDefault?"Yes":"No"}}</td>
+                                                        <td class="t-cell-center">
+                                                            <button title="Remove" ng-click="removeAddress(aCompanyAddress)">
+                                                                <i class="fa fa-minus-square"></i>&nbsp;
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+
+                                            <div class="row">
+
+                                                <button class="customBtn custmoBtnSave" ng-click="AddCompany(companyModal)" ng-disabled="( companyEntryForm.CompanyName.$invalid
+                                                                                           || companyEntryForm.CustomerLastName.$invalid
+                                                                                           || companyEntryForm.CompanyCode.$invalid
+                                                                                           ||!ddlEmployeeRef) ||(companyAddresslist.length==0)
+                                                                                           || btnSuppAddressDeleteShow " data-dismiss="modal">
+                                                    <i class="fa fa-floppy-o"></i>&nbsp;{{buttonSupp}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 6%; padding-right: 6%;">
+                                            <div class="row">
+                                                <button id="btnDelete" ng-show="btnDeleteShow" ng-click="Delete()" class="customBtn custmoBtnDelete" title="Delete">
+                                                    <i class="fa fa-trash"></i>&nbsp;Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-3 col-sm-4 col-lg-3 col-xs-12" style="padding-left: 7%; padding-right: 5%;">
+                                            <div class="row">
+
+                                                <button id="btnReset" ng-click="resetFormModal()" class="customBtn custmoBtnReset" title="Reset">
+                                                    <i class="fa fa-refresh"></i>&nbsp;Reset
+                                                </button>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="itemEntryNewForm" novalidate>
+    <!-- Modal -->
+    <div id="itemModal" class="modal fade" ng-model="itemModal" role="dialog">
+        <div class="modal-dialog modal-md">
+            <!-- Modal content-->
+            <div class="modal-content" style="width: 906px" ;>
+                <div class="modal-header text-center" style=" background-color: #3c8dbc;color:white;">
+                    <button type="button" class="close" style="color:red;" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New Product</h4>
+                </div>
+                <div class="modal-body">
+                    <!--<div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryNewForm.Category.$dirty && itemEntryNewForm.Category.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                    <select ng-model="ddlCategory" class="form-control selectMendatory" name="Category" id="cmbCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId" ng-change="CategoryChange()" required>
+                                        <option value="" label="Select Category"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryNewForm.Category.$dirty && itemEntryNewForm.Category.$invalid">Category is required</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryNewForm.SubCategory.$dirty && itemEntryNewForm.SubCategory.$invalid }">
+                                <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Subcategory">
+                                    <select ng-model="ddlSubCategory" class="form-control selectMendatory" name="SubCategory" ng-options="subCategory.SubCategoryName for subCategory in SubcategoryList | filter:{CategoryId: ddlCategory.CategoryId}:true track by subCategory.SubCategoryId" ng-change="CategoryChange()" ng-disabled="!ddlCategory" required>
+                                        <option value="" label="Select Subcategory"></option>
+                                    </select>
+                                </div>
+                                <span class="help-block" ng-show="itemEntryNewForm.SubCategory.$dirty && itemEntryNewForm.SubCategory.$invalid">Subcategory is required</span>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryNewForm.ItemName.$invalid && itemEntryNewForm.ItemName.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Name">
+                                <div class="input-group-btn search-panel">
+                                    <input type="text" onkeydown="newControl(this)" name="ItemName" id="txtItemSearch" ng-model="ad_Item.ItemName" ng-change="ItemSearchTextChange(ddlSubCategory.SubCategoryId)" autocomplete="off" class="form-control arrow-togglable" placeholder="Item Name" ng-disabled="!ddlSubCategory" onclick="return this.select();" required />
+                                    <div id="SearchResults">
+                                        <ul ng-show="ItemMainlist.length && ShowItemSearch" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9;">
+                                            <li ng-repeat="aCombination in AllItemSearch" ng-bind-html-unsafe="aCombination.ItemName">
+                                                <button ng-click="LoadAnItem(aCombination)" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                                    {{aCombination.ItemName}}
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryNewForm.FirstDescription.$invalid && itemEntryNewForm.FirstDescription.$touched }" data-toggle="tooltip" data-placement="bottom" title="Description">
+                                <div class="input-group-btn search-panel">
+                                    <input type="text" onkeydown="newControl(this)" name="FirstDescription" id="txtFirstDescription" ng-model="ad_Item.ItemDescription" ng-change="FirstDescriptionTextChange()" autocomplete="off" class="form-control arrow-togglable" placeholder="Description" ng-disabled="!ad_Item.ItemName" onclick="return this.select();" required />
+                                    <div id="SearchResults2">
+                                        <ul ng-show="FirstAttributeList.length && ShowFirstAttribute" style="z-index: 9 !important; position: absolute; list-style-type: none; padding: 0; background-color: #ede9e9;">
+                                            <li ng-repeat="aAttribute in FirstAttributeSearch" ng-bind-html-unsafe="aAttribute.AttributeValue">
+                                                <button ng-click="LoadFirstAttributeValue(aAttribute.AttributeValue)" onkeydown="nextControlFromSugession(this)" class="form-control arrow-togglable">
+                                                    {{aAttribute.AttributeValue}}
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7" style="padding-right:2px">
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryNewForm.ItemCode.$invalid && itemEntryNewForm.ItemCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Code">
+                                        <div class="input-group">
+                                            <input type="text" id="txtItemCode" maxlength="50" name="ItemCode" class="form-control" ng-model="ad_Item.ItemCode" placeholder="Item Code" ng-maxlength="49" ng-blur="CheckDuplicateBarcode()" ng-change="ItemCodeChange()" required>
+                                            <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="itemEntryNewForm.ItemCode.$error.required && itemEntryNewForm.ItemCode.$touched">Code is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="itemEntryNewForm.ItemCode.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="padding-left:2px">
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid }">
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                                            <select ng-model="ddlItemUnit" class="form-control selectMendatory" ng-change="SelectddlItemUnit(ddlItemUnit)" name="ItemUnit" ng-options="unit.UnitName for unit in ItemUnitlistM track by unit.ItemUnitId" required>
+                                                <option value="" label="SelectUnit"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid">Unit is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : itemEntryNewForm.ReorderLevel.$invalid && itemEntryNewForm.ReorderLevel.$touched }" data-toggle="tooltip" data-placement="bottom" title="Reorder Level">
+                                <div class="input-group">
+                                    <input type="number" onclick="return this.select();" maxlength="8" name="ReorderLevel" class="form-control" ng-model="ad_Item.ReorderLevel" placeholder="Reorder Level" ng-maxlength="7">
+                                    <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                </div>
+                                <span class="help-block" style="display: block;" ng-if="itemEntryNewForm.ReorderLevel.$error.maxlength">8 Character Max</span>
+                            </div>
+
+
+
+                        </div>
+                    </div>-->
+                    <div class="panel-body" style="margin-right: -25px; margin-left: -15px; ">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-4">
+                                    <label>Category</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.Category.$dirty && salesOrderForm.Category.$invalid }">
+
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                            <select ng-model="ddlCategory" class="form-control selectMendatory" name="Category" id="cmbCategory" ng-options="category.CategoryName for category in CategoryList track by category.CategoryId" ng-change="CategoryChange()" required autofocus>
+                                                <option value="" label="Select Category"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="salesOrderForm.Category.$dirty && salesOrderForm.Category.$invalid">Category is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Subcategory</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.SubCategory.$dirty && salesOrderForm.SubCategory.$invalid }">
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Subcategory">
+                                            <select ng-model="ddlSubCategory" class="form-control selectMendatory" name="SubCategory" ng-options="subCategory.SubCategoryName for subCategory in SubcategoryList | filter:{CategoryId: ddlCategory.CategoryId}:true track by subCategory.SubCategoryId" ng-change="CategoryChange()" ng-disabled="!ddlCategory" required>
+                                                <option value="" label="Select Subcategory"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="salesOrderForm.SubCategory.$dirty && salesOrderForm.SubCategory.$invalid">Subcategory is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Item Name</label>
+                                </div>
+                                <div class="col-md-8">
+
+
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.ItmName.$touched && itemEntryTwoForm.ItmName.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Select Item">
+                                        <div class="input-group input-group-md ddl">
+                                            <input type="text" list="ItmList" class="form-control selectMendatory" name="ItmName" ng-model="ad_Item.ItemName" placeholder="Item Name" required />
+                                        </div>
+                                        <datalist id="ItmList">
+                                            <option ng-repeat="Item in ItemSearchList" value="{{Item.ItemName}}">
+                                        </datalist>
+                                        <span class="help-block" ng-show="itemEntryTwoForm.ItmName.$touched && itemEntryTwoForm.ItmName.$invalid">Item is required</span>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Description 1</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.DescriptionOne.$invalid && salesOrderForm.DescriptionOne.$touched }" data-toggle="tooltip" data-placement="bottom" title="Description 1">
+                                        <div class="input-group">
+                                            <input type="text" id="txtDescriptionOne" maxlength="50" name="DescriptionOne" class="form-control" ng-model="ad_Item.ItemDescription" ng-maxlength="49" required>
+                                            <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.DescriptionOne.$error.required && salesOrderForm.DescriptionOne.$touched">PDescription 1 is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.DescriptionOne.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Description 2 </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.DescriptionTwo.$invalid && salesOrderForm.DescriptionTwo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Description 2">
+                                        <div class="input-group">
+                                            <input type="text" id="txtDescriptionTwo" maxlength="50" name="DescriptionTwo" class="form-control" ng-model="ad_Item.ItemDescriptionTwo" ng-maxlength="49" required>
+                                            <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.DescriptionTwo.$error.required && salesOrderForm.DescriptionTwo.$touched">Description 2  is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.DescriptionTwo.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Item Code</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.ItemCode.$invalid && salesOrderForm.ItemCode.$touched }" data-toggle="tooltip" data-placement="bottom" title="Item Code">
+                                        <div class="input-group">
+                                            <input type="text" id="txtItemCode" maxlength="50" name="ItemCode" class="form-control" ng-model="ad_Item.ItemCode" ng-maxlength="49" ng-blur="CheckDuplicateBarcode()" ng-change="ItemCodeChange()" required>
+                                            <span class="input-group-addon"><i class="fa fa-text-width" style="color: red;"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.ItemCode.$error.required && salesOrderForm.ItemCode.$touched">Item Code is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.ItemCode.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-4">
+                                    <label>Unit</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid }">
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Unit">
+                                            <select ng-model="ddlItemUnit" class="form-control selectMendatory" name="ItemUnit" ng-change="Unit(ddlItemUnit);ad_Item.UnitName=ddlItemUnit.UnitName" ng-options="unit.UnitName for unit in ItemUnitlist track by unit.ItemUnitId" required>
+                                                <option value="" label="Select Unit" hidden></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="itemEntryForm.ItemUnit.$dirty && itemEntryForm.ItemUnit.$invalid">Unit is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Package</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemPackage.$dirty && itemEntryForm.ItemPackage.$invalid }">
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Package">
+                                            <select id="ddlItemPackage" ng-model="ddlItemPackage" class="form-control selectNotMandetory" ng-disabled="!ddlItemUnit" ng-change="ad_Item.UnitName=ddlItemPackage.UnitName;" name="ItemPackage" ng-options="package.UnitName for package in ItemUnitlist |  filter: {ItemUnitId: '!' +ddlItemUnit.ItemUnitId}| filter:ItemUnitFilter track by package.ItemUnitId" required>
+                                                <option value="" label="Select Unit" hidden></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="itemEntryForm.ItemPackage.$dirty && itemEntryForm.ItemPackage.$invalid">Unit is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Container</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid }">
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Container">
+                                            <select id="containerLbl" ng-model="ddlItemContainer" class="form-control selectNotMandetory" ng-change="ad_Item.UnitName=ddlItemContainer.UnitName" name="ItemContainer" ng-disabled="!ddlItemPackage" ng-options="container.UnitName for container in ItemUnitlist | filter : {ItemUnitId : '!' +ddlItemUnit.ItemUnitId } | filter:{ ItemUnitId : '!' +ddlItemPackage.ItemUnitId} |filter:PackageUnitFilter track by container.ItemUnitId">
+                                                <option value="" label="Select Unit" hidden></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid">Unit is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>RO Level</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid }">
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Container">
+                                            <select id="containerLbl" ng-model="ddlItemContainer" class="form-control selectNotMandetory" ng-change="ad_Item.UnitName=ddlItemContainer.UnitName" name="ItemContainer" ng-disabled="!ddlItemPackage" ng-options="container.UnitName for container in ItemUnitlist | filter : {ItemUnitId : '!' +ddlItemUnit.ItemUnitId } | filter:{ ItemUnitId : '!' +ddlItemPackage.ItemUnitId}  track by container.ItemUnitId">
+                                                <option value="" label="Select Unit" hidden></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="itemEntryForm.ItemContainer.$dirty && itemEntryForm.ItemContainer.$invalid">Unit is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>HS Code</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group" ng-class="{ 'has-error' : itemEntryTwoForm.HsCode.$dirty && itemEntryTwoForm.HsCode.$invalid }">
+
+                                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="Select Category">
+                                            <select ng-model="ddlHsCode" class="form-control selectMendatory" name="HSCode" id="cmbHSCode" ng-options="code.HsCode for code in HsCodeList track by code.HsCodeId" ng-change="ad_Item.HsCodeId=ddlHsCode.HsCodeId" required autofocus>
+                                                <option value="" label="Select HSCode"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" ng-show="itemEntryTwoForm.HsCode.$dirty && itemEntryTwoForm.HsCode.$invalid">HSCode is required</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <label>Active Status: </label>
+                                        &nbsp;&nbsp;
+                                        <div class="radio-inline">
+                                            <input type="radio" name="optionsRadios" ng-value="true" ng-model="ad_Item.IsActive">Active
+                                        </div>
+                                        <div class="radio-inline">
+                                            <input type="radio" name="optionsRadios" ng-value="false" ng-model="ad_Item.IsActive">Inactive
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-6" ng-show="ddlItemPackage">
+                                    <label>{{ddlItemUnit.UnitName}} per {{ddlItemPackage.UnitName}}</label>
+                                </div>
+                                <div class="col-md-6" ng-show="ddlItemPackage">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.UnitPackage.$invalid && salesOrderForm.UnitPackage.$touched }" data-toggle="tooltip" data-placement="bottom" title="Unit Per Package">
+                                        <div class="input-group">
+                                            <input type="text" id="txtUnitPackage" maxlength="50" name="UnitPackage" class="form-control" ng-model="ad_Item.UnitPerPackage" ng-maxlength="49">
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.UnitPackage.$error.required && salesOrderForm.UnitPackage.$touched">Unit Per Package is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.UnitPackage.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 2||ddlItemPackage.ItemUnitId==2||ddlItemContainer.ItemUnitId==2">
+                                    <label>{{btnPackageWeight}}(kg) </label>
+                                </div>
+                                <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 2||ddlItemPackage.ItemUnitId==2||ddlItemContainer.ItemUnitId==2">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.PackageWeight.$invalid && salesOrderForm.PackageWeight.$touched }" data-toggle="tooltip" data-placement="bottom" title="Package Weight">
+                                        <div class="input-group">
+                                            <input type="number" id="txtPackageWeight" name="PackageWeight" class="form-control" ng-model="ad_Item.PackageWeight">
+                                            <!--<span class="input-group-addon"><i class="fa fa-text-width"></i></span>-->
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.PackageWeight.$error.required && salesOrderForm.PackageWeight.$touched">Package Weight is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.PackageWeight.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="padding-right:5px" ng-if="ddlItemUnit.ItemUnitId== 1" ng-show="ddlItemContainer">
+                                    <label>{{ddlItemPackage.UnitName}} Per {{ddlItemContainer.UnitName}}</label>
+                                </div>
+                                <div class="col-md-6" ng-if="ddlItemUnit.ItemUnitId== 1" ng-show="ddlItemContainer">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.PackagePerContainer.$invalid && salesOrderForm.PackagePerContainer.$touched }" data-toggle="tooltip" data-placement="bottom" title="Package Per Container">
+                                        <div class="input-group">
+                                            <input type="text" id="txtPackagePerContainer" maxlength="50" name="PackagePerContainer" class="form-control" ng-model="ad_Item.PackagePerContainer" ng-maxlength="49">
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.PackagePerContainer.$error.required && salesOrderForm.PackagePerContainer.$touched">Package Per Container is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.PackagePerContainer.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-if="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+
+                                    <label>{{btnContainerWeight}}(kg)</label>
+                                </div>
+                                <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.ContainerWeight.$invalid && salesOrderForm.ContainerWeight.$touched }" data-toggle="tooltip" data-placement="bottom" title="Container Weight">
+                                        <div class="input-group">
+                                            <input type="number" id="txtContainerWeight" name="ContainerWeight" class="form-control" ng-model="ad_Item.ContainerWeight">
+                                            <!--<span class="input-group-addon"><i class="fa fa-text-width"></i></span>-->
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.ContainerWeight.$error.required && salesOrderForm.ContainerWeight.$touched">Container Weight is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.ContainerWeight.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                                    <label>{{btnContainerSize}}</label>
+                                </div>
+                                <div class="col-md-6" ng-show="ddlItemUnit.ItemUnitId== 3||ddlItemPackage.ItemUnitId==3||ddlItemContainer.ItemUnitId==3">
+                                    <div class="form-group" ng-class="{ 'has-error' : salesOrderForm.ContainerSize.$invalid && salesOrderForm.ContainerSize.$touched }" data-toggle="tooltip" data-placement="bottom" title="Container Size">
+                                        <div class="input-group">
+                                            <input type="text" id="txtContainerSize" maxlength="50" name="ContainerSize" class="form-control" ng-model="ad_Item.ContainerSize" ng-maxlength="49">
+                                            <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                        </div>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.ContainerSize.$error.required && salesOrderForm.ContainerSize.$touched">Container Size is required</span>
+                                        <span class="help-block" style="display: block;" ng-if="salesOrderForm.ContainerSize.$error.maxlength">50 Character Max</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="margin-top:10px" class="btn btn-success" ng-click="SaveItem();" title="save">Save</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="CloseItemModal();">Close</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="AmendmentModal" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Amendment Request</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-9">
+                        <p>
+                            Sales Order No:
+                            {{PaymentProcessForAmendment.SalesOrderNo}} &nbsp;,&nbsp; &nbsp;
+                            Company Name:
+                            {{PaymentProcessForAmendment.CompanyName }}
+                        </p>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Amendment Reason</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Select Reason">
+                            <div class="input-group input-group-md ddl">
+                                <select ng-model="ddlAmendmentReason" id="ddlAmendmentReason" class="form-control selectMendatory" name="AmendmentReason" ng-options="reason.AmendmentReasonName for reason in AmendmentReasonList track by reason.AmendmentReasonId" ng-change="exp_AmendmentRequest.AmendmentReasonId = ddlAmendmentReason.AmendmentReasonId" autofocus required>
+                                    <option value="" label="Select Reason"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Remarks</label>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Remarks">
+                            <div class="input-group ">
+                                <input type="text" name="Remarks" class="form-control" ng-model="exp_AmendmentRequest.RequestRemarks" placeholder="Remarks" maxlength="101" ng-maxlength="100" required>
+                                <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button" class="customBtn custmoBtnReset" data-dismiss="modal" ng-disabled="AmendmentRequestCheck || !ddlAmendmentReason" ng-click="SaveAmendmentRequest();"><i class="fa fa-floppy-o"></i>&nbsp;Request</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="customBtn custmoBtnDelete" data-dismiss="modal" ng-click="AmendmentRequestCheck=false"><i class="fa fa-refresh"></i>&nbsp;Cancel</button>
+                    </div>
+                </div>
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#dueDateDiv').bind('mouseenter', function () {
+            var $this = $(this);
+
+            var soDate = $("#txtSalesOrderDate").val();
+            if (soDate == "") {
+                $this.attr({
+                    'title': 'To Enable This Select Order Date First'
+                });
+
+            } else {
+                $this.attr('title', 'Select Due Date');
+            }
+            //if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+            //    $this.attr('title', $this.text());
+            //}
+        });
+    });
+</script>
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+
+    //var pickerSalesOrderDate = new Pikaday({
+    //    field: document.getElementById('txtSalesOrderDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date(),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender").addEventListener("click", function () {
+    //    pickerSalesOrderDate.show();
+    //});
+
+    //var pickerPoDate = new Pikaday({
+    //    field: document.getElementById('txtPoDate'),
+    //    firstDay: 1,
+    //    format: "dd/MM/yyyy",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date(),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calenderPoD").addEventListener("click", function () {
+    //    pickerPoDate.show();
+    //});
+
+    //var pickerIDD = new Pikaday({
+    //    field: document.getElementById('txtInvoiceDueDate'),
+    //    firstDay: 1,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date(),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calenderIDD").addEventListener("click", function () {
+    //    pickerIDD.show();
+    //});
+
+    //var picker = new Pikaday({
+    //    field: document.getElementById('txtDueDate'),
+    //    firstDay: 8,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date('2050-12-31'),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender1").addEventListener("click", function () {
+    //    picker.show();
+    //});
+
+    //var picker2 = new Pikaday({
+    //    field: document.getElementById('txtFromDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date(),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender2").addEventListener("click", function () {
+    //    picker2.show();
+    //});
+
+    //var picker3 = new Pikaday({
+    //    field: document.getElementById('txtToDate'),
+    //    firstDay: 6,
+    //    format: "DD/MM/YYYY",
+    //    minDate: new Date('1930-01-01'),
+    //    maxDate: new Date(),
+    //    yearRange: [1930, 2050],
+    //    theme: 'blue-theme'
+    //});
+    //document.getElementById("calender3").addEventListener("click", function () {
+    //    picker3.show();
+    //});
+
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+    }
+</script>

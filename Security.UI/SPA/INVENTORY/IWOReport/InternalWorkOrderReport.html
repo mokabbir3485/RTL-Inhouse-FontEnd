@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+    body {
+    font-family: "Times New Roman", Times, serif;
+    color: #000000;
+    writing-mode: inherit;
+    width: 100%;
+    height: 100%;
+
+    }
+    #UpperTable  td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding:5px;
+    }
+    .ProductTable th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    }
+    .ProductTable td {
+    border: 1px solid black;
+    border-collapse: collapse;
+     padding:5px;
+    }
+    .footer {
+    position: fixed;
+    left: 29px;
+    bottom: 0px;
+    }
+    .flexcontainer {
+    display: flex;
+    justify-content: space-between;
+    }
+    @media screen {
+    img {
+    height: 200px;
+    width: 300px;
+    margin-top:0px;
+    }
+    }
+    @media print {
+      #LogoImg, img {
+          margin-top:-10px;
+      }
+
+        #PrintImg, img {
+            margin-top: -10px;
+            height: 200px;
+            width: 300px;
+        }
+
+        .page-break {
+            display: block;
+            page-break-before: always;
+        }
+
+    img {
+    height: 200px;
+    width: 300px;
+    margin-top: 60px;
+    }
+    }
+
+    @page {
+    size: A4 landscape;
+    max-height: 100%;
+    max-width: 100%;
+    font-family: 'Times New Roman';
+    }
+    
+    </style>
+</head>
+<body>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td>
+                    <div class=" hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+
+                    <div class="" id="source-html">
+                        <div>
+                            <!--<img id="LogoImg" style="width:65px;height:65px;border-radius:100%;margin-right:15px;" src="/UploadedImages/logo.jpg" />-->
+                            <p style="font-size: 25px; text-align: center; margin: 0px; padding: 0px;"> <b>Retail Technologies Limited</b></p>
+                            <p style="font-size: 12px; text-align: center; margin-top: 10px; padding: 0px;margin-top:0px;">
+                                <b>
+                                    House #02,Road #01,Black #A
+                                    <br />
+                                    <b>
+                                        Nolvoge,Nishatnagagar,Turag, Dhaka
+                                    </b>
+                                </b>
+                            </p>
+
+                        </div>
+                        <table id="UpperTable" style="width: 100%; border:1px;">
+                            <tbody>
+                                <tr width="450px" style="text-align:left;padding:5px;">
+                                    <td>Cumstomer Name</td>
+                                    <td>
+                                            {{InternalWorkOrderList[0].CompanyName}}
+                                    </td>
+                                    <td>Requisition Given By</td>
+                                    <td>
+                                        {{InternalWorkOrderList[0].FullName}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cumstomer Address</td>
+                                    <td> {{InternalWorkOrderList[0].CompanyAddress}}</td>
+                                    <td>Sample Requition Date</td>
+                                    <td>{{InternalWorkOrderList[0].InternalWorkOrderDate}} </td>
+                                </tr>
+                                <tr>
+                                    <td>Sample Delivery address</td>
+                                    <td>{{InternalWorkOrderList[0].PlaceOfDelivery}}</td>
+                                    <td>Sample Delivery Date</td>
+                                    <td>{{InternalWorkOrderList[0].DeliveryDate}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="ProductTable table-hover" style="width: 100%;  margin-left: auto; margin-right: auto;margin-top:20px">
+                            <tbody>
+                                <tr>
+                                    <th class="t-cell-center">S/N</th>
+                                    <th class="t-cell-center">Barcode</th>
+                                    <th class="t-cell-center">Product Name & Size</th>
+
+
+                                    <th class="t-cell-center">Raw Material</th>
+                                    <th class="t-cell-center">Ups Qty. </th>
+                                    <th class="t-cell-center">Color</th>
+                                    <th class="t-cell-center">Radias / Corner</th>
+                                    <th class="t-cell-center">Core Dia (mm)</th>
+                                    <th class="t-cell-center">Qty Per Roll</th>
+                                    <th class="t-cell-center">Roll Direction</th>
+
+                                    <th class="t-cell-center">Quantity</th>
+                                    <th class="t-cell-center">Remarks</th>
+
+                                </tr>
+                                <tr class="HoverTable" ng-repeat="anternalWorkOrder in   InternalWorkOrderList track by $index">
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.Barcode}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.FinishedItemName}}</td>
+
+
+                                    <td class="t-cell-center">{{anternalWorkOrder.RawMaterials}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.Ups}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.Color}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.Radius}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.Core}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.QtyPerRoll}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.RollDirection}}</td>
+                                    <td class="t-cell-center">{{anternalWorkOrder.OrderQty}}</td>
+                                    <td style="text-align:justify">{{anternalWorkOrder.Remarks}}</td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div ><h3>Special Instrcution: <span style="font-size:16px;"> {{InternalWorkOrderList[0].Remarks}} </span> </h3></div>
+                        <div class="container text-center page-break ">
+                            <table border="1"  style="width: 100%;">
+                                <tr ng-repeat="anternalWorkOrder in InternalWorkOrderList | filter:{ArtWork:''}" style="height:250px;"  >
+                                  
+                                    <td style="width:50% ;" class="t-cell-center">
+                                        <b >ItemName:</b> {{anternalWorkOrder.FinishedItemName}} <b>BarCode:</b>{{anternalWorkOrder.Barcode}}
+                                    </td>
+                                    <td style="width:50%" class="t-cell-center" >
+                                        <div ng-if="anternalWorkOrder.ArtWork">
+                                            <img id="PrintImg" ng-src="../../../UploadedFiles/ArtWork/{{anternalWorkOrder.ArtWork}}" alt="Description" />
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                       
+                        <!--<div class="container text-center" ng-repeat="anternalWorkOrder in InternalWorkOrderList">
+                            <div class="page-break" style="font-size:large">
+                                <b>ItemName:</b> {{anternalWorkOrder.FinishedItemName}} <b>BarCode:</b>{{anternalWorkOrder.Barcode}}
+                            </div>
+                            <div><img ng-src="../../../UploadedFiles/{{anternalWorkOrder.ArtWork}}" alt="Description" /></div>
+
+                        </div>-->
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+<script>
+
+
+
+    jQuery(document).ready(function ($) {
+
+        $(".main-sidebar").attr("hidden", true);
+        $(".main-header").attr("hidden", true);
+        $(".main-footer").attr("hidden", true);
+        $("#br").attr("hidden", true);
+
+        $("div").removeClass("wrapper");
+        $("div").removeClass("content-wrapper");
+    });
+
+
+    function PrintPdf() {
+        window.print();
+    }
+
+</script>

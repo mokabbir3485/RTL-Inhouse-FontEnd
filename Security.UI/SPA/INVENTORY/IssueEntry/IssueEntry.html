@@ -1,0 +1,460 @@
+﻿<form name="issueEntryForm" novalidate>
+    <div class="col-md-12">
+        <div class="alert alert-info alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="topInfo"> &nbsp; &#9755; <span style="color:red;">Red Icon</span> Denotes Required Field &nbsp;&nbsp;&nbsp;&nbsp; &#9755; Click On A Table Row To Update/Delete</div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Stock Issue</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row" ng-show="showTable">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tbody>
+                                <tr class="t-head"><th colspan="5">Requisition</th></tr>
+                                <tr>
+                                    <th>S/N</th>
+                                    <th class="t-cell-center" width="20%">Requisition #</th>
+                                    <th class="t-cell-center" width="20%">Requisition Date</th>
+                                    <th class="t-cell-center" width="25%">From</th>
+                                    <th class="t-cell-center" width="25%">To</th>
+                                </tr>
+                                <tr>
+                                <tr class="HoverTable searchRow" onclick="RowSelect(this)" ng-repeat="topIssue in TopForIssueList" ng-click="CellClick(topIssue)">
+                                    <td>{{$index+1}}</td>
+                                    <td class="t-cell-center">{{topIssue.RequisitionNo}}</td>
+                                    <td class="t-cell-center">{{topIssue.RequisitionDate}}</td>
+                                    <td class="t-cell-center">{{topIssue.FromDepartmentName}}</td>
+                                    <td class="t-cell-center">{{topIssue.ToDepartmentName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Issue Date">
+                                    <div class="input-group">
+                                        <input type="text" onkeydown="return false" id="txtIssueDate" name="reqDate" ng-model="inv_StockIssue.IssueDate" ng-change="getMaxIsseByDate()" class="form-control picker" placeholder="Issue Date" required readonly="readonly" />
+                                        <span class="input-group-addon" id="calender"><i class="fa fa-calendar req-icon-color"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.IssueNo.$invalid && issueEntryForm.IssueNo.$touched }" data-toggle="tooltip" data-placement="bottom" title="Issue No">
+                                    <div class="input-group ">
+                                        <input type="number" id="txtIssueNo" name="IssueNo" class="form-control" ng-model="inv_StockIssue.IssueNo" ng-change="CheckDuplicateIssueNo();" placeholder="Issue No" maxlength="10" ng-maxlength="9" required>
+                                        <span class="input-group-addon"><i class="fa fa-text-width req-icon-color"></i></span>
+                                    </div>
+                                    <span class="help-block" style="display: block;" ng-if="issueEntryForm.IssueNo.$error.required && issueEntryForm.IssueNo.$touched">Issue No. is required</span>
+                                    <span class="help-block" style="display: block;" ng-if="issueEntryForm.IssueNo.$error.maxlength">10 Character Max</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="From Departemt">
+                            <div class="input-group width-hundred-percent">
+                                <select ng-model="ddlDepartment" disabled="disabled" id="ddlDepartment" class="form-control selectMendatory" name="Department" ng-change="inv_StockIssue.IssueFromDepartmentId=ddlDepartment.DepartmentId;inv_StockIssue.IssueFromDepartmentName=ddlDepartment.DepartmentName;GetByCombinationLike()" ng-options="department.DepartmentName for department in DepartmentList track by department.DepartmentId">
+                                    <option value="" label="From Department"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-md ddl" data-toggle="tooltip" data-placement="bottom" title="To Store">
+                            <select ng-model="ddlStore" disabled="disabled" class="form-control selectMendatory" name="Store" ng-change="inv_StockIssue.IssueToDepartmentId=ddlStore.DepartmentId;inv_StockIssue.IssueToDepartmentName=ddlStore.DepartmentName" ng-options="store.DepartmentName for store in Storelist track by store.DepartmentId">
+                                <option value="" label="To Store"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.ddlIssuedBy.$dirty && issueEntryForm.ddlIssuedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Issued By">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlIssuedBy" ng-model="ddlIssuedBy" class="form-control selectMendatory" ng-change=" inv_StockIssue.IssuedById =ddlIssuedBy.EmployeeId; inv_StockIssue.IssuedBy =ddlIssuedBy.FullName;" ng-options="employee.FullName  for employee in EmployeeList track by employee.EmployeeId" name="ddlIssuedBy" required>
+                                    <option value="" label="Issued By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="issueEntryForm.ddlIssuedBy.$dirty && issueEntryForm.ddlIssuedBy.$invalid">Issued By is required</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{ 'has-error' : issueEntryForm.ddlReceivedBy.$dirty && issueEntryForm.ddlReceivedBy.$invalid }" data-toggle="tooltip" data-placement="bottom" title="Received By">
+                            <div class="input-group input-group-md ddl">
+                                <select id="ddlReceivedBy" ng-model="ddlReceivedBy" class="form-control selectMendatory" ng-change=" inv_StockIssue.ReceivedById =ddlReceivedBy.EmployeeId; inv_StockIssue.ReceivedBy =ddlReceivedBy.FullName;" ng-options="employee.FullName  for employee in EmployeeList | filter:{EmployeeId: '!' + ddlIssuedBy.EmployeeId} track by employee.EmployeeId" name="ddlReceivedBy" required>
+                                    <option value="" label="Received By"></option>
+                                </select>
+                            </div>
+                            <span class="help-block" ng-show="issueEntryForm.ddlReceivedBy.$dirty && issueEntryForm.ddlReceivedBy.$invalid">Received By</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="responstable table-hover">
+                            <tr>
+                                <th class="t-cell-center"></th>
+                                <th class="t-cell-center">SL.No</th>
+                                <th class="t-cell-center">Product Name</th>
+                                <th class="t-cell-center">Description 1</th>
+                                <th class="t-cell-center">Description 2</th>
+                                <th class="t-cell-center">Issue Quantity</th>
+                            </tr>
+                            <tbody ng-repeat="aIssue in SingleIssuelist track by $index">
+                                <tr>
+                                    <td class="t-cell-center"><label><i ng-show="!aIssue.DisplaySta && aIssue.HeaderOfAttribute.length" class="fa fa-plus-square"></i><i ng-show="aIssue.DisplaySta && aIssue.HeaderOfAttribute.length" class="fa fa-minus-square"></i><input style="visibility:hidden;" type="checkbox" ng-model="aIssue.DisplaySta" /></label></td>
+                                    <td class="t-cell-center">{{$index+1}}</td>
+                                    <td class="t-cell-center">{{aIssue.Combination}}</td>
+                                    <td class="t-cell-center">{{aIssue.ItemDescription}}</td>
+                                    <td class="t-cell-center">{{aIssue.ItemDescriptionTwo}}</td>
+                                    <td class="t-cell-center">{{aIssue.IssueQuantity}}</td>
+                                   
+                                </tr>
+                                <tr ng-show="aIssue.DisplaySta && aIssue.HeaderOfAttribute.length">
+                                    <td></td>
+                                    <td colspan="6">
+                                        <div>
+                                            <table class="responstable table-hover">
+                                                <tr>
+                                                    <th style="text-align:center;" width="10%">Chk</th>
+                                                    <th class="t-cell-center">Barcode</th>
+                                                    <th class="t-cell-center">Req. Purpose</th>
+                                                    <th class="t-cell-center">Stock Qty</th>
+                                                    <th class="t-cell-center">Req. Qty</th>
+                                                    <th class="t-cell-center">Issued Qty</th>
+                                                    <th class="t-cell-center" colspan="2">Issue Quantity</th>
+                                                </tr>
+                                                <tr class="HoverTable" ng-repeat="aIssueDetailAdAttribute in _inv_StockIssueDetailAdAttribute | filter: { ItemId : aIssue.ItemId }:true">
+                                                    <td style="text-align:center;">
+                                                        <input type="checkbox" ng-model="aIssueDetailAdAttribute.IsIssued">
+                                                    </td>
+                                                    <td class="t-cell-center">{{aIssueDetailAdAttribute.Barcode}}</td>
+                                                    <td class="t-cell-center">{{aIssueDetailAdAttribute.RequisitionPurposeName}}</td>
+                                                    <td class="t-cell-center">{{aIssueDetailAdAttribute.CurrentQuantity}}</td>
+                                                    <td class="t-cell-center">{{aIssueDetailAdAttribute.RequisitionQuantity}}</td>
+                                                    <td class="t-cell-center">{{aIssueDetailAdAttribute.IssuedQuantity}}</td>
+                                                    <td class="t-cell-center text-center">
+                                                        <input type="number" min="0" step=".01" style="text-align:center" ng-change="SumAttQty()" ng-model="aIssueDetailAdAttribute.IssueQuantity" />
+                                                    </td>
+                                                    <td class="t-cell-center">
+                                                        <button title="Remove" ng-click="RemoveItemAttr(aIssueDetailAdAttribute)">
+                                                            <i class="fa fa-minus-square"></i>&nbsp;Remove
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="input-group">
+                        <button id="btnDelete" class="btn btn-success" ng-click="SaveStockIssue()" title="Save" ng-disabled="!inv_StockIssue.IssueNo||!inv_StockIssue.IssueDate||!ddlIssuedBy||!ddlReceivedBy">
+                            <i class="fa fa-save"></i>&nbsp;{{btnSave}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="input-group">
+                        <button id="btnReset" ng-click="resetForm()" class="btn btn-primary" title="Reset">
+                            <i class="fa fa-refresh"></i>&nbsp;Reset
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+<pre>{{TopForIssueList | json}}</pre>
+<pre>{{_inv_StockIssueDetailAdAttribute | json}}</pre>
+<script>
+    function RowSelect(e) {
+        $('.searchRow').css('background-color', '');
+        $(e).css('background-color', '#94d5ef');
+    }
+</script>
+
+<script>
+    var picker = new Pikaday({
+        field: document.getElementById('txtIssueDate'),
+        firstDay: 6,
+        format: "DD/MM/YYYY",
+        minDate: new Date('1930-01-01'),
+        maxDate: new Date('2050-12-31'),
+        yearRange: [1930, 2050],
+        theme: 'blue-theme'
+    });
+    document.getElementById("calender").addEventListener("click", function () {
+        picker.show();
+    });
+
+    var elements = document.getElementsByClassName("arrow-togglable");
+    var currentIndex = 0;
+
+    function newControl(e) {
+        elements = document.getElementsByClassName("arrow-togglable");
+        currentIndex = 0;
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+
+    function nextControlFromSugession(e) {
+        if (window.event.which == 40) {
+            currentIndex = ((currentIndex + 1) == elements.length) ? 0 : ++currentIndex;
+            elements[currentIndex].focus();
+        }
+        if (window.event.which == 38) {
+            currentIndex = (currentIndex == 0) ? elements.length - 1 : --currentIndex;
+            elements[currentIndex].focus();
+        }
+    }
+    function Hilitor2(id, tag) {
+        var targetNode = document.getElementById(id) || document.body;
+        var hiliteTag = tag || "EM";
+        var skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM)$");
+        var colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+        var wordColor = [];
+        var colorIdx = 0;
+        var matchRegex = "";
+        var openLeft = false;
+        var openRight = false;
+
+        this.setMatchType = function (type) {
+            switch (type) {
+                case "left":
+                    this.openLeft = false;
+                    this.openRight = true;
+                    break;
+
+                case "right":
+                    this.openLeft = true;
+                    this.openRight = false;
+                    break;
+
+                case "open":
+                    this.openLeft = this.openRight = true;
+                    break;
+
+                default:
+                    this.openLeft = this.openRight = false;
+
+            }
+        };
+
+        function addAccents(input) {
+            retval = input;
+            retval = retval.replace(/([ao])e/ig, "$1");
+            retval = retval.replace(/\\u00E[024]/ig, "a");
+            retval = retval.replace(/\\u00E7/ig, "c");
+            retval = retval.replace(/\\u00E[89AB]/ig, "e");
+            retval = retval.replace(/\\u00E[EF]/ig, "i");
+            retval = retval.replace(/\\u00F[46]/ig, "o");
+            retval = retval.replace(/\\u00F[9BC]/ig, "u");
+            retval = retval.replace(/\\u00FF/ig, "y");
+            retval = retval.replace(/\\u00DF/ig, "s");
+            retval = retval.replace(/a/ig, "([aÃ Ã¢Ã¤]|ae)");
+            retval = retval.replace(/c/ig, "[cÃ§]");
+            retval = retval.replace(/e/ig, "[eÃ¨Ã©ÃªÃ«]");
+            retval = retval.replace(/i/ig, "[iÃ®Ã¯]");
+            retval = retval.replace(/o/ig, "([oÃ´Ã¶]|oe)");
+            retval = retval.replace(/u/ig, "[uÃ¹Ã»Ã¼]");
+            retval = retval.replace(/y/ig, "[yÃ¿]");
+            retval = retval.replace(/s/ig, "(ss|[sÃŸ])");
+            return retval;
+        }
+
+        this.setRegex = function (input) {
+            input = input.replace(/\\([^u]|$)/g, "$1");
+            input = input.replace(/[^\w\\\s']+/g, "").replace(/\s+/g, "|");
+            input = input.replace(/^\||\|$/g, "");
+            input = addAccents(input);
+            if (input) {
+                var re = "(" + input + ")";
+                if (!this.openLeft) re = "(?:^|[\\b\\s])" + re;
+                if (!this.openRight) re = re + "(?:[\\b\\s]|$)";
+                matchRegex = new RegExp(re, "i");
+                return true;
+            }
+            return false;
+        };
+
+        this.getRegex = function () {
+            var retval = matchRegex.toString();
+            retval = retval.replace(/(^\/|\(\?:[^\)]+\)|\/i$)/g, "");
+            return retval;
+        };
+
+        // recursively apply word highlighting
+        this.hiliteWords = function (node) {
+            if (node === undefined || !node) return;
+            if (!matchRegex) return;
+            if (skipTags.test(node.nodeName)) return;
+
+            if (node.hasChildNodes()) {
+                for (var i = 0; i < node.childNodes.length; i++)
+                    this.hiliteWords(node.childNodes[i]);
+            }
+            if (node.nodeType == 3) { // NODE_TEXT
+                if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+                    if (!wordColor[regs[1].toLowerCase()]) {
+                        wordColor[regs[1].toLowerCase()] = colors[colorIdx++ % colors.length];
+                    }
+
+                    var match = document.createElement(hiliteTag);
+                    match.appendChild(document.createTextNode(regs[1]));
+                    match.style.backgroundColor = wordColor[regs[1].toLowerCase()];
+                    match.style.fontStyle = "inherit";
+                    match.style.color = "#000";
+
+                    var after;
+                    if (regs[0].match(/^\s/)) { // in case of leading whitespace
+                        after = node.splitText(regs.index + 1);
+                    } else {
+                        after = node.splitText(regs.index);
+                    }
+                    after.nodeValue = after.nodeValue.substring(regs[1].length);
+                    node.parentNode.insertBefore(match, after);
+                }
+            };
+        };
+
+        // remove highlighting
+        this.remove = function () {
+            var arr = document.getElementsByTagName(hiliteTag);
+            while (arr.length && (el = arr[0])) {
+                var parent = el.parentNode;
+                parent.replaceChild(el.firstChild, el);
+                parent.normalize();
+            }
+        };
+
+        // start highlighting at target node
+        this.apply = function (input) {
+            // this.remove();
+            if (input === undefined || !(input = input.replace(/(^\s+|\s+$)/g, ""))) return;
+            input = convertCharStr2jEsc(input);
+            if (this.setRegex(input)) {
+                this.hiliteWords(targetNode);
+            }
+        };
+
+        // added by Yanosh Kunsh to include utf-8 string comparison
+        function dec2hex4(textString) {
+            var hexequiv = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+            return hexequiv[(textString >> 12) & 0xF] + hexequiv[(textString >> 8) & 0xF] + hexequiv[(textString >> 4) & 0xF] + hexequiv[textString & 0xF];
+        }
+
+        function convertCharStr2jEsc(str, cstyle) {
+            // Converts a string of characters to JavaScript escapes
+            // str: sequence of Unicode characters
+            var highsurrogate = 0;
+            var suppCP;
+            var pad;
+            var n = 0;
+            var outputString = '';
+            for (var i = 0; i < str.length; i++) {
+                var cc = str.charCodeAt(i);
+                if (cc < 0 || cc > 0xFFFF) {
+                    outputString += '!Error in convertCharStr2UTF16: unexpected charCodeAt result, cc=' + cc + '!';
+                }
+                if (highsurrogate != 0) { // this is a supp char, and cc contains the low surrogate
+                    if (0xDC00 <= cc && cc <= 0xDFFF) {
+                        suppCP = 0x10000 + ((highsurrogate - 0xD800) << 10) + (cc - 0xDC00);
+                        if (cstyle) {
+                            pad = suppCP.toString(16);
+                            while (pad.length < 8) {
+                                pad = '0' + pad;
+                            }
+                            outputString += '\\U' + pad;
+                        } else {
+                            suppCP -= 0x10000;
+                            outputString += '\\u' + dec2hex4(0xD800 | (suppCP >> 10)) + '\\u' + dec2hex4(0xDC00 | (suppCP & 0x3FF));
+                        }
+                        highsurrogate = 0;
+                        continue;
+                    } else {
+                        outputString += 'Error in convertCharStr2UTF16: low surrogate expected, cc=' + cc + '!';
+                        highsurrogate = 0;
+                    }
+                }
+                if (0xD800 <= cc && cc <= 0xDBFF) { // start of supplementary character
+                    highsurrogate = cc;
+                } else { // this is a BMP character
+                    switch (cc) {
+                        case 0:
+                            outputString += '\\0';
+                            break;
+                        case 8:
+                            outputString += '\\b';
+                            break;
+                        case 9:
+                            outputString += '\\t';
+                            break;
+                        case 10:
+                            outputString += '\\n';
+                            break;
+                        case 13:
+                            outputString += '\\r';
+                            break;
+                        case 11:
+                            outputString += '\\v';
+                            break;
+                        case 12:
+                            outputString += '\\f';
+                            break;
+                        case 34:
+                            outputString += '\\\"';
+                            break;
+                        case 39:
+                            outputString += '\\\'';
+                            break;
+                        case 92:
+                            outputString += '\\\\';
+                            break;
+                        default:
+                            if (cc > 0x1f && cc < 0x7F) {
+                                outputString += String.fromCharCode(cc);
+                            } else {
+                                pad = cc.toString(16).toUpperCase();
+                                while (pad.length < 4) {
+                                    pad = '0' + pad;
+                                }
+                                outputString += '\\u' + pad;
+                            }
+                    }
+                }
+            }
+            return outputString;
+        }
+
+    }
+</script>

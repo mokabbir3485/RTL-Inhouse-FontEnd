@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Information Formation</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            /*width: 850px;
+            margin: 0 auto;*/
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        @page {
+            size: A4 landscape;
+            
+            /*margin:0;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="hidden-print">
+                <div class="col-sm-7 col-md-9">
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 col-md-1">
+                        <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                            <i class="fa fa-print"></i>&nbsp;Print
+                        </button>
+                    </div>
+
+                    <div class="col-sm-3 col-md-2">
+                        <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                            <i class="fa fa-save"></i>&nbsp;Export to .doc
+                        </button>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    <table width=100% style="font-weight: bold;">
+        <tr>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">From No. {{CIFCustomerList.FormNo}}</p>
+            </td>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Date of Origin: {{CIFCustomerList.DateOfOrigin}}</p>
+                
+            </td>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Revision No. {{CIFCustomerList.RevisionNo}}</p>
+                
+            </td>
+            <td>
+                <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">Revision Date: {{CIFCustomerList.RevisionDate}}</p>
+                
+            </td>
+        </tr>
+    </table>
+
+    <table id="heading" style="text-align: center;margin-left:auto;margin-right:auto;">
+
+        <tr>
+            <td>
+                <img style="height: 80px; width: 80px; padding: 5px" src="../../../UploadedImages/rtlLogo.jpg" />
+            </td>
+            <td>
+                <p style="font-size: 30px;line-height: 1; margin : 0; padding : 0 ; font-weight: bold;"><strong>Retail Technologies Limited</strong></p>
+                <p style="font-size: 14px; line-height: 1.5; margin : 0; padding : 0 ;">
+                    Address: House- B142 (First Floor), Road-22, New DOHS,
+                    Mohakhali, Dhaka-1206
+                </p>
+                <p style="font-size: 18px; line-height: 1; margin: 0; padding: 0;"><i><u><b>Customer Information Formation (CIF)</b></u></i></p>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <p style="font-size: .9em; line-height: 1; margin : 0; padding : 0 ; font-weight: bold;">SALES PERSON(CONTACT NO): {{CIFCustomerList.SalesPerson1}} / {{CIFCustomerList.SalesPerson2}}</p>
+    <br />
+    <table border="1" width="100%" style="padding:5px;">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;">{{CIFCustomerList.CompanyName}}</p>
+                </td>
+                <th>Contact Person</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;">{{CIFCustomerList.ContactPerson}}</p>
+                </td>
+            </tr>
+            <tr>
+                <th>Office Address</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;">{{CIFCustomerList.OfficeAddess}}</p>
+                </td>
+                <th>Designation</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;  font-weight: bold;">{{CIFCustomerList.Designation}}</p>
+                </td>
+            </tr>
+            <tr>
+                <th>Delivery Address</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;">{{CIFCustomerList.DeliveryAddress}}</p>
+                </td>
+                <th>Contact No.</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;">{{CIFCustomerList.ContactNo}}</p>
+                </td>
+            </tr>
+            <tr>
+                <th>Product name</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;"></p>
+                </td>
+                <th>Payment Terms</th>
+                <td>
+                    <p style="font-size: .9em; line-height: 1; font-weight: bold;">{{CIFCustomerList.PaymentTerms}}</p>
+                </td>
+            </tr>
+        </thead>
+    </table>
+    <br>
+    <table style="text-align:center; font-weight: bold;" border="1" width="100%">
+        <thead>
+            <tr>
+                <td>SL.No</td>
+                <td>SIZE</td>
+                <td>ERP CODE</td>
+                <td>MATERIAL</td>
+                <td>STOCK WIDTH(MM)</td>
+                <td>CORE SIZE (MM)</td>
+                <td>Qty./ ROLL(PCS)</td>
+                <td>ROLL DIRECTION</td>
+                <td>PRICE/ PCS(T)</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="aCIFProduct in CIFProductList track by $index">
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{$index + 1}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.Size}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.ERPCode}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.Material}}</p>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.Material}}</p>
+                </td>
+                <td style="text-align:justify; width: 100px; padding: 5px;">
+                    <span><input type="checkbox" ng-model="aCIFProduct.Core40" value="FaceIn" disabled/>&nbsp;40</span>
+                    <span><input type="checkbox" ng-model="aCIFProduct.Core76" value="FaceOut" disabled/>&nbsp;76</span> <br>
+                    <span><input type="checkbox" ng-model="aCIFProduct.Core25" value="ClockWise" disabled/>&nbsp;25</span>
+                    <span><input type="checkbox" ng-model="aCIFProduct.Core12" value="AntiClockWise" disabled/>&nbsp;12.5</span>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.QtyPerRoll}}</p>
+                </td>
+                <td style="text-align:justify;width: 115px; padding: 5px;">
+                    <span><input type="checkbox" ng-model="aCIFProduct.FaceIn" value="FaceIn" />&nbsp;F/I</span>
+                    <span><input type="checkbox" ng-model="aCIFProduct.FaceOut" value="FaceOut" />&nbsp;F/O</span> <br>
+                    <span><input type="checkbox" ng-model="aCIFProduct.ClockWise" value="ClockWise" />&nbsp;CW</span>
+                    <span><input type="checkbox" ng-model="aCIFProduct.AntiClockWise" value="AntiClockWise" />&nbsp;ACW</span>
+                </td>
+                <td>
+                    <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;">{{aCIFProduct.PricePerPCS}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+    </script>
+</body>
+
+</html>

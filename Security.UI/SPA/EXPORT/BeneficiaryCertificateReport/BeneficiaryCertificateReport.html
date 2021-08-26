@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            
+        }
+
+        td {
+            vertical-align: top;
+            text-align: left;
+        }
+        @media print {
+            #footer {
+                position: fixed;
+                bottom: 0;
+                padding-right:30px;
+            }
+        }
+/*
+        @page {
+            size: A4;
+            margin-top: 2.2cm;
+            margin-bottom: 2cm;
+            margin-left: 2cm;
+            margin-right: 2cm;
+        }*/
+        /*@page {
+            size: A4;
+            /*margin-top: 2.2cm;
+            margin-bottom: 2cm;
+            margin-left: .25in;
+            margin-right: .25in;
+        }*/
+    </style>
+</head>
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="container hidden-print">
+                        <div class="col-sm-7 col-md-9">
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-md-1">
+                                <button type="button" onclick="PrintPdf();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Print To .PDF">
+                                    <i class="fa fa-print"></i>&nbsp;Print
+                                </button>
+                            </div>
+
+                            <div class="col-sm-3 col-md-2">
+                                <button type="button" onclick="ExportToDoc();" class="customBtn custmoBtnReset" style="border-radius: 3px; margin-bottom: -.9em; margin-top: -15px; padding-bottom: 3px; padding-top: 3px;" title="Export to .doc">
+                                    <i class="fa fa-save"></i>&nbsp;Export to .doc
+                                </button>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+
+                    <div class="container" id="source-html">
+                        <div>
+                            <br />
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].CommercialInvoiceNo"><b>BC No: {{CommercialInvoiceMasterList[0].CommercialInvoiceNo}}</b></p>
+                            <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].CommercialInvoiceDate">{{CommercialInvoiceMasterList[0].CommercialInvoiceDate}}</p><br />
+                            <!--<p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].ExpNo"><b>EXP No: </b>{{CommercialInvoiceMasterList[0].ExpNo}} <b>&emsp;&emsp;&emsp;</b>{{CommercialInvoiceMasterList[0].ExpDate}}</p>-->
+
+                        </div>
+                        <br /><br />
+                        <div>
+                            <p style="font-size: 25px; text-align: center;"><b><u>Beneficiary's Certificate</u></b></p>
+                        </div>
+                        <br /><br />
+
+                              <div>
+                                  <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].LcScNo"><b>LC No:</b> {{CommercialInvoiceMasterList[0].LcScNo}}  {{CommercialInvoiceMasterList[0].LcScDate}}</p>
+                                  <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'AppExtxa4' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                                  <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'AppExtxa5' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</p>
+                                  <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="ciInfoDetail.InfoValue" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'ExpContact' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span><br />
+                                  <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'BDBankDc' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                  <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].ExpNo"><b>EXP No: </b>{{CommercialInvoiceMasterList[0].ExpNo}} <b>&emsp;&emsp;&emsp;</b>{{CommercialInvoiceMasterList[0].ExpDate}}</p>
+
+                                  <br />
+                                  <br />
+                                  <p style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-if="CommercialInvoiceMasterList[0].Amount"><b>Amount: $  {{CommercialInvoiceMasterList[0].Amount}}</b></p>
+
+                              </div>
+                        <br />
+
+                        <div>
+                            <p style="font-size: 1em; text-align: justify; line-height: 1; margin: 0; padding: 0;" ng-if="CommercialInvoiceMasterList[0].ImporterName || CommercialInvoiceMasterList[0].ImporterBillAddress || CommercialInvoiceMasterList[0].Covering || CommercialInvoiceMasterList[0].PiRefNo || CommercialInvoiceMasterList[0].PiRefDate">
+                                This is to certify that the goods supplied to  <b>{{CommercialInvoiceMasterList[0].ImporterName}}</b> {{CommercialInvoiceMasterList[0].ImporterBillAddress}} {{CommercialInvoiceMasterList[0].Covering}}
+                                Goods are strictly in Conformity as per <b ng-if="CommercialInvoiceMasterList[0].PaymentProcessType == 'LC'">Proforma Invoice Number : </b><b ng-if="CommercialInvoiceMasterList[0].PaymentProcessTypeId == 2 || CommercialInvoiceMasterList[0].PaymentProcessTypeId == 3">Sales Contract Number : </b> {{PiRefInfo}}
+                                <!--<span ng-if="POInfo"> <b>PO Number : </b>{{POInfo}}</span>--> Goods.
+                                <!-- Extra field -->
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'LcInfoEx1' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'LcInfoEx2' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'LcInfoEx3' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <span style="font-size: .9em; line-height: 1;    margin : 0;  padding : 0 ;" ng-repeat="ciInfoDetail in CiInfoDetailReportList | filter: { InfoSubType: 'LcInfoEx4' }"><b>{{ciInfoDetail.InfoLabel}}:</b> {{ciInfoDetail.InfoValue}}</span>
+                                <b>H.S. Code:</b> {{CommercialInvoiceMasterList[0].HsCodes}} and we are giving assurance that, these goods are strictly 100% qualified as
+                                per customer requirement. No any damage or poor products.
+
+                            </p>
+                            <br />
+
+                        </div>
+                        <br />
+                        <div ng-if="CommercialInvoiceMasterList[0].ImporterBankName">
+                            <ul>
+                                <li>
+                                    <p style="font-size: 1em; line-height: 1;" ng-if="CommercialInvoiceMasterList[0].ImporterBankName"><b>{{CommercialInvoiceMasterList[0].ImporterBankName}}</b></p>
+                                    <p style="font-size: 1em; line-height: 1;" ng-if="CommercialInvoiceMasterList[0].ImporterBranchAddress">{{CommercialInvoiceMasterList[0].ImporterBranchAddress}}</p>
+                                    <p style="font-size: 1em; line-height: 1;" ng-if="CommercialInvoiceMasterList[0].ImporterSwift"><b>Swift Code:</b>{{CommercialInvoiceMasterList[0].ImporterSwift}}</p>
+                                    <p style="font-size: 1em; line-height: 1;" ng-if="CommercialInvoiceMasterList[0].BankInfoLabel"><b>{{CommercialInvoiceMasterList[0].BankInfoLabel}}:</b>{{CommercialInvoiceMasterList[0].ImporterBIN}}</p>
+                                    <p style="font-size: 1em; line-height: 1;" ng-if="!CommercialInvoiceMasterList[0].BankInfoLabel && CommercialInvoiceMasterList[0].ImporterBIN"><b>BIN:</b>{{CommercialInvoiceMasterList[0].ImporterBIN}}</p>
+                                </li>
+                            </ul>
+                            <br />
+
+
+                        </div>
+                        <br />
+                        <br />
+                        <div id="footer">
+                            <table style="width: 100%;">
+                                <tbody style="left:30px; right: 50px;">
+                                    <tr>
+                                        <td width="450px" style="text-align:left;">
+                                            <!--<div>
+                            <br />
+                            <br />
+                            <span style="font-size: .9em; line-height: 1;"><b>Authorized Signature</b></span>
+                            <br />
+                            <span style="font-size: .9em; line-height: 1;"><b>{{CommercialInvoiceMasterList[0].ImporterName}}</b></span>
+
+                        </div>-->
+                                        </td>
+                                        <td width="450px" style="text-align: right;" >
+                                            <div ng-if="CommercialInvoiceMasterList[0].ExporterId == 1">
+                                                <span style="font-size: .9em; line-height: 1;"><b>{{CommercialInvoiceMasterList[0].ExporterName}}</b></span>
+                                                <br />
+                                                <br />
+                                                <br />
+                                                <span style="font-size: .9em; line-height: 1;"><b>Authorized Signature</b></span>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br />
+
+                            <!--<table style="width: 100%;">
+                                <tbody style="left:30px; right: 50px;">
+                                    <tr>
+                                        <td style="text-align:left; font-size: small;">
+                                            <div class="footer">
+                                                <span><b>{{currentDatetimeFormated}}</b></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>-->
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript">
+        //$("#footer").draggable();
+
+        function ExportToDoc() {
+
+            var sourceHTML = document.getElementById("source-html").innerHTML;
+
+            // console.log(sourceHTML);
+            function escapeRegExp(string) {
+                return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            }
+            function replaceAll(str, term, replacement) {
+                return str.replace(new RegExp(escapeRegExp(term), 'g'), replacement);
+            }
+            var removeTableBorderStr;
+            $('#ciTable tbody tr td').each(function (tdIndex, td) {
+                var preStyle = $(this).attr("style");
+
+                if (preStyle != undefined) {
+                    var pos = preStyle.indexOf("display: none;");
+                    if (pos != -1) {
+                        $('#ciTable').find("tbody tr td:nth-child(" + tdIndex + ")").each(function () {
+
+                            $(this).remove();
+
+                            alert();
+                        });
+                        //  $(this).remove();
+                    }
+                }
+
+            });
+
+
+            var thCount = 8;
+
+            if (thCount <= 10 && thCount > 0) {
+                removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+            }
+            else if (thCount <= 15 && thCount > 10) {
+                removeTableBorderStr = replaceAll(sourceHTML, 'style="width: 100% !important; font-size: .9em; font-family: "Times New Roman", Times, serif; color:#000000; text-align:center; margin:0; padding:0;', 'style="width: 100% !important; text:align:center; border: 1px solid black; border-collapse: collapse; font-size: .7em; font-family: "Times New Roman", Times, serif; color:#000000; margin:0; padding:0;');
+            }
+            else {
+                alert('Please insert less then 15 column.');
+                return;
+            }
+            var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(removeTableBorderStr);
+            var fileDownload = document.createElement("a");
+            document.body.appendChild(fileDownload);
+            fileDownload.href = source;
+            fileDownload.download = 'Commercil Invoice.doc';
+            fileDownload.click();
+            document.body.removeChild(fileDownload);
+            $('.hideButton').show();
+            $('#result').show();
+        }
+        function PrintPdf() {
+
+            window.print();
+
+        }
+        jQuery(document).ready(function ($) {
+
+            $(".main-sidebar").attr("hidden", true);
+            $(".main-header").attr("hidden", true);
+            $(".main-footer").attr("hidden", true);
+            $("#Hidebr").attr("hidden", true);
+
+            $("div").removeClass("wrapper");
+            $("div").removeClass("content-wrapper");
+        });
+
+
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,165 @@
+﻿
+<form name="exportReportForm" novalidate>
+
+    <div class="col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-group"></i>&nbsp;Reports </h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <!--<div class="row">
+                        <div class="radio-inline" ng-show="CurrentStock">
+                            <label>
+                                <input type="radio" name="optionsRadios1" ng-click="UnitInLoad();" value="CurrentStock" ng-model="rbReport">Current Stock Report
+                            </label>
+                        </div>
+                    </div>-->
+                    <div class="row">
+                        <div class="radio-inline">
+                            <label>
+                                <input type="radio" name="exportRadios1" ng-click="UnitInLoad();" value="BeneficiaryCertificate" ng-model="rbReport">Beneficiary's Certificate
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="StockSummary">
+                            <label>
+                                <input type="radio" name="exportRadios1" value="BillofExchange" ng-model="rbReport">Bill of Exchange
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="ProductSerialNo">
+                            <label>
+                                <input type="radio" name="exportRadios1" value="Certificateoforigin" ng-model="rbReport">Certificate of origin
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="DateWiseProductionStatus">
+                            <label>
+                                <input type="radio" name="exportRadios1" value="DeliveryChallan" ng-model="rbReport">Delivery Challan
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="row">
+                        <div class="radio-inline" ng-show="PurchaseBySupplier">
+                            <label>
+                                <input type="radio" name="exportRadios1" value="PurchaseBySupplier" ng-model="rbReport">Purchase By Supplier Report
+                            </label>
+                        </div>
+                    </div>-->
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SaleReportByCompany">
+                            <label>
+                                <input type="radio" name="exportRadios1" value="PackingList" ng-model="rbReport">Packing List
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="radio-inline" ng-show="SaleReportByCompany">
+                            <label>
+                                <input type="radio" name="exportRadios1" value="SaleReportByCompany" ng-model="rbReport">Truck Challan
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>&nbsp;Report Parameters</h3>
+            </div>
+            <div class="panel-body custom-panal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+
+
+                            <div class="col-md-12" ng-show="rbReport=='BeneficiaryCertificate'||'BillofExchange'||'DeliveryChallan'||'PackingList'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Select Ci">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selCi" ng-model="ddlCi" class="form-control selectNotMandetory" name="Ci" ng-options="ci.DisplayLabel  for ci in CiList  track by ci.DataValue" ng-change="">
+                                            <option value="" label="Select Ci"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-12" ng-show="rbReport=='BillofExchange'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Doc Type">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selDoc" ng-model="ddlDoc" class="form-control selectNotMandetory" name="Doc" ng-options="label.Label  for label in DocList  track by label.Label" ng-change="">
+                                            <option value="" label="Select Doc Type"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-12" ng-show="rbReport=='Certificateoforigin'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="Certificateoforigin">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selCertificate" ng-model="ddlCertificate" class="form-control selectNotMandetory" name="Doc" ng-options="month.MonthName  for month in MonthList  track by month.MonthId" ng-change="">
+                                            <option value="" label="Select Certificate of origin"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="row">
+                            <div class="col-md-12" ng-show="rbReport=='PackingList'">
+                                <div class="form-group" data-toggle="tooltip" data-placement="bottom" title="PackingList">
+                                    <div class="input-group input-group-md ddl">
+                                        <select id="selPackingList" ng-model="ddlPackingList" class="form-control selectNotMandetory" name="PackingList" ng-options="month.MonthName  for month in MonthList  track by month.MonthId" ng-change="">
+                                            <option value="" label="Select Packing List"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--View Button-->
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 4%; padding-right: 7%;">
+                                <div class="row">
+                                    <button id="Button1" class="customBtn custmoBtnSave" ng-click="ReportViewButton()" title="Report View">
+                                        <i class="fa fa-floppy-o"></i>&nbsp;View Report
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-lg-4 col-xs-12" style="padding-left: 5%; padding-right: 7%;">
+                                <!--<div class="row" ng-show="rbReport=='SaleComparison'||rbReport=='SalesOrder'">
+                                    <button id="btnGraphView" class="customBtn custmoBtnSave" ng-click="SaleComparison();" title="Graph View" data-toggle="modal" data-target="#modChart">
+                                        <i class=" fa fa-bar-chart "></i>&nbsp;View Graph
+                                    </button>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</form>
